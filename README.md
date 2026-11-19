@@ -2,6 +2,6 @@
 
 Live page: https://four2d.github.io/vuba-wiltshire-studio/
 
-Opens with three posts for Monday, Wednesday and Friday. Looks good keeps one. Try another writes a different one. Change photo swaps the picture. Edit words changes the caption and the lines on the picture. Copy the caption and download the picture.
+The page holds the working plan, then writes the week from it: Monday, Wednesday and Friday on Instagram and Facebook, and one LinkedIn note. Looks good keeps a post. Try another writes a different one from the same plan. Change photo and Edit words are the other two actions. Copy the caption and download the picture.
 
-Nothing on the page is posted to Facebook, Instagram, LinkedIn or Google.
+Training and Google stay off until there is a real date or a profile change. Nothing on the page is posted to Facebook, Instagram, LinkedIn or Google.
