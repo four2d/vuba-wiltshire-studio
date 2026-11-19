@@ -8,7 +8,7 @@
   @font-face { font-family: Poppins; src: url("fonts/Poppins-Regular.ttf") format("truetype"); font-weight: 400; font-display: swap; }
   @font-face { font-family: Poppins; src: url("fonts/Poppins-Bold.ttf") format("truetype"); font-weight: 700; font-display: swap; }
   @font-face { font-family: Poppins; src: url("fonts/Poppins-Black.ttf") format("truetype"); font-weight: 900; font-display: swap; }
-  :root { --blue: #035b80; --red: #821732; --ink: #142026; --muted: #3d555f; --line: #d5e0e6; --paper: #f4f7f8; }
+  :root { --blue: #035b80; --red: #821732; --ink: #142026; --muted: #3d555f; --line: #d5e0e6; --paper: #f4f7f8; --ok: #1f7a4d; --ok-bg: #e7f6ee; }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--paper); color: var(--ink); font-family: Poppins, sans-serif; font-size: 16px; line-height: 1.45; }
   ::selection { background: #c5dbe4; }
@@ -17,25 +17,51 @@
   header img { width: 64px; height: auto; }
   header h1 { margin: 0; font-weight: 900; font-size: 1.8rem; letter-spacing: -0.03em; }
   header p { margin: 4px 0 0; color: #d5e8ef; }
-  main { padding: 28px 32px 64px; display: grid; gap: 28px; }
-  article { display: grid; grid-template-columns: minmax(260px, 420px) 1fr; gap: 24px; align-items: start; }
-  .shot { background: var(--ink); border-radius: 12px; overflow: hidden; box-shadow: 0 16px 36px rgba(20, 32, 38, 0.14); min-height: 240px; }
+  main { padding: 28px 32px 64px; display: grid; gap: 28px; max-width: 920px; }
+  article { background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 12px 28px rgba(20, 32, 38, 0.06); }
+  .when { margin: 0; padding: 14px 16px 0; font-weight: 700; }
+  .when.is-ok { color: var(--ok); }
+  .shot { margin: 12px 16px 0; background: var(--ink); border-radius: 12px; overflow: hidden; min-height: 180px; }
   .shot img { display: block; width: 100%; height: auto; }
-  .shot p { color: #d5e8ef; padding: 28px; margin: 0; }
-  h2 { margin: 0 0 4px; font-size: 1.35rem; letter-spacing: -0.03em; }
-  .day { color: var(--muted); margin: 0 0 14px; }
-  .tabs { display: flex; gap: 8px; margin-bottom: 10px; }
-  .tabs button, .actions button {
-    font: inherit; font-weight: 700; border-radius: 8px; border: 1px solid var(--blue);
-    background: #fff; color: var(--blue); padding: 8px 12px; cursor: pointer;
+  .shot p { color: #d5e8ef; padding: 24px; margin: 0; }
+  .caption { margin: 12px 16px 0; white-space: pre-wrap; }
+  .tabs { display: flex; gap: 8px; padding: 12px 16px 0; }
+  .tabs button { font: inherit; border: 0; background: transparent; color: var(--muted); padding: 6px 2px; cursor: pointer; border-bottom: 2px solid transparent; }
+  .tabs button[aria-pressed="true"] { color: var(--blue); border-bottom-color: var(--blue); font-weight: 700; }
+  .actions { display: flex; flex-direction: column; gap: 8px; padding: 14px 16px 0; }
+  .actions button, .edit button, .sheet button, .filebtn {
+    font: inherit; font-weight: 700; border-radius: 10px; border: 1px solid var(--line);
+    background: #fff; color: var(--ink); padding: 12px 14px; cursor: pointer; text-align: center;
   }
-  .tabs button[aria-pressed="true"], .actions button.primary { background: var(--blue); color: #fff; }
-  textarea { width: 100%; min-height: 150px; font: inherit; color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; resize: vertical; background: #fff; }
-  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-  footer { padding: 0 32px 40px; color: var(--muted); max-width: 46rem; }
-  @media (max-width: 800px) {
+  .yes { background: var(--ok); color: #fff; border-color: var(--ok); }
+  .yes[aria-pressed="true"] { background: #0f5c38; }
+  .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 18px; padding: 4px 16px 16px; }
+  .links button { font: inherit; background: none; border: 0; color: var(--blue); padding: 8px 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+  .links button:disabled { color: var(--muted); cursor: default; text-decoration: none; }
+  .msg { min-height: 1.2em; margin: 0 16px; font-size: 0.92rem; }
+  .msg.is-ok { color: var(--ok); }
+  .msg.is-err { color: var(--red); }
+  .edit { padding: 0 16px 16px; }
+  .edit[hidden] { display: none; }
+  .edit label { display: block; font-weight: 700; font-size: 0.92rem; margin: 10px 0 4px; }
+  .edit input, .edit textarea { width: 100%; font: inherit; border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+  .edit textarea { min-height: 120px; resize: vertical; }
+  .edit .row { display: flex; gap: 8px; margin-top: 10px; }
+  .edit .row button { flex: 1; }
+  .save { background: var(--blue); color: #fff; border-color: var(--blue); }
+  .sheet { position: fixed; inset: 0; background: rgba(20, 32, 38, 0.45); display: grid; place-items: end center; padding: 16px; }
+  .sheet[hidden] { display: none; }
+  .sheet-card { background: #fff; width: min(520px, 100%); border-radius: 16px; padding: 18px 18px 22px; max-height: 88vh; overflow: auto; }
+  .sheet-card h2 { margin: 0 0 6px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0; }
+  .grid button { padding: 0; border-radius: 8px; overflow: hidden; border: 2px solid transparent; }
+  .grid button[aria-pressed="true"] { border-color: var(--blue); }
+  .grid img { display: block; width: 100%; height: 88px; object-fit: cover; }
+  .filebtn { display: block; margin-top: 8px; }
+  .filebtn input { display: none; }
+  footer { padding: 0 32px 40px; color: var(--muted); max-width: 40rem; }
+  @media (max-width: 700px) {
     header, main, footer { padding-left: 16px; padding-right: 16px; }
-    article { grid-template-columns: 1fr; }
     header h1 { font-size: 1.4rem; }
   }
 </style>
@@ -45,63 +71,106 @@
   <img src="logo.png" alt="Vuba Wiltshire">
   <div>
     <h1>This week’s posts</h1>
-    <p>Three posts, already written. Copy the caption and download the picture. This page does not publish them.</p>
+    <p>Review them, then copy the caption and download the picture. Nothing is published from this page.</p>
   </div>
 </header>
 <main id="list"></main>
-<footer>The photographs are the sample blends named on the colours page: Cotswolds, Anthracite and London Stone. They are available through the depot. The captions do not claim a bag is on the shelf today.</footer>
+<footer>Looks good keeps a post. Try another writes a different one. Change photo swaps the picture. Edit words changes the caption and the lines on the picture.</footer>
+
+<div class="sheet" id="photoSheet" hidden>
+  <div class="sheet-card">
+    <h2>Change photo</h2>
+    <p>Pick one of the sample blends, or take a new photograph.</p>
+    <div class="grid" id="photoGrid"></div>
+    <label class="filebtn">Take a photo
+      <input id="photoCamera" type="file" accept="image/*" capture="environment">
+    </label>
+    <label class="filebtn">Upload a photo
+      <input id="photoUpload" type="file" accept="image/*">
+    </label>
+    <div class="row" style="display:flex;gap:8px;margin-top:12px">
+      <button type="button" id="photoClose" style="flex:1">Close</button>
+    </div>
+    <p class="msg" id="photoMsg"></p>
+  </div>
+</div>
+
 <script>
+const KEY = "vuba-posts-v2";
 const PHONE = "01985 221123";
-const POSTS = [
-  {
-    id: "cotswolds",
-    day: "Monday",
-    title: "Cotswolds",
-    file: "photos/cotswolds.jpg",
-    line1: "Cotswolds.",
-    line2: "See it in daylight.",
-    captions: {
-      Instagram: "Cotswolds. Easier to choose when you can see the blend in real light, not only on a screen.",
-      Facebook: "Cotswolds is available through the Sutton Veny counter. Honey tones.\n\nWorth looking at in daylight before you specify it. Monday to Friday, 07:30–16:30.",
-      LinkedIn: "Cotswolds is one of the blends available through Vuba Wiltshire at Sutton Veny.\n\nSeeing the finish in daylight is a better way to choose than a picture on a phone. The counter is open Monday to Friday, 07:30–16:30."
-    }
-  },
-  {
-    id: "anthracite",
-    day: "Wednesday",
-    title: "Anthracite",
-    file: "photos/anthracite.jpg",
-    line1: "Anthracite.",
-    line2: "When the job wants dark grey.",
-    captions: {
-      Instagram: "Anthracite, when the scheme wants a dark grey.",
-      Facebook: "Anthracite is the contemporary dark grey. If that is the finish the job needs, it is available through Sutton Veny.\n\nCall the desk. " + PHONE + ".",
-      LinkedIn: "Anthracite is the dark grey blend, for a contemporary scheme.\n\nIt is available through the Vuba Wiltshire counter at Sutton Veny. Weekdays 07:30–16:30, or call " + PHONE + "."
-    }
-  },
-  {
-    id: "london-stone",
-    day: "Friday",
-    title: "London Stone",
-    file: "photos/london-stone.jpg",
-    line1: "London Stone.",
-    line2: "The warm buff.",
-    captions: {
-      Instagram: "London Stone. The warm buff, at the Sutton Veny counter.",
-      Facebook: "London Stone is the warm buff. A known finish, available through Vuba Wiltshire.\n\nUnit 32, Deverill Road Trading Estate, Sutton Veny, BA12 7BZ.",
-      LinkedIn: "London Stone is the warm buff blend installers already ask for by name.\n\nVuba Wiltshire holds it as part of the range available from Sutton Veny, near Warminster. Desk: " + PHONE + "."
-    }
-  }
+const SLOTS = [
+  { id: "mon", day: "Monday" },
+  { id: "wed", day: "Wednesday" },
+  { id: "fri", day: "Friday" }
 ];
+const IDEAS = [
+  idea("cotswolds", "Cotswolds", "Cotswolds.", "See it in daylight.",
+    "Cotswolds. Easier to choose when you can see the blend in real light, not only on a screen.",
+    "Cotswolds is available through the Sutton Veny counter. Honey tones.\n\nWorth looking at in daylight before you specify it. Monday to Friday, 07:30–16:30.",
+    "Cotswolds is one of the blends available through Vuba Wiltshire at Sutton Veny.\n\nSeeing the finish in daylight is a better way to choose than a picture on a phone. The counter is open Monday to Friday, 07:30–16:30."),
+  idea("anthracite", "Anthracite", "Anthracite.", "When the job wants dark grey.",
+    "Anthracite, when the scheme wants a dark grey.",
+    "Anthracite is the contemporary dark grey. If that is the finish the job needs, it is available through Sutton Veny.\n\nCall the desk. " + PHONE + ".",
+    "Anthracite is the dark grey blend, for a contemporary scheme.\n\nIt is available through the Vuba Wiltshire counter at Sutton Veny. Weekdays 07:30–16:30, or call " + PHONE + "."),
+  idea("london-stone", "London Stone", "London Stone.", "The warm buff.",
+    "London Stone. The warm buff, at the Sutton Veny counter.",
+    "London Stone is the warm buff. A known finish, available through Vuba Wiltshire.\n\nUnit 32, Deverill Road Trading Estate, Sutton Veny, BA12 7BZ.",
+    "London Stone is the warm buff blend installers already ask for by name.\n\nVuba Wiltshire holds it as part of the range available from Sutton Veny, near Warminster. Desk: " + PHONE + "."),
+  idea("manhattan", "Manhattan", "Manhattan.", "The cool grey.",
+    "Manhattan. A cool grey mix, for a more urban finish.",
+    "Manhattan is the cool grey mix. Useful when the job wants something quieter than a warm stone.\n\nAvailable through Sutton Veny.",
+    "Manhattan is the cool grey blend in the Vuba Wiltshire range.\n\nIt suits a more urban scheme. The counter at Sutton Veny can show it in daylight, weekdays 07:30–16:30."),
+  idea("st-ives", "St Ives", "St Ives.", "The pale one.",
+    "St Ives. The pale coastal blend.",
+    "St Ives is the light one. Worth seeing against the house colour, not only on a screen.\n\nSutton Veny counter, Monday to Friday.",
+    "St Ives is the pale blend. It reads lighter on site than it does in a small photo.\n\nAvailable through Vuba Wiltshire at Sutton Veny."),
+  idea("patagonia", "Patagonia", "Patagonia.", "The multi-tone.",
+    "Patagonia. More than one colour in the mix.",
+    "Patagonia is the multi-tone blend. The choice is easier once you have seen how the colours sit together.\n\nCome to Sutton Veny on a weekday.",
+    "Patagonia is the statement blend, with more than one tone in the mix.\n\nIt is part of the range available from the Sutton Veny counter.")
+];
+function idea(id, title, line1, line2, ig, fb, li) {
+  return { id, title, file: "photos/" + id + ".jpg", line1, line2, captions: { Instagram: ig, Facebook: fb, LinkedIn: li } };
+}
+const PLATFORMS = ["Instagram", "Facebook", "LinkedIn"];
 
-const list = document.getElementById("list");
 let logo;
+let photoFor = null;
 
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+  catch { return {}; }
+}
+function saveState(s) {
+  try { localStorage.setItem(KEY, JSON.stringify(s)); return true; }
+  catch { return false; }
+}
+function fromIdea(item) {
+  return {
+    ideaId: item.id, title: item.title, file: item.file, custom: "",
+    line1: item.line1, line2: item.line2,
+    captions: { ...item.captions }, platform: "Instagram", status: "awaiting"
+  };
+}
+function ensure() {
+  const s = loadState();
+  const used = new Set();
+  SLOTS.forEach((slot, i) => {
+    const post = s[slot.id];
+    if (!post || used.has(post.ideaId)) {
+      const pick = IDEAS.find((item) => !used.has(item.id)) || IDEAS[i % IDEAS.length];
+      s[slot.id] = fromIdea(pick);
+    }
+    used.add(s[slot.id].ideaId);
+  });
+  saveState(s);
+  return s;
+}
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(src));
+    img.onerror = () => reject(new Error("image"));
     img.src = src;
   });
 }
@@ -112,105 +181,276 @@ function cover(ctx, img, w, h) {
 }
 function fit(ctx, lines, maxW) {
   let size = 64;
-  while (size > 36) {
+  while (size > 34) {
     ctx.font = "900 " + size + "px Poppins, sans-serif";
     if (lines.every((line) => ctx.measureText(line).width <= maxW)) return size;
     size -= 2;
   }
-  return 36;
+  return 34;
 }
 async function bake(post) {
   await document.fonts.load("900 64px Poppins");
-  const photo = await loadImage(post.file);
-  const W = 1080, H = 1350;
+  const photo = await loadImage(post.custom || post.file);
   const canvas = document.createElement("canvas");
-  canvas.width = W; canvas.height = H;
+  canvas.width = 1080; canvas.height = 1350;
   const ctx = canvas.getContext("2d");
-  cover(ctx, photo, W, H);
-  const g = ctx.createLinearGradient(0, 0, 0, H);
+  cover(ctx, photo, 1080, 1350);
+  const g = ctx.createLinearGradient(0, 0, 0, 1350);
   g.addColorStop(0, "rgba(3,28,40,0.28)");
   g.addColorStop(0.45, "rgba(3,28,40,0)");
   g.addColorStop(1, "rgba(3,28,40,0.82)");
   ctx.fillStyle = g;
-  ctx.fillRect(0, 0, W, H);
-  const lw = 220, lh = lw * (logo.height / logo.width);
-  ctx.drawImage(logo, 48, 40, lw, lh);
-  const lines = [post.line1, post.line2];
-  const size = fit(ctx, lines, W - 112);
-  let y = H - 220;
+  ctx.fillRect(0, 0, 1080, 1350);
+  const lw = 220;
+  ctx.drawImage(logo, 48, 40, lw, lw * (logo.height / logo.width));
+  const lines = [post.line1, post.line2].filter(Boolean);
+  const size = fit(ctx, lines, 960);
+  let y = 1350 - 80 - lines.length * size * 1.05 - 36;
   ctx.fillStyle = "#821732";
   ctx.fillRect(56, y, 64, 6);
-  y += 28;
+  y += 24;
   ctx.fillStyle = "#fff";
   ctx.textBaseline = "top";
   ctx.font = "900 " + size + "px Poppins, sans-serif";
-  for (const line of lines) { ctx.fillText(line, 56, y); y += size * 1.05; }
+  lines.forEach((line) => { ctx.fillText(line, 56, y); y += size * 1.05; });
   return canvas.toDataURL("image/jpeg", 0.92);
 }
 
-function card(post) {
+function render() {
+  const state = ensure();
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  SLOTS.forEach((slot) => list.appendChild(card(slot, state[slot.id])));
+}
+function card(slot, post) {
+  const approved = post.status === "approved";
   const el = document.createElement("article");
+  el.dataset.card = slot.id;
   el.innerHTML = `
+    <p class="when${approved ? " is-ok" : ""}">${slot.day}${approved ? " · Kept" : ""}</p>
     <div class="shot"><p>Making the picture…</p></div>
-    <div>
-      <h2>${post.title}</h2>
-      <p class="day">${post.day} · Instagram, Facebook and LinkedIn</p>
-      <div class="tabs"></div>
-      <textarea readonly></textarea>
-      <div class="actions">
-        <button type="button" class="primary" data-copy>Copy caption</button>
-        <button type="button" data-save disabled>Download picture</button>
+    <div class="tabs">${PLATFORMS.map((name) => `<button type="button" data-platform="${name}" aria-pressed="${name === post.platform ? "true" : "false"}">${name}</button>`).join("")}</div>
+    <p class="caption"></p>
+    <div class="actions">
+      <button type="button" class="yes" data-act="approve" aria-pressed="${approved ? "true" : "false"}">${approved ? "Approved ✓" : "Looks good ✓"}</button>
+      <button type="button" data-act="another">Try another</button>
+      <button type="button" data-act="photo">Change photo</button>
+    </div>
+    <p class="msg" data-msg></p>
+    <div class="links">
+      <button type="button" data-act="edit">Edit words</button>
+      <button type="button" data-act="copy">Copy caption</button>
+      <button type="button" data-act="download" disabled>Download picture</button>
+      ${approved ? `<button type="button" data-act="undo">Undo</button>` : ""}
+    </div>
+    <div class="edit" hidden>
+      <label>First line on the picture</label>
+      <input data-line1 value="">
+      <label>Second line on the picture</label>
+      <input data-line2 value="">
+      <label>Caption</label>
+      <textarea data-caption></textarea>
+      <div class="row">
+        <button type="button" class="save" data-act="save-words">Save</button>
+        <button type="button" data-act="cancel-words">Cancel</button>
       </div>
     </div>`;
-  const tabs = el.querySelector(".tabs");
-  const box = el.querySelector("textarea");
-  let current = "Instagram";
-  Object.keys(post.captions).forEach((name) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.textContent = name;
-    btn.setAttribute("aria-pressed", name === current ? "true" : "false");
-    btn.onclick = () => {
-      current = name;
-      box.value = post.captions[name];
-      tabs.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
-    };
-    tabs.appendChild(btn);
+  paintWords(el, post);
+  el.addEventListener("click", (e) => {
+    const platform = e.target.closest("[data-platform]");
+    const act = e.target.closest("[data-act]");
+    if (platform) setPlatform(slot.id, platform.dataset.platform);
+    if (!act) return;
+    const action = act.dataset.act;
+    if (action === "approve") approve(slot.id);
+    if (action === "undo") undo(slot.id);
+    if (action === "another") tryAnother(slot.id);
+    if (action === "photo") openPhotos(slot.id);
+    if (action === "edit") openEdit(slot.id);
+    if (action === "copy") copyCaption(slot.id);
+    if (action === "download") downloadPicture(slot.id, act);
+    if (action === "cancel-words") el.querySelector(".edit").hidden = true;
+    if (action === "save-words") saveWords(slot.id, el);
   });
-  box.value = post.captions.Instagram;
-  el.querySelector("[data-copy]").onclick = async () => {
-    await navigator.clipboard.writeText(box.value);
-    el.querySelector("[data-copy]").textContent = "Copied";
-  };
-  list.appendChild(el);
+  bake(post).then((url) => {
+    const shot = el.querySelector(".shot");
+    if (!shot) return;
+    shot.innerHTML = "";
+    const img = new Image();
+    img.src = url;
+    img.alt = post.line1 + " " + post.line2;
+    shot.appendChild(img);
+    const dl = el.querySelector("[data-act='download']");
+    if (dl) { dl.disabled = false; dl.dataset.url = url; }
+  }).catch(() => {
+    const note = el.querySelector(".shot p");
+    if (note) note.textContent = "This picture could not be made.";
+  });
   return el;
 }
-
-(async () => {
-  logo = await loadImage("logo.png");
-  for (const post of POSTS) {
-    const el = card(post);
-    try {
-      const url = await bake(post);
-      const img = new Image();
-      img.src = url;
-      img.alt = post.line1 + " " + post.line2;
-      const shot = el.querySelector(".shot");
-      shot.textContent = "";
-      shot.appendChild(img);
-      const save = el.querySelector("[data-save]");
-      save.disabled = false;
-      save.onclick = () => {
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "vuba-wiltshire-" + post.id + ".jpg";
-        a.click();
-      };
-    } catch (err) {
-      el.querySelector(".shot p").textContent = "This picture could not be made.";
-    }
+function paintWords(el, post) {
+  el.querySelector(".caption").textContent = post.captions[post.platform] || "";
+}
+function setPlatform(id, name) {
+  const s = ensure();
+  s[id].platform = name;
+  saveState(s);
+  render();
+}
+function approve(id) {
+  const s = ensure();
+  s[id].status = "approved";
+  saveState(s);
+  render();
+  const msg = document.querySelector(`[data-card="${id}"] [data-msg]`);
+  if (msg) { msg.textContent = "Kept. Nothing has been published."; msg.className = "msg is-ok"; }
+}
+function undo(id) {
+  const s = ensure();
+  s[id].status = "awaiting";
+  saveState(s);
+  render();
+}
+function tryAnother(id) {
+  const s = ensure();
+  const used = new Set(SLOTS.map((slot) => s[slot.id] && s[slot.id].ideaId));
+  const current = s[id].ideaId;
+  const next = IDEAS.find((item) => item.id !== current && !used.has(item.id)) || IDEAS.find((item) => item.id !== current);
+  if (!next) return;
+  s[id] = fromIdea(next);
+  saveState(s);
+  render();
+  const msg = document.querySelector(`[data-card="${id}"] [data-msg]`);
+  if (msg) msg.textContent = "A different post. Have another look.";
+}
+function openPhotos(id) {
+  photoFor = id;
+  const s = ensure();
+  const post = s[id];
+  const grid = document.getElementById("photoGrid");
+  grid.innerHTML = IDEAS.map((item) => `
+    <button type="button" data-file="${item.file}" aria-pressed="${post.file === item.file && !post.custom ? "true" : "false"}">
+      <img src="${item.file}" alt="${item.title}">
+    </button>`).join("");
+  grid.querySelectorAll("button").forEach((btn) => {
+    btn.onclick = () => applyPhoto(id, btn.dataset.file, "");
+  });
+  document.getElementById("photoMsg").textContent = "";
+  document.getElementById("photoSheet").hidden = false;
+}
+function applyPhoto(id, file, custom) {
+  const s = ensure();
+  const previous = JSON.parse(JSON.stringify(s[id]));
+  s[id].file = file;
+  s[id].custom = custom;
+  s[id].status = "awaiting";
+  if (!saveState(s)) {
+    s[id] = previous;
+    saveState(s);
+    const msg = document.getElementById("photoMsg");
+    msg.textContent = "That photo is too large to keep in this browser. Try a smaller one.";
+    msg.className = "msg is-err";
+    return;
   }
-})();
+  document.getElementById("photoSheet").hidden = true;
+  render();
+}
+function shrinkPhoto(dataUrl) {
+  return loadImage(dataUrl).then((img) => {
+    const max = 1400;
+    const scale = Math.min(1, max / Math.max(img.width, img.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(img.width * scale));
+    canvas.height = Math.max(1, Math.round(img.height * scale));
+    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL("image/jpeg", 0.82);
+  });
+}
+function readDevicePhoto(input) {
+  const file = input.files && input.files[0];
+  input.value = "";
+  if (!file || !photoFor) return;
+  const msg = document.getElementById("photoMsg");
+  msg.textContent = "Preparing that photo…";
+  msg.className = "msg";
+  const reader = new FileReader();
+  reader.onload = () => {
+    shrinkPhoto(reader.result).then((url) => applyPhoto(photoFor, "", url)).catch(() => {
+      msg.textContent = "That photo could not be used. Try another file.";
+      msg.className = "msg is-err";
+    });
+  };
+  reader.onerror = () => {
+    msg.textContent = "That photo could not be read.";
+    msg.className = "msg is-err";
+  };
+  reader.readAsDataURL(file);
+}
+function copyCaption(id) {
+  const post = ensure()[id];
+  const text = post.captions[post.platform] || "";
+  const done = () => {
+    const msg = document.querySelector(`[data-card="${id}"] [data-msg]`);
+    if (msg) { msg.textContent = "Caption copied."; msg.className = "msg is-ok"; }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done, id));
+  } else fallbackCopy(text, done, id);
+}
+function fallbackCopy(text, done, id) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  document.body.appendChild(area);
+  area.select();
+  const ok = document.execCommand("copy");
+  area.remove();
+  if (ok) done();
+  else {
+    const msg = document.querySelector(`[data-card="${id}"] [data-msg]`);
+    if (msg) { msg.textContent = "Select the caption and copy it yourself."; msg.className = "msg is-err"; }
+  }
+}
+function downloadPicture(id, button) {
+  const url = button.dataset.url;
+  if (!url) return;
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "vuba-wiltshire-" + id + ".jpg";
+  a.click();
+}
+function openEdit(id) {
+  const s = ensure();
+  const post = s[id];
+  const el = document.querySelector(`[data-card="${id}"]`);
+  const panel = el.querySelector(".edit");
+  panel.hidden = false;
+  panel.querySelector("[data-line1]").value = post.line1;
+  panel.querySelector("[data-line2]").value = post.line2;
+  panel.querySelector("[data-caption]").value = post.captions[post.platform] || "";
+  panel.querySelector("[data-line1]").focus();
+}
+function saveWords(id, el) {
+  const s = ensure();
+  const post = s[id];
+  post.line1 = el.querySelector("[data-line1]").value.trim();
+  post.line2 = el.querySelector("[data-line2]").value.trim();
+  post.captions[post.platform] = el.querySelector("[data-caption]").value.trim();
+  post.status = "awaiting";
+  saveState(s);
+  render();
+  const msg = document.querySelector(`[data-card="${id}"] [data-msg]`);
+  if (msg) { msg.textContent = "Words saved."; msg.className = "msg is-ok"; }
+}
+document.getElementById("photoClose").onclick = () => { document.getElementById("photoSheet").hidden = true; };
+document.getElementById("photoSheet").addEventListener("click", (e) => {
+  if (e.target.id === "photoSheet") document.getElementById("photoSheet").hidden = true;
+});
+document.getElementById("photoCamera").onchange = (e) => readDevicePhoto(e.target);
+document.getElementById("photoUpload").onchange = (e) => readDevicePhoto(e.target);
+
+loadImage("logo.png").then((img) => { logo = img; render(); }).catch(() => {
+  document.getElementById("list").textContent = "The lockup did not load.";
+});
 </script>
 </body>
 </html>
