@@ -67,3 +67,24 @@ drop trigger if exists studio_post_transition on public.studio_posts;
 create trigger studio_post_transition before insert or update on public.studio_posts for each row execute function public.enforce_studio_post_transition();
 -- Initial administrator: replace with actual auth.users UUID after inviting the user.
 -- insert into public.studio_members(user_id,role) values ('UUID-HERE','admin');
+
+-- Shared Vuba Wiltshire marketing strategy (one organisation-wide plan).
+create table if not exists public.studio_marketing_plan (
+ id integer primary key default 1 check(id=1),
+ goal text not null default 'Become the most useful local social account for resin-bound installers and landscapers around Wiltshire.',
+ audience text not null default 'Installers, landscapers, contractors and trade customers; homeowners occasionally.',
+ priorities text not null default 'Practical installation preparation; product confidence; local trade relationships.',
+ campaigns text not null default '',
+ seasonal_notes text not null default '',
+ confirmed_events text not null default '',
+ cadence text not null default 'Instagram and Facebook: three useful posts per week. LinkedIn: one trade-focused post per week.',
+ updated_at timestamptz not null default now(),
+ updated_by uuid references auth.users(id)
+);
+alter table public.studio_marketing_plan enable row level security;
+revoke all on public.studio_marketing_plan from anon;
+grant select,insert,update on public.studio_marketing_plan to authenticated;
+create policy "Staff can read marketing plan" on public.studio_marketing_plan for select to authenticated using(studio_private.studio_role() is not null);
+create policy "Admins can create marketing plan" on public.studio_marketing_plan for insert to authenticated with check(studio_private.studio_role()='admin' and updated_by=(select auth.uid()));
+create policy "Admins and approvers can edit marketing plan" on public.studio_marketing_plan for update to authenticated using(studio_private.studio_role() in ('admin','approver')) with check(studio_private.studio_role() in ('admin','approver') and updated_by=(select auth.uid()));
+insert into public.studio_marketing_plan (id) values (1) on conflict do nothing;
