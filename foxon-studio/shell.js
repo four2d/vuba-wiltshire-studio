@@ -163,7 +163,7 @@ const studioIcons={
  campaigns:'<path d="m3 10 11-5v14L3 14zM14 8l5-3v14l-5-3M6 15v5h4v-4"/>',
  media:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 17 5-5 4 4 3-3 6 5"/>',
  brain:'<path d="M12 5c-3-2-6-2-9-1v16c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1zM12 5v16"/>',
- planned:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18m5 6 2 2 4-4"/>',
+ planned:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7.5 15l2.5 2.5 5-5"/>',
  approval:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
  images:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 17 5-5 4 4 3-3 6 5"/><path d="M17 17v4m-2-2h4"/>',
  opportunities:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/>',
