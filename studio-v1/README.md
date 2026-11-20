@@ -23,3 +23,22 @@
 - Media upload/library, drag-and-drop calendar moves, audit log, automatic reminders, knowledge-base retrieval, AI source verification, and publishing integrations are not yet implemented.
 - The starter pack's original TypeScript source is supplied separately and should be integrated as a typed editorial package in the next iteration.
 - No public signups, public posting or automatic publishing should be enabled.
+
+
+## V2 team workflow (20 November 2026)
+
+The Studio now has three new tabs above the existing seasonal suggestions and calendar:
+
+* **Campaigns** — admins and approvers can create/edit goals, audiences, messages, date ranges, owners and success metrics. Staff can view campaigns, and each calendar post can be linked to a campaign.
+* **Creative library** — signed-in staff can upload genuine JPEG/PNG/WebP photographs (up to 10 MB) with documented usage permissions. All files are kept in a private Supabase Storage bucket, with signed one-hour preview URLs. Admins/approvers approve photo use. Only approved images can be attached to approved posts.
+* **Review queue** — draft posts can be submitted for review; approvers/admins can request changes with notes or approve. Database triggers record status transitions in `studio_review_events`. The full review history can be viewed in the editor.
+
+**Platform preview:** Both the main post editor and suggested-post previews can display Instagram, Facebook and LinkedIn feed approximations before saving. Layouts are approximations, not official API rendering or publishing. Suggested-post preview supports writing or pasting a manual caption while API credits are unavailable. Captions and media are never published automatically.
+
+Schema delta is recorded in `supabase/workspace.sql`, applied to this project's live Supabase database. Existing `studio-v1/supabase/schema.sql` is a historical base schema; apply `workspace.sql` after it for a fresh environment. Do not rerun the delta against an already upgraded database because it adds named constraints/policies.
+
+**Security:** media is private, membership and role permissions are enforced by RLS, and a database trigger guards approval transitions and prevents approved posts from linking to unapproved images. The app uses a public publishable Supabase key; never put a service-role key or `OPENAI_API_KEY` in the GitHub Pages files.
+
+**Still not implemented:** native publishing to social networks, analytics integrations, image editing, asset tagging/search, performance dashboards, automatic media licence verification, and browser-to-browser collaboration presence. Human review remains essential. The AI drafting endpoint needs paid OpenAI API credits; ordinary non-AI workflows are independent of that budget.
+
+**QA performed:** JavaScript parse checks, verified RLS for new tables, verified the private Storage bucket, and successfully tested an authenticated administrator creating a campaign and a review post with automatic audit event inside rolled-back SQL transactions. Browser-based end-to-end testing of real uploads, staff approval and signed image display remains outstanding.
