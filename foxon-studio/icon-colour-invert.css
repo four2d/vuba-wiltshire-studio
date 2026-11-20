@@ -1,0 +1,47 @@
+/* FOXON Classic: reverse black/yellow icon foregrounds and tiles.
+   Presentation only. b.1 branch is not modified. Other themes untouched. */
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.amber,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.rose,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.blue {
+ background:#f2c500!important;
+ color:#080808!important;
+ -webkit-text-fill-color:#080808!important;
+ border:1px solid #f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] :is(.studio-builder-icon,.automation-icon){
+ background:#101010!important;
+ color:#f2c500!important;
+ -webkit-text-fill-color:#f2c500!important;
+ border:1px solid #554a17!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-builder-icon.secondary {
+ background:#f2c500!important;
+ color:#080808!important;
+ -webkit-text-fill-color:#080808!important;
+ border-color:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation .nav-glyph {
+ display:grid;place-items:center;
+ width:26px;height:26px;min-width:26px;
+ border-radius:6px;
+ background:#f2c500!important;
+ color:#080808!important;
+ -webkit-text-fill-color:#080808!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation .nav-glyph svg {
+ stroke:currentColor!important;
+ width:17px;height:17px;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a.is-active .nav-glyph {
+ background:#101010!important;
+ color:#f2c500!important;
+ -webkit-text-fill-color:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-tip-card .tip-spark {
+ color:#080808!important;
+ background:#f2c500!important;
+ border-radius:7px;
+ display:inline-grid;place-items:center;
+ width:34px;height:34px;
+}
