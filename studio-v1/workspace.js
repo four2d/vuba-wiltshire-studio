@@ -57,9 +57,12 @@ function build(){
  // Attach extra editor controls without altering the original form lifecycle.
  const format=$("format").closest("label");
  format.insertAdjacentHTML("afterend",`<label>Campaign<select id="postCampaign"><option value="">No campaign</option></select></label><label>Approved photo<select id="postMedia"><option value="">No image selected</option></select></label>`);
- $("caption").closest("label").insertAdjacentHTML("afterend",`<div class="editor-extras"><button id="showPreview" type="button">Preview Facebook / Instagram / LinkedIn</button><button id="openReviewHistory" type="button">Review history</button></div><label>Reviewer notes<input id="reviewNote" placeholder="Changes requested or reviewer guidance"></label><div id="reviewHistory" class="review-history" hidden></div>`);
+ $("caption").closest("label").insertAdjacentHTML("afterend",`<div class="editor-extras"><button id="showPreview" type="button">Preview Facebook / Instagram / LinkedIn</button><button id="openReviewHistory" type="button">Review history</button></div><label>Reviewer notes<input id="reviewNote" placeholder="Changes requested or reviewer guidance"></label><div class="review-actions"><button id="submitReview" type="button">Submit for review</button><button id="requestChanges" type="button">Request changes</button><button id="approvePost" type="button">Approve post</button></div><div id="reviewHistory" class="review-history" hidden></div>`);
  $("showPreview").onclick=()=>openPlatformPreview();
  $("openReviewHistory").onclick=showHistory;
+ $("submitReview").onclick=()=>changeReviewStatus("review","submitted");
+ $("requestChanges").onclick=()=>changeReviewStatus("changes_requested","changes_requested");
+ $("approvePost").onclick=()=>changeReviewStatus("approved","approved");
  $("postStatus").insertAdjacentHTML("beforeend",'<option value="changes_requested">Changes requested</option>');
  // Original app's save handler includes a separate payload, so this module
  // persists campaign and media on its own follow-up save with RLS enforced.
@@ -173,6 +176,9 @@ function fillEditorExtras(){
  $("reviewNote").value=p?.review_note||"";
  $("reviewHistory").hidden=true;
  $("reviewHistory").textContent="";
+ $("submitReview").hidden=!id||!["idea","draft","changes_requested"].includes(p?.status||"idea");
+ $("requestChanges").hidden=!id||p?.status!=="review"||!["admin","approver"].includes(state.role);
+ $("approvePost").hidden=!id||p?.status!=="review"||!["admin","approver"].includes(state.role);
 }
 function reviewPost(id){
  const p=state.posts.find(x=>x.id===id);if(!p)return;
@@ -208,6 +214,20 @@ async function showPlatform(channel){
  const url=state.urls[state.currentPost.media_id];
  $("mockImage").innerHTML=url?'<img src="'+safe(url)+'" alt="Selected approved image">':'<div class="mock-placeholder">No approved photo selected</div>';
  $("previewStatus").textContent="This is a layout preview, not a live post. No content has been published.";
+}
+async function changeReviewStatus(status,action){
+ const id=$("postId").value;if(!id)return;
+ const post=state.posts.find(p=>p.id===id);
+ if(!post)return;
+ const note=$("reviewNote").value.trim();
+ if(action==="changes_requested"&&!note){$("editorError").textContent="Please explain what needs changing in Reviewer notes.";return;}
+ if(status==="approved"&&!post.caption.trim()){ $("editorError").textContent="The post needs a saved caption before approval.";return;}
+ const {error}=await db.from("studio_posts").update({status,review_note:note,updated_by:state.user.id}).eq("id",id);
+ if(error){$("editorError").textContent=error.message;return;}
+ await recordReview(id,action,note);
+ $("editor").close();await refresh();
+ // The calendar is owned by the main app and needs a reload to reflect review action.
+ $("reviewGrid").scrollIntoView({block:"nearest"});
 }
 async function recordReview(postId,action,note){
  const {error}=await db.from("studio_review_events").insert({post_id:postId,action,note,actor_id:state.user.id});
