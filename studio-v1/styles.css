@@ -68,3 +68,30 @@
 .social-mock.platform-linkedin .mock-avatar{border-radius:8px;background:#17689d}
 .social-mock.platform-facebook .mock-avatar{background:#1765bd}
 .social-mock.platform-linkedin .mock-actions{font-size:.88rem;color:#356c85}
+
+/* Private, staff-only Vuba Brain */
+#vubaBrain{margin:22px 0 28px;background:white;border:1px solid #d9e3e7;border-radius:15px;padding:22px}
+.brain-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.brain-head h2{margin:3px 0 4px}
+.brain-eyebrow{font-size:.72rem;letter-spacing:.13em;font-weight:800;color:#821732}
+.brain-head p{margin:0;max-width:760px}
+.brain-summary{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0 12px;font-size:.84rem;color:#35515c}
+.brain-summary span{border:1px solid #dbe4e8;border-radius:20px;padding:6px 11px}
+.brain-filter{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.brain-filter label:first-child{min-width:220px;flex:2}
+.brain-filter label{min-width:145px;flex:1}
+.brain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:18px 0}
+.brain-card{border:1px solid #dce5e9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;background:#f9fbfc;min-width:0}
+.brain-card-head{display:flex;justify-content:space-between;align-items:center;gap:9px}
+.brain-tag{font-size:.73rem;color:#035b80;font-weight:750}
+.brain-status{font-size:.73rem;border-radius:20px;padding:4px 9px;text-transform:capitalize;background:#ede5d6;color:#79501c}
+.brain-approved{background:#e0f0e7;color:#176640}
+.brain-superseded{background:#e5e7eb;color:#6b7280}
+.brain-card h3{font-size:1.04rem;line-height:1.35;margin:0}
+.brain-card p{font-size:.84rem;white-space:pre-wrap;line-height:1.55;flex:1;margin:0;color:#364f59;overflow-wrap:anywhere}
+.brain-source{font-size:.72rem;color:#576b75;line-height:1.5;overflow-wrap:anywhere}
+.brain-card button{align-self:flex-start}
+#brainDialog{width:min(820px,96vw)}
+#brainDialog form{gap:12px}
+#brainFormError,#brainMessage{color:#8e2e31}
+@media(max-width:650px){#vubaBrain{padding:14px}.brain-grid{grid-template-columns:1fr}}
