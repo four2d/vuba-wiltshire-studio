@@ -121,27 +121,34 @@ function updateSelected(){
  const m=media.find(x=>x.id===id);
  $("selectedPostPhoto").innerHTML=m&&signedUrls[id]?
   '<img src="'+safe(signedUrls[id])+'" alt="Selected approved photo"><span>'+safe(m.description||m.filename)+'</span>':
-  'No approved image selected yet.';
+  'No image selected yet.';
 }
 async function loadMedia(){
  if(!signedIn)return;
  const ticket=++renderTicket;
  const {data,error}=await db.from("studio_media").select("id,filename,description,usage_rights,approved,file_path").eq("approved",true).is("archived_at",null).like("mime_type","image/%").order("created_at",{ascending:false}).limit(400);
  if(error){if($("imagePickerMessage"))$("imagePickerMessage").textContent=error.message;return;}
+ const selectedId=$("postMedia")?.value;
+ let selectedPending=null;
+ if(selectedId&&!(data||[]).some(m=>m.id===selectedId)){
+  const pending=await db.from("studio_media").select("id,filename,description,usage_rights,approved,file_path").eq("id",selectedId).is("archived_at",null).maybeSingle();
+  if(!pending.error&&pending.data)selectedPending=pending.data;
+ }
+ const visible=selectedPending?[...(data||[]),selectedPending]:(data||[]);
  const urls={};
- await Promise.all((data||[]).map(async m=>{
+ await Promise.all(visible.map(async m=>{
   const signed=await db.storage.from("foxon-approved-media").createSignedUrl(m.file_path,3600);
   if(signed.data?.signedUrl)urls[m.id]=signed.data.signedUrl;
  }));
  if(ticket!==renderTicket)return;
- media=data||[];signedUrls=urls;
+ media=visible;signedUrls=urls;
  updateSelected();
 }
 function drawPicker(){
  const grid=$("imagePickerGrid");if(!grid)return;
  const term=$("imagePickerSearch").value.toLowerCase().trim();
  const words=imageWords(currentTopic());
- const matches=media.map(m=>({...m,score:ranking(m,words)})).filter(m=>!term||[m.filename,m.description,m.usage_rights].join(" ").toLowerCase().includes(term)).sort((a,b)=>b.score-a.score);
+ const matches=media.filter(m=>m.approved).map(m=>({...m,score:ranking(m,words)})).filter(m=>!term||[m.filename,m.description,m.usage_rights].join(" ").toLowerCase().includes(term)).sort((a,b)=>b.score-a.score);
  grid.innerHTML=matches.map((m,i)=>`<button type="button" data-media-id="${safe(m.id)}" class="image-choice">
   <span class="image-choice-frame">${signedUrls[m.id]?'<img loading="lazy" src="'+safe(signedUrls[m.id])+'" alt="'+safe(m.description)+'">':"Photo unavailable"}</span>
   <span class="image-choice-copy"><strong>${safe(m.description||m.filename)}</strong><small>${i<3&&m.score>0?"Relevant filename match · ":""}${safe(m.filename)}</small></span></button>`).join("")||"<p>No approved photos match. Import your Mac folder and approve its images first.</p>";
