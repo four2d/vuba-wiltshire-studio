@@ -20,7 +20,7 @@ function build(){
        <button type="button" id="brainOpenDocuments" class="brain-action-outline">⇧ Upload documents</button>
      </div>
    </div>
-   <div class="brain-command-art foxon-brain-brand" aria-hidden="true"><div class="foxon-brain-hazard"></div><img src="foxon-logo-horizontal-dark.svg" alt="" width="235" height="71"><strong>TOOLS THAT GRAFT</strong><span class="foxon-brain-brand-line">BUILT FOR THE TRADE.</span></div>
+   <div class="brain-command-art foxon-brain-papers" aria-hidden="true"><div class="foxon-paper-sheet foxon-paper-back"><span class="foxon-paper-rule"></span><span class="foxon-paper-rule short"></span></div><div class="foxon-paper-sheet foxon-paper-front"><div class="foxon-paper-logo"><img src="foxon-logo-horizontal-dark.svg" alt="" width="190" height="57"></div><span class="foxon-paper-rule"></span><span class="foxon-paper-rule"></span><span class="foxon-paper-rule short"></span><span class="foxon-paper-footer">TOOLS THAT GRAFT</span></div></div>
  </div>
  <div class="brain-overview-bar">
   <div><strong id="brainCount">—</strong><span>Knowledge entries</span></div>
