@@ -96,6 +96,7 @@ async function generatePost(){
   $("source").value=starter.source_notes;
   $("postStatus").value="draft";
   $("editorError").textContent="Offline editorial starter: review and improve this draft before submitting. It was not written by live AI.";
+  await window.VubaMediaAssist?.chooseForBuilder?.();
   return;
  }
  const button=$("generate"),bigButton=$("autoSuggest");
@@ -117,6 +118,7 @@ async function generatePost(){
   if(pillars.includes(data.pillar))$("pillar").value=data.pillar;
   if(data.source_notes)$("source").value=data.source_notes;
   $("postStatus").value="draft";
+  await window.VubaMediaAssist?.chooseForBuilder?.();
  }catch(e){alertError(e)}finally{
   button.disabled=false;bigButton.disabled=false;
   button.textContent="Suggest AI post";bigButton.textContent="Suggest AI post";
