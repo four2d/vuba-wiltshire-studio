@@ -87,13 +87,13 @@ function applyVisibility(){
  const map={campaigns:"campaigns",media:"assets",reviews:"reviews"};
  if(area){
   const tab=area.querySelector('[data-section="'+(map[p]||"campaigns")+'"]');
-  if(["campaigns","media","reviews"].includes(p))tab?.click();
+  if(["campaigns","media","reviews"].includes(p)&&tab&&!tab.classList.contains("active"))tab.click();
  }
  const strategy=$("strategyArea");
  show(strategy,["ideas","plan"].includes(p));
  if(strategy){
   const tabId=p==="plan"?"tabPlan":"tabSuggestions";
-  if(p==="ideas"||p==="plan")$(tabId)?.click();
+  if((p==="ideas"||p==="plan")&&$(tabId)&&!$(tabId).classList.contains("active"))$(tabId).click();
  }
  show($("vubaBrain"),p==="brain");
  show($("brainJump"),false);
@@ -134,7 +134,7 @@ async function refreshDashboard(){
  $("dashList").innerHTML=shortlisted.map(p=>`<div class="studio-upcoming-row"><div class="studio-post-date">${new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</div><div class="studio-post-copy"><strong>${esc(p.title)}</strong><small>${esc(p.channel)} · ${esc(p.status.replaceAll("_"," "))}${!p.media_id?" · Image needed":""}</small></div><button type="button" data-dash-edit="${esc(p.id)}">Edit</button></div>`).join("")||"<p class='hint'>No upcoming posts yet. Fill calendar gaps to get started.</p>";
  $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{
   navigate("calendar");
-  setTimeout(()=>{const selector='[data-post="'+b.dataset.dashEdit+'"]';document.querySelector(selector)?.click();},0);
+  window.VubaOpenPost?.(b.dataset.dashEdit);
  });
  if(mediaResult.error)$("fillCalendarMessage").textContent="Media library unavailable: "+mediaResult.error.message;
 }
@@ -150,13 +150,13 @@ async function fillCalendar(){
   if(!scheduled.length){message.textContent="Calendar already has a post in every planned slot. Nothing changed.";return;}
   const titles=existing.map(x=>x.title);
   const plan=[];
+  await window.VubaMediaAssist?.refresh?.();
   const pillars=["Installer Advice","Project Planning","Blends & Colour Inspiration","FAQs & Myth Busting","Behind the Scenes / Depot","Product Education"];
   for(const s of scheduled){
    const starter=window.VubaOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length]});
    if(!starter)throw Error("Offline content templates unavailable. Refresh the Studio.");
    titles.push(starter.title);
-   const match=await window.VubaMediaAssist?.chooseForBuilder?.(
-    [starter.title,starter.topic,starter.pillar].join(" "),{attach:false});
+   const match=window.VubaMediaAssist?.bestForText?.([starter.title,starter.topic,starter.pillar].join(" "));
    plan.push({
     title:starter.title,topic:starter.topic,pillar:starter.pillar,
     format:starter.format||"Single image",series:starter.series||null,
