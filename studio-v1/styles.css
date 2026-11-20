@@ -95,3 +95,26 @@
 #brainDialog form{gap:12px}
 #brainFormError,#brainMessage{color:#8e2e31}
 @media(max-width:650px){#vubaBrain{padding:14px}.brain-grid{grid-template-columns:1fr}}
+
+/* Media-first post editing and local folder import */
+.media-tools{display:grid;gap:10px;grid-column:1/-1;padding:12px;border:1px solid #dce5e9;background:#f5f9fb;border-radius:11px}
+.media-tools .editor-extras button{flex:1;min-width:160px}
+.post-image-status{display:flex;gap:12px;align-items:center;font-size:.82rem;color:#445a66}
+.post-image-status img{width:96px;height:84px;border-radius:8px;object-fit:cover;border:1px solid #cfdbdf}
+.folder-import{display:grid;gap:12px;margin:22px 0 12px;padding:18px;background:#f8fafc;border:1px solid #dbe5eb;border-radius:12px}
+.folder-import h3{margin:0}
+.folder-import p{margin:0}
+.folder-import-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+#folderImportStatus{color:#035b80;font-size:.83rem;white-space:pre-wrap}
+#postImagePicker{width:min(870px,96vw)}
+.image-picker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;max-height:58vh;overflow-y:auto;padding:12px 2px}
+.image-choice{display:grid;padding:0;border:1px solid #d4e0e5;background:#fff;color:#172b38;border-radius:10px;overflow:hidden;text-align:left}
+.image-choice:hover{border-color:#035b80;filter:none}
+.image-choice-frame{aspect-ratio:4/3;background:#e4ecef;display:grid;place-items:center;color:#637682;font-size:.8rem;overflow:hidden}
+.image-choice-frame img{height:100%;width:100%;object-fit:cover}
+.image-choice-copy{padding:9px;display:grid;gap:5px;min-width:0}
+.image-choice-copy strong{font-size:.78rem;overflow-wrap:anywhere}
+.image-choice-copy small{font-size:.68rem;color:#5b6b77;overflow-wrap:anywhere}
+#imageBriefDialog{width:min(770px,96vw)}
+#imageBriefText{font-size:.84rem;line-height:1.65;resize:vertical}
+@media(max-width:600px){.image-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.folder-import{padding:12px}}
