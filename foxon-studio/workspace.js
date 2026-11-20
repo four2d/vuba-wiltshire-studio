@@ -39,7 +39,7 @@ function build(){
  const preview=document.createElement("dialog");preview.id="platformPreview";
  preview.innerHTML=`<div class="dialogHead"><h2>Platform preview</h2><button id="closePlatform" type="button">×</button></div><p class="hint">A visual approximation of feed presentation; final layouts can differ by platform and device.</p>
  <div class="workspace-tabs" id="previewPlatforms"><button data-channel="Instagram" class="active">Instagram</button><button data-channel="Facebook">Facebook</button><button data-channel="LinkedIn">LinkedIn</button></div>
- <div class="social-mock"><div class="mock-head"><div class="mock-avatar">VW</div><div><strong>FOXON Software</strong><small id="mockPlatform">Instagram · Preview</small></div></div><div id="mockImage" class="mock-image"></div><div class="mock-copy"><h3 id="mockTitle"></h3><p id="mockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div>
+ <div class="social-mock"><div class="mock-head"><div class="mock-avatar"><img src="foxon-logo-horizontal-dark.svg" alt="FOXON logo"></div><div><strong>FOXON Software</strong><small id="mockPlatform">Instagram · Preview</small></div></div><div id="mockImage" class="mock-image"></div><div class="mock-copy"><p id="mockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div>
  <div id="previewStatus" class="hint"></div>`;
  document.body.appendChild(preview);
  document.querySelectorAll("[data-section]").forEach(b=>b.onclick=()=>section(b.dataset.section));
@@ -182,11 +182,10 @@ async function showPlatform(channel){
  document.querySelectorAll("[data-channel]").forEach(b=>b.classList.toggle("active",b.dataset.channel===channel));
  $("mockPlatform").textContent=channel+" · Preview";
  document.querySelector("#platformPreview .social-mock").className="social-mock platform-"+channel.toLowerCase();
- $("mockTitle").textContent=state.currentPost.title||"Working headline";
  $("mockCaption").textContent=state.currentPost.caption||"No caption yet. Add a caption or generate one when AI credits are available.";
  const url=state.urls[state.currentPost.media_id];
- $("mockImage").innerHTML=url?'<img src="'+safe(url)+'" alt="Selected approved image">':'<div class="mock-placeholder">No approved photo selected</div>';
- $("previewStatus").textContent="This is a layout preview, not a live post. No content has been published.";
+ $("mockImage").innerHTML=url?'<img src="'+safe(url)+'" alt="Selected approved image">':'<div class="mock-placeholder">NO ARTWORK ATTACHED<br><small>The published post will need its approved visual</small></div>';
+ $("previewStatus").textContent="Preview uses the actual caption and selected approved artwork. Platform layout is approximate. Nothing has been published.";
 }
 async function changeReviewStatus(status,action){
  const id=$("postId").value;if(!id)return;
