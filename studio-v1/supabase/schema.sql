@@ -8,6 +8,7 @@ create table if not exists public.studio_members(
 create table if not exists public.studio_posts(
  id uuid primary key default gen_random_uuid(),
  title text not null check(length(title) between 1 and 140),
+ topic text not null default '',
  scheduled_date date not null,
  channel text not null check(channel in ('Instagram','Facebook','LinkedIn')),
  pillar text not null,
