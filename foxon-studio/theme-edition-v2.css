@@ -510,3 +510,28 @@ body.studio-shell-ready[data-foxon-theme="synthwave"] .studio-topbar{
  background:linear-gradient(90deg,#201039,#451858)!important;
  border-bottom:3px solid #f58bdf!important
 }
+
+/* FIX: optional edition mascot was an empty flex item on Classic and other
+   ordinary themes. justify-content:space-between then moved .hero-copy
+   to the far right. Hide it by default; special editions explicitly display
+   their absolutely positioned mascots above. */
+body.studio-shell-ready .studio-hero > .edition-hero-mascot{
+ display:none;
+}
+body.studio-shell-ready .studio-hero > .hero-copy{
+ margin-left:0!important;
+ margin-right:auto!important;
+ min-width:0;
+}
+/* Don't let presentation-only empty elements take flex layout space. */
+body.studio-shell-ready .studio-hero > .special-hero-plate{
+ display:none;
+}
+/* The special edition plate is an overlay only and never a flex item. */
+body.studio-shell-ready:is(
+ [data-foxon-theme="futuristic"],[data-foxon-theme="steampunk"],
+ [data-foxon-theme="christmas"],[data-foxon-theme="synthwave"],
+ [data-foxon-theme="arcade"]
+) .studio-hero > .special-hero-plate{
+ display:block;position:absolute;
+}
