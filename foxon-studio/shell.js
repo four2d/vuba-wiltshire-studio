@@ -226,17 +226,24 @@ async function refreshDashboard(){
   }
  }
  const symbols={"Instagram":"◎","Facebook":"f","LinkedIn":"in"};
- $("dashList").innerHTML=shortlisted.length?'<div class="editorial-post-grid">'+shortlisted.map((p,i)=>{
-  const image=urls[p.media_id];
-  const date=new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
-  const status=p.status.replaceAll("_"," ");
-  return '<button type="button" class="editorial-post-card" data-dash-edit="'+esc(p.id)+'">'+
-   '<span class="editorial-post-art art-'+i%4+'">'+
-    (image?'<img loading="lazy" src="'+esc(image)+'" alt="Approved FOXON post image">':
-    '<span class="foxon-preview-design" aria-hidden="true"><span class="foxon-preview-kicker">TOOLS THAT GRAFT</span><span class="foxon-preview-title">'+esc(p.title)+'</span><span class="foxon-preview-stripe"></span><span class="foxon-preview-mark">FOXON / '+esc(p.pillar||"SOCIAL")+'</span></span><span class="editorial-image-needed">ARTWORK NEEDED</span>')+
-    '<span class="editorial-channel">'+esc(symbols[p.channel]||"✦")+'</span></span>'+
-   '<span class="editorial-post-details"><span class="editorial-post-meta">'+esc(date)+' <span>·</span> '+esc(p.channel)+'</span>'+
-   '<strong>'+esc(p.title)+'</strong><span class="editorial-status status-'+esc(p.status)+'"><i></i>'+esc(status)+'</span></span></button>';
+ $("dashList").innerHTML=shortlisted.length?'<div class="editorial-post-grid foxon-feed-grid">'+shortlisted.map(p=>{
+   const image=urls[p.media_id];
+   const date=new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+   const status=p.status.replaceAll("_"," ");
+   const channel=p.channel||"Instagram";
+   const hasText=Boolean((p.caption||"").trim());
+   const caption=hasText?esc(p.caption):"Caption not written yet";
+   const media=image?'<span class="foxon-feed-image"><img loading="lazy" src="'+esc(image)+'" alt="Attached approved post artwork"></span>':
+     '<span class="foxon-feed-missing"><span>NO ARTWORK ATTACHED</span><small>Attach approved media to preview the final visual</small></span>';
+   const mediaBlock='<span class="foxon-feed-media">'+media+'</span>';
+   const captionBlock='<span class="foxon-feed-caption'+(hasText?"":" is-empty")+'">'+caption+'</span>';
+   const body=channel==="Instagram"?mediaBlock+captionBlock:captionBlock+mediaBlock;
+   return '<button type="button" class="foxon-feed-card platform-'+esc(channel.toLowerCase())+'" data-dash-edit="'+esc(p.id)+'" aria-label="Edit '+esc(channel)+' post: '+esc(p.title)+'">'+
+     '<span class="foxon-feed-header"><img src="foxon-logo-horizontal-dark.svg" alt="FOXON Software"><span class="foxon-feed-profile"><strong>FOXON Software</strong><small>'+esc(channel)+' · '+esc(date)+'</small></span><span class="foxon-feed-channel">'+esc(symbols[channel]||"✦")+'</span></span>'+
+     '<span class="foxon-feed-body">'+body+'</span>'+
+     '<span class="foxon-feed-actions" aria-hidden="true">♡ &nbsp; ◯ &nbsp; ↗</span>'+
+     '<span class="foxon-feed-footer"><strong>'+esc(p.title)+'</strong><span class="foxon-feed-state">'+esc(status)+'</span></span>'+
+     '</button>';
  }).join("")+'</div>':"<div class='studio-empty'><span>✦</span><h3>Make room for something good.</h3><p>Your next posts will appear here once you've planned them.</p><button type='button' id='emptyPlan'>Plan content →</button></div>";
  $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{navigate("calendar");window.FOXONOpenPost?.(b.dataset.dashEdit)});
  if($("emptyPlan"))$("emptyPlan").onclick=fillCalendar;
