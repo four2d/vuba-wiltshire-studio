@@ -103,7 +103,7 @@ function section(name){
  for(const n of ["campaigns","assets","reviews"])$(n+"Panel").hidden=n!==name;
 }
 async function refresh(){
- if(!state.user)return;
+ if(!state.user||!$("workspacePlus"))return;
  const [campaigns,media,posts]=await Promise.all([
   db.from("studio_campaigns").select("*").order("created_at",{ascending:false}),
   db.from("studio_media").select("*").order("created_at",{ascending:false}),
