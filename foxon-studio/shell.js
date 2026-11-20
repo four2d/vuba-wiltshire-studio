@@ -19,8 +19,8 @@ function buildShell(){
  shell.innerHTML=`
  <aside class="studio-navigation" aria-label="Studio navigation">
   <div class="brand-lockup">
-   <div class="brand-monogram" aria-hidden="true"><svg viewBox="0 0 42 42" fill="none"><path d="M8 11L21 32 34 11" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><path d="M14 11H28" stroke="currentColor" stroke-width="2"/></svg></div>
-   <div><strong>FOXON <span>SOFTWARE</span></strong><small>SOCIAL STUDIO</small></div>
+   <img src="foxon-logo-horizontal-dark.svg" alt="FOXON SOFTWARE" width="216" height="64">
+   <small class="foxon-product-label">SOCIAL STUDIO</small>
   </div>
   <div class="studio-workspace-label"><span class="workspace-live-dot"></span> WORKSPACE <span class="workspace-chevron">⌄</span></div>
   <div class="studio-nav-scroll">
