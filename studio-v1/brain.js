@@ -8,11 +8,31 @@ let user=null,role=null,entries=[],selection=null;
 function build(){
  const area=document.createElement("section");
  area.id="vubaBrain";
- area.innerHTML=`<div class="brain-head"><div><span class="brain-eyebrow">TEAM KNOWLEDGE</span><h2>Vuba Brain</h2><p>Shared, source-attributed company knowledge. Approval is required before using a claim in public content.</p></div><button id="newBrainEntry" type="button">+ Add knowledge</button></div>
- <div class="brain-summary"><span id="brainCount"></span><span id="brainApproved"></span><span id="brainReview"></span></div>
- <div class="brain-filter"><label>Search knowledge<input id="brainSearch" type="search" placeholder="Brand, product, stock, launch, people…"></label><label>Category<select id="brainCategory"><option value="">All categories</option>${categories.map(c=>'<option>'+safe(c)+'</option>').join("")}</select></label><label>Verification<select id="brainVerification"><option value="">All</option><option value="approved">Approved</option><option value="needs_review">Needs review</option><option value="superseded">Superseded</option></select></label><label><input type="checkbox" id="brainShowArchived"> Show archived</label><button id="refreshBrain" type="button">Refresh</button></div>
- <p class="hint">Source snapshots are not a live Mac-folder or GitHub sync. If Grok updates a file, refresh its entry here or ask ChatGPT to import the new version. Avoid publishing unverified or superseded claims.</p>
- <div id="brainCards" class="brain-grid" aria-live="polite"></div><p id="brainMessage" role="status"></p>`;
+ area.dataset.brainView="knowledge";
+ area.innerHTML=`
+ <div class="brain-command">
+   <div class="brain-command-copy">
+     <div class="brain-overline"><span class="brain-overline-dot"></span> VUBA WILTSHIRE / KNOWLEDGE BASE</div>
+     <h2>Everything we know.<br><em>All in one place.</em></h2>
+     <p>One trusted home for brand guidance, product references and decisions — so every piece of content starts with the right facts.</p>
+     <div class="brain-command-actions">
+       <button type="button" id="newBrainEntry" class="brain-action-primary">＋ Add knowledge</button>
+       <button type="button" id="brainOpenDocuments" class="brain-action-outline">⇧ Upload documents</button>
+     </div>
+   </div>
+   <div class="brain-command-art" aria-hidden="true"><div class="brain-art-circle one"></div><div class="brain-art-circle two"></div><div class="brain-art-sheet back"><span></span><span></span></div><div class="brain-art-sheet front"><span class="brain-art-sigil">V</span><span></span><span></span><span></span></div></div>
+ </div>
+ <div class="brain-overview-bar">
+  <div><strong id="brainCount">—</strong><span>Knowledge entries</span></div>
+  <div><strong id="brainApproved">—</strong><span>Ready to use</span></div>
+  <div><strong id="brainReview">—</strong><span>Awaiting review</span></div>
+  <p>Only approved knowledge informs marketing suggestions.</p>
+ </div>
+ <div class="brain-workspace-nav" aria-label="Brain areas"><button type="button" data-brain-tab="knowledge" class="active">✦ &nbsp; Knowledge</button><button type="button" data-brain-tab="documents">▤ &nbsp; Documents</button></div>
+ <div class="brain-knowledge-header"><div><span class="studio-kicker">CURATED KNOWLEDGE</span><h3>Explore the Brain</h3><p>Find a source, check its status or update what the team knows.</p></div><button id="refreshBrain" type="button" class="brain-refresh">↻ Refresh</button></div>
+ <div class="brain-filter"><label class="brain-search-label"><span>SEARCH KNOWLEDGE</span><input id="brainSearch" type="search" placeholder="Search everything in the Brain…"></label><label><span>CATEGORY</span><select id="brainCategory"><option value="">All categories</option>${categories.map(c=>'<option>'+safe(c)+'</option>').join("")}</select></label><label><span>STATUS</span><select id="brainVerification"><option value="">All statuses</option><option value="approved">Approved</option><option value="needs_review">Needs review</option><option value="superseded">Superseded</option></select></label><label class="brain-show-archived"><input type="checkbox" id="brainShowArchived"> Archived</label></div>
+ <div class="brain-library-note">✳ &nbsp; Source documents are securely stored. Facts must be approved before they can inform published content.</div>
+ <div id="brainCards" class="brain-grid" aria-live="polite"></div><p id="brainMessage" role="status"></p>`
  const host=$("app");
  host.insertBefore(area,$("workspacePlus")||$("strategyArea")||host.querySelector(".metrics"));
  const tab=document.createElement("button");
@@ -32,6 +52,8 @@ function build(){
  <p class="hint">Only admins and approvers can approve or supersede knowledge. New staff contributions start in Needs review.</p>
  <p id="brainFormError" role="alert"></p><div class="dialogActions"><button type="button" id="brainArchive" class="brain-danger-action" hidden>Archive entry</button><button type="button" id="brainCopy">Copy as Grok handoff</button><button type="submit" id="saveBrain">Save knowledge</button></div></form>`;
  document.body.appendChild(d);
+ area.querySelectorAll("[data-brain-tab]").forEach(b=>b.onclick=()=>switchTab(b.dataset.brainTab));
+ $("brainOpenDocuments").onclick=()=>{switchTab("documents");$("brainDropzone")?.scrollIntoView({block:"center",behavior:"smooth"});};
  $("brainSearch").oninput=render;
  $("brainCategory").onchange=render;
  $("brainVerification").onchange=render;
@@ -49,6 +71,14 @@ function build(){
   navigator.clipboard?.writeText(entry).then(()=>{$("brainFormError").textContent="Copied for Grok. This does not write to the Mac shared-memory folder.";}).catch(()=>{$("brainFormError").textContent="Copy unavailable in this browser. Select the text instead.";});
  };
 }
+function switchTab(tab){
+ const root=$("vubaBrain");if(!root)return;
+ root.dataset.brainView=tab==="documents"?"documents":"knowledge";
+ root.querySelectorAll("[data-brain-tab]").forEach(x=>{
+  const active=x.dataset.brainTab===root.dataset.brainView;
+  x.classList.toggle("active",active);x.setAttribute("aria-selected",String(active));
+ });
+}
 async function init(u){
  user=u;
  if(!u){$("vubaBrain")?.remove();$("brainDialog")?.remove();$("brainJump")?.remove();entries=[];return;}
@@ -63,9 +93,9 @@ async function load(){
  const {data,error}=await db.from("studio_brain_entries").select("*").order("updated_at",{ascending:false}).limit(500);
  if(error){$("brainMessage").textContent="Couldn't load Brain: "+error.message;return;}
  entries=data||[];$("brainMessage").textContent="";
- $("brainCount").textContent=entries.length+" entries";
- $("brainApproved").textContent=entries.filter(x=>x.verification==="approved").length+" approved";
- $("brainReview").textContent=entries.filter(x=>x.verification==="needs_review").length+" need review";
+ $("brainCount").textContent=String(entries.filter(x=>!x.archived_at).length);
+ $("brainApproved").textContent=String(entries.filter(x=>!x.archived_at&&x.verification==="approved").length);
+ $("brainReview").textContent=String(entries.filter(x=>!x.archived_at&&x.verification==="needs_review").length);
  render();
 }
 function render(){
