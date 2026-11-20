@@ -13,7 +13,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  const allowedRoles=new Set(["admin","approver","editor"]);
  const editorFields=["title","topic","date","postChannel","pillar","format","series","caption","source","postStatus"];
  function sourceName(p){const s=[p.title||"",p.topic||"",p.pillar||""].join(" ").toLowerCase();for(const n of ["invoice","cis","miles","gas"])if(new RegExp("(^|[^a-z])"+n+"([^a-z]|$)").test(s))return "FOXON "+(n==="cis"?"CIS":n[0].toUpperCase()+n.slice(1));return "General";}
- function guardNote(p){const issues=[];if(!String(p.caption||"").trim())issues.push("caption missing");if(!p.media_id)issues.push("approved image not selected");else if(!state.approvedMedia.has(p.media_id))issues.push("image not approved");if(!String(p.source_notes||"").trim())issues.push("source notes missing");return issues;}
+ function guardNote(p){const issues=[];if(!String(p.caption||"").trim())issues.push("caption missing");if(p.format!=="Text-led"){if(!p.media_id)issues.push("approved image not selected");else if(!state.approvedMedia.has(p.media_id))issues.push("image not approved");}if(!String(p.source_notes||"").trim())issues.push("source notes missing");return issues;}
  async function init(user){
   state.user=user||null;
   if(!user){document.querySelectorAll(".foxon-upgrade").forEach(n=>n.remove());state.posts=[];state.importedMetrics=[];return;}
@@ -33,7 +33,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   state.busy=true;
   try{
    const [p,m,b]=await Promise.all([
-    db.from("studio_posts").select("id,title,topic,caption,source_notes,status,channel,pillar,scheduled_date,media_id,created_at,updated_at").order("scheduled_date",{ascending:true}).limit(500),
+    db.from("studio_posts").select("id,title,topic,caption,source_notes,status,channel,pillar,format,scheduled_date,media_id,created_at,updated_at").order("scheduled_date",{ascending:true}).limit(500),
     db.from("studio_media").select("id").eq("approved",true).is("archived_at",null).limit(1000),
     db.from("studio_brain_entries").select("title,source_label,source_path,source_date").eq("verification","approved").is("archived_at",null).limit(100)
    ]);
@@ -137,7 +137,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const today=dateToday(),end=plusDays(28);
   const upcoming=state.posts.filter(p=>p.scheduled_date>=today&&p.scheduled_date<=end);
   const review=state.posts.filter(p=>p.status==="review");
-  const noMedia=upcoming.filter(p=>!p.media_id||!state.approvedMedia.has(p.media_id));
+  const noMedia=upcoming.filter(p=>p.format!=="Text-led"&&(!p.media_id||!state.approvedMedia.has(p.media_id)));
   const past=state.posts.filter(p=>p.scheduled_date<today&&!["approved","scheduled"].includes(p.status));
   const ready=upcoming.filter(p=>["approved","scheduled"].includes(p.status)&&!guardNote(p).length);
   const actions=[
@@ -259,8 +259,10 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const issues=[];
   if(!caption.trim())issues.push("caption needed");
   if(!source)issues.push("source/verification notes needed");
-  if(!image)issues.push("no image selected");
-  else if(!state.approvedMedia.has(image))issues.push("check image approval");
+  if(byId("format")?.value!=="Text-led"){
+   if(!image)issues.push("no image selected");
+   else if(!state.approvedMedia.has(image))issues.push("check image approval");
+  }
   node.textContent=chars+" characters · "+(issues.length?issues.join(" · "):"Editorial checks complete. Staff approval is still required.");
   const sourceList=byId("foxonBrainSources");if(sourceList){
    const current=sourceList.value;
@@ -294,8 +296,8 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const rows=state.posts.filter(p=>["approved","scheduled"].includes(p.status)&&p.scheduled_date>=today).sort((a,b)=>a.scheduled_date.localeCompare(b.scheduled_date));
   if(!rows.length){byId("foxonUpgradeNotice").textContent="No approved or internally scheduled posts are available to export.";return;}
   const safeCsv=v=>{let s=String(v??"");if(/^[\s]*[=+@-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';};
-  const fields=["scheduled_date","channel","status","title","caption","pillar","source_notes"];
-  const csv=[fields.join(","),...rows.map(p=>fields.map(k=>safeCsv(p[k])).join(","))].join("\r\n");
+  const fields=["scheduled_date","channel","status","title","caption","pillar","format","source_notes","readiness_issues"];
+  const csv=[fields.join(","),...rows.map(p=>fields.map(k=>safeCsv(k==="readiness_issues"?guardNote(p).join("; "):p[k])).join(","))].join("\r\n");
   const url=URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}));
   const link=document.createElement("a");link.href=url;link.download="foxon-approved-content-"+today+".csv";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   byId("foxonUpgradeNotice").textContent=rows.length+" prepared posts exported. This does not publish them or verify platform delivery.";
