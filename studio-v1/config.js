@@ -3,5 +3,6 @@
 window.VUBA_CONFIG = {
   supabaseUrl: "https://iwituhhojivokiueekdb.supabase.co",
   supabaseAnonKey: "sb_publishable_f7Bdh8sMtoBaqUFix-7zfg_MAGjTQsZ",
-  aiFunction: "draft-post"
+  aiFunction: "draft-post",
+  aiEnabled: false // Temporary no-credit mode; set true when API billing is restored.
 };
