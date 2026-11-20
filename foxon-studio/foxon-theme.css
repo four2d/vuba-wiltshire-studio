@@ -688,3 +688,95 @@ body.studio-shell-ready #vubaBrain{
 @media(max-width:850px){
  #vubaBrain .brain-command-art.foxon-brain-papers{display:none!important}
 }
+
+
+/* FOXON cross-page contrast audit — 20 November 2026.
+   Keep the studio's black/yellow UI legible across Home, Calendar,
+   Campaigns, Ideas, Creative Library, Review, Brain and modal editors.
+   Scope to FOXON: never alter Vuba's separate style sheets. */
+body.studio-shell-ready{
+  color-scheme:dark;
+  color:#f5f5f5;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-hero,
+  .studio-home-main,.studio-tip-card,.studio-automation-panel,
+  .studio-builder-card,.studio-stat,.panel,.workspace-card,
+  .suggestion-card,.brain-card,.review-history,
+  .folder-import,.media-tools,.studio-navigation,
+  .studio-upcoming-row,.upcomingItem,.balanceRow
+){
+  color:#f5f5f5;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-home-main,
+  .studio-tip-card,.studio-automation-panel,.studio-builder-card,
+  .panel,.workspace-card,.suggestion-card,.brain-card,
+  .review-history,.folder-import,.media-tools
+) :is(h1,h2,h3,h4,h5,h6){
+  color:#fff!important;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-home-main,
+  .studio-tip-card,.studio-automation-panel,.studio-builder-card,
+  .panel,.workspace-card,.suggestion-card,.brain-card,
+  .review-history,.folder-import,.media-tools
+) :is(p,small,blockquote,dd,dt,li,.hint,.description,.subtitle,.muted,.meta){
+  color:#dedede!important;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-home-main,
+  .studio-tip-card,.studio-automation-panel,.studio-builder-card,
+  .panel,.workspace-card,.suggestion-card,.brain-card
+) :is(a:not(.button),.studio-text-btn){
+  color:#f2c500!important;
+}
+body.studio-shell-ready :is(.panel,.workspace-card,.suggestion-card,.brain-card)
+  :is(input,textarea,select){
+  background:#0c0c0c!important;color:#fff!important;border-color:#858585!important;
+}
+body.studio-shell-ready :is(input,textarea)::placeholder{
+  color:#bdbdbd!important;opacity:1;
+}
+body.studio-shell-ready :is(.panel,.workspace-card,.suggestion-card,.brain-card)
+  :is(input,textarea,select):focus-visible,
+body.studio-shell-ready button:focus-visible,
+body.studio-shell-ready a:focus-visible{
+  outline:2px solid #f2c500!important;outline-offset:2px;
+}
+body.studio-shell-ready .studio-navigation :is(a,small,span){
+  color:#dedede;
+}
+body.studio-shell-ready .studio-navigation a.is-active{
+  color:#0b0b0b!important;background:#f2c500!important;
+}
+body.studio-shell-ready :is(.studio-page-heading,.studio-page-intro) :is(p,small,span),
+body.studio-shell-ready :is(.workspace-card,.suggestion-card,.brain-card) :is(small,.hint),
+body.studio-shell-ready :is(.studio-upcoming-row,.upcomingItem,.balanceRow) :is(small,span,p){
+  color:#dcdcdc!important;
+}
+body.studio-shell-ready :is(dialog,.panel) :is(.dialogHead,.preview-header) h2{
+  color:#fff!important;
+}
+/* Actual Facebook / LinkedIn / Instagram previews remain white, as posted.
+   Never paint white preview text over the light platform mockups. */
+body.studio-shell-ready :is(.social-mock,.foxon-feed-card){
+  color-scheme:light;color:#171717!important;background:#fff!important;
+}
+body.studio-shell-ready :is(.social-mock,.foxon-feed-card) :is(
+  h1,h2,h3,h4,strong,p,small,li,span,.mock-copy,.mock-head,
+  .foxon-feed-caption,.foxon-feed-footer
+){color:#171717!important}
+body.studio-shell-ready .social-mock .mock-avatar,
+body.studio-shell-ready .foxon-feed-card .foxon-feed-missing,
+body.studio-shell-ready .foxon-feed-card .foxon-feed-image{
+  color:#f2c500!important;background:#0b0b0b!important;
+}
+body.studio-shell-ready .foxon-feed-card .foxon-feed-missing small{
+  color:#fff!important;
+}
+/* Yellow actions always have black type; dark actions have pale type. */
+body.studio-shell-ready :is(.topbar-create,.hero-actions button:not(.hero-secondary),
+  .studio-builder-card>button,#fillCalendar,.brain-card>button){
+  color:#0b0b0b!important;
+}
