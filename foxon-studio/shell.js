@@ -106,8 +106,9 @@ function buildShell(){
  shell.querySelectorAll("[data-dash-route]").forEach(b=>b.onclick=()=>navigate(b.dataset.dashRoute));
  $("fillCalendar").onclick=fillCalendar;
  window.addEventListener("hashchange",route);
- const watch=new MutationObserver(()=>applyVisibility());
- watch.observe(root,{childList:true});
+ const watch=new MutationObserver(()=>{applyVisibility();upgradeUtilityIcons();});
+ watch.observe(root,{childList:true,subtree:true});
+ upgradeUtilityIcons();
  document.body.classList.add("studio-shell-ready");
  route();
 }
@@ -217,6 +218,28 @@ function installNavGlyphs(){
   const el=root.querySelector(selector);
   if(el)el.innerHTML=studioIcon(kind);
  });
+}
+/* Upgrade persistent utility icon slots across dynamically rendered pages.
+   Preserve all button labels and click handlers; only change leading symbols. */
+function upgradeUtilityIcons(){
+ const slots=[
+  ["#mmNewFolder","add",/^[＋+]/],
+  ["#mmSelectFiles","upload",/^[＋+]/],
+  ["#mmSelectFolder","upload",/^⇧/],
+  ["#mmDrop .mm-drop-icon","upload",/^⇧/],
+  ["#newBrainEntry","add",/^[＋+]/],
+  ['[data-brain-tab="knowledge"]',"assistant",/^✦/],
+  ['[data-brain-tab="documents"]',"document",/^▤/]
+ ];
+ for(const [selector,kind,test] of slots){
+  const el=document.querySelector(selector);
+  if(!el||el.querySelector(".foxon-icon"))continue;
+  const child=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&test.test(n.textContent.trimStart()));
+  if(!child)continue;
+  child.textContent=child.textContent.replace(test,"").trimStart();
+  el.insertAdjacentHTML("afterbegin",studioIcon(kind));
+  el.classList.add("foxon-icon-button");
+ }
 }
 function navigate(name){location.hash=name;route();}
 function currentRoute(){
