@@ -56,7 +56,7 @@ $("new").onclick=()=>edit(null);
 $("close").onclick=()=>$("editor").close();
 function edit(p){
  $("postForm").reset();$("editorError").textContent="";$("postId").value=p?.id||"";$("editorTitle").textContent=p?"Edit post":"New post";
- $("title").value=p?.title||"";$("date").value=p?.scheduled_date||iso(new Date());
+ $("title").value=p?.title||"";$("topic").value=p?.topic||p?.title||"";$("date").value=p?.scheduled_date||iso(new Date());
  $("postChannel").value=p?.channel||"Instagram";$("pillar").value=p?.pillar||pillars[0];
  $("format").value=p?.format||"Single image";$("series").value=p?.series||"";$("caption").value=p?.caption||"";$("source").value=p?.source_notes||"";
  $("postStatus").value=p?.status||"idea";
@@ -70,7 +70,7 @@ $("postForm").onsubmit=async e=>{
  const status=$("postStatus").value;
  if(["approved","scheduled"].includes(status)&&!["admin","approver"].includes(role))return alertError("Only an approver can approve posts.");
  if(status==="scheduled"&&!($("caption").value.trim()))return alertError("A scheduled post needs a caption.");
- const payload={title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
+ const payload={topic:$("topic").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
  if(!id)payload.created_by=user.id;
  const q=id?db.from("studio_posts").update(payload).eq("id",id):db.from("studio_posts").insert(payload);
  const {error}=await q;if(error)return alertError(error);
@@ -79,7 +79,7 @@ $("postForm").onsubmit=async e=>{
 $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))return;const {error}=await db.from("studio_posts").delete().eq("id",$("postId").value);if(error)return alertError(error);$("editor").close();await load();};
 $("generate").onclick=async()=>{
  $("editorError").textContent="";
- const topic=$("title").value.trim();if(!topic)return alertError("Enter a specific topic first.");
+ const topic=$("topic").value.trim();if(!topic)return alertError("Enter a specific topic in the Topic field first.");
  const confirmed=$("source").value.trim();if(!confirmed)return alertError("Add confirmed facts or a source before requesting AI content.");
  $("generate").disabled=true;
  try{
