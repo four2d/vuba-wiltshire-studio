@@ -780,3 +780,18 @@ body.studio-shell-ready :is(.topbar-create,.hero-actions button:not(.hero-second
   .studio-builder-card>button,#fillCalendar,.brain-card>button){
   color:#0b0b0b!important;
 }
+
+/* Fix the dedicated interior page H1. premium.css gives this selector #142e3b
+   (unlike .studio-page-heading h1), which made Post ideas invisible. */
+body.studio-shell-ready .studio-interior-heading h1,
+body.studio-shell-ready .studio-page-heading h1,
+body.studio-shell-ready .studio-page-intro h1{
+  color:#ffffff!important;
+}
+body.studio-shell-ready .studio-interior-heading p,
+body.studio-shell-ready .studio-interior-heading .subtitle{
+  color:#dedede!important;
+}
+body.studio-shell-ready .studio-interior-heading .studio-kicker{
+  color:#f2c500!important;
+}
