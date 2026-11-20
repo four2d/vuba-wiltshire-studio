@@ -70,3 +70,45 @@ body.studio-shell-ready[data-foxon-theme="synthwave"] .studio-stat .stat-mark{
  background:#502664!important;color:#ffd7f8!important;
  border:2px solid #d96de2!important;border-radius:8px!important
 }
+
+/* FOXON Classic icon treatment approved from 20 Nov reference:
+   simple yellow linework on black, no chunky yellow filled squares.
+   Restrict to Classic; other 13 themes retain their own designs. */
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.amber,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.rose,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.blue {
+ background:#101010!important;
+ color:#f2c500!important;
+ border:1px solid #383218!important;
+ border-radius:8px!important;
+ box-shadow:none!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark .studio-icon-svg{
+ color:#f2c500!important;stroke:#f2c500!important;
+ width:21px!important;height:21px!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation .nav-glyph,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation .nav-glyph .studio-icon-svg{
+ color:#f2c500!important;stroke:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation a.is-active .nav-glyph,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation a.is-active .nav-glyph .studio-icon-svg{
+ color:#111!important;stroke:#111!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-tip-card .tip-spark{
+ background:#111!important;border:1px solid #393013!important;
+ border-radius:8px!important;color:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-tip-card .tip-spark .studio-icon-svg{
+ color:#f2c500!important;stroke:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-automation-panel .automation-icon,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-builder-card .studio-builder-icon {
+ background:#111!important;color:#f2c500!important;
+ border:1px solid #554512!important;
+ border-radius:8px!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] :is(.automation-icon,.studio-builder-icon) .studio-icon-svg{
+ color:#f2c500!important;stroke:#f2c500!important
+}
