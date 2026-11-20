@@ -205,3 +205,11 @@ body.studio-shell-ready .layout{margin-bottom:12px}
 
 body.studio-shell-ready #strategyArea>.strategy-tabs{display:none}
 body.studio-shell-ready #workspacePlus>.workspace-tabs{display:none}
+
+.studio-more{position:relative;margin-left:2px}
+.studio-more summary{cursor:pointer;list-style:none;padding:10px 13px;border-radius:9px;font-size:.81rem;font-weight:650;color:#4a5d66}
+.studio-more summary::-webkit-details-marker{display:none}
+.studio-more summary:after{content:"⌄";font-size:.8rem;padding-left:7px}
+.studio-more[open] summary,.studio-more.has-active summary{background:#eaf2f6;color:#035b80}
+.studio-more-menu{position:absolute;right:0;top:calc(100% + 10px);min-width:188px;display:grid;gap:4px;padding:8px;background:white;border:1px solid #dfe8ec;box-shadow:0 12px 32px #1232;border-radius:11px;z-index:20}
+.studio-more-menu a{display:block;width:100%;padding:10px 12px!important}
