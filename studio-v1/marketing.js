@@ -52,7 +52,7 @@ const evergreen=[
  ["A real face behind the depot","Behind the Scenes / Depot","","Requires genuine staff participation and consent.","Single image"],
  ["Site-Day Checklist: three questions before the crew arrives","Project Planning","Site-Day Checklist","Use planning questions, not technical instructions.","Carousel"]
 ];
-let user=null,role=null,plan=null,posts=[],campaignPlans=[],suggestions=[],previewIndex=-1,previewDraft=null;
+let user=null,role=null,plan=null,posts=[],campaignPlans=[],approvedKnowledge=[],suggestions=[],previewIndex=-1,previewDraft=null;
 function launchUI(){
  const app=document.getElementById("app"); if(!app||document.getElementById("strategyArea"))return;
  const el=document.createElement("section");el.id="strategyArea";el.className="strategy-area";
@@ -108,13 +108,14 @@ async function init(u){
 }
 async function loadAll(){
  try{
-  const [p,ps,cs]=await Promise.all([
+  const [p,ps,cs,brain]=await Promise.all([
    db.from("studio_marketing_plan").select("*").eq("id",1).single(),
    db.from("studio_posts").select("title,pillar,scheduled_date,status,created_at").order("created_at",{ascending:false}).limit(150),
-   db.from("studio_campaigns").select("id,name,objective,audience,key_messages,start_date,end_date,status").in("status",["planning","active"]).limit(100)
+   db.from("studio_campaigns").select("id,name,objective,audience,key_messages,start_date,end_date,status").in("status",["planning","active"]).limit(100),
+   db.from("studio_brain_entries").select("title,body,category,source_path,source_date").eq("verification","approved").in("category",["Marketing","Product","Audience","Operations"]).limit(60)
   ]);
-  if(p.error)throw p.error;if(ps.error)throw ps.error;if(cs.error)throw cs.error;
-  plan=p.data;posts=ps.data||[];campaignPlans=cs.data||[];
+  if(p.error)throw p.error;if(ps.error)throw ps.error;if(cs.error)throw cs.error;if(brain.error)throw brain.error;
+  plan=p.data;posts=ps.data||[];campaignPlans=cs.data||[];approvedKnowledge=brain.data||[];
   const form=document.getElementById("strategyForm");
   for(const key of ["goal","audience","priorities","campaigns","seasonal_notes","confirmed_events","cadence"])form.elements[key].value=plan[key]||"";
   const editable=["admin","approver"].includes(role);
@@ -128,6 +129,15 @@ const normal=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,"").split(/\s+/).filter(w=
 function generateSuggestions(){
  const now=new Date();const month=now.getMonth();const season=seasonSets.find(s=>s.months.includes(month));
  const candidates=[...season.items,...evergreen];
+ // Approved Brain knowledge contributes editorial subjects, not unverified claims.
+ for(const k of approvedKnowledge.slice(0,12)){
+  const pillar=k.category==="Product"?"Product Education":k.category==="Audience"?"Installer Advice":k.category==="Operations"?"Project Planning":"FAQs & Myth Busting";
+  candidates.push([
+   "From Vuba Brain: "+String(k.title).slice(0,90),pillar,"",
+   "Approved Brain entry, source: "+(k.source_path||"team knowledge")+(k.source_date?" · "+k.source_date:"")+". Recheck current details and authorised imagery before publishing.",
+   "Text-led",null
+  ]);
+ }
  // Actual planned or active campaigns contribute topics to the editorial queue.
  for(const c of campaignPlans){
   const focus=String(c.key_messages||c.objective||c.name).split(/[\n;]+/).map(x=>x.trim()).filter(Boolean).slice(0,3);
@@ -258,3 +268,5 @@ async function addPreviewToCalendar(){
 }
 const {data:{session}}=await db.auth.getSession();await init(session?.user||null);
 db.auth.onAuthStateChange((_,session)=>{setTimeout(()=>init(session?.user||null),0)});
+
+document.addEventListener("vuba-brain-updated",()=>{if(user&&document.getElementById("strategyArea"))loadAll()});
