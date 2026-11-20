@@ -620,3 +620,20 @@ body.studio-shell-ready #vubaBrain{
  #vubaBrain #brainDocumentZone{padding:15px!important}
  #vubaBrain .brain-document-row{align-items:flex-start}
 }
+
+
+/* Backwards-compatible FOXON-only guard: even if an older Brain JavaScript
+   module is cached, NEVER render the retired Vuba V/round-cards illustration. */
+#vubaBrain .brain-command-art:not(.foxon-brain-brand) {
+ position:absolute!important;right:20px!important;top:50%!important;
+ transform:translateY(-50%)!important;width:270px!important;height:196px!important;
+ opacity:1!important;border:2px solid #f2c500!important;border-radius:3px!important;
+ background:#0b0b0b url('./foxon-logo-horizontal-dark.svg') center center / 212px auto no-repeat!important;
+ box-shadow:none!important;
+}
+#vubaBrain .brain-command-art:not(.foxon-brain-brand)::before{
+ content:"";position:absolute;top:0;left:0;right:0;height:13px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 16px,#0b0b0b 16px 32px)
+}
+#vubaBrain .brain-command-art:not(.foxon-brain-brand) > *{display:none!important}
+@media(max-width:850px){#vubaBrain .brain-command-art:not(.foxon-brain-brand){display:none!important}}
