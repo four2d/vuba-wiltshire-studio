@@ -6,7 +6,7 @@ const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"
 const state={user:null,role:null,campaigns:[],media:[],posts:[],urls:{},currentPost:null};
 const channels=["Instagram","Facebook","LinkedIn"];
 async function auth(u){
- state.user=u;if(!u){$("workspacePlus")?.remove();return;}
+ state.user=u;if(!u){$("workspacePlus")?.remove();$("campaignDialog")?.remove();$("platformPreview")?.remove();return;}
  const {data}=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
  if(!data)return;state.role=data.role;
  if(!$("workspacePlus"))build();
@@ -138,7 +138,7 @@ async function approveMedia(id,button){
  await refresh();
 }
 function renderReviews(){
- const selected=state.posts.filter(p=>["review","changes_requested","approved"].includes(p.status));
+ const selected=state.posts.filter(p=>["review","changes_requested"].includes(p.status));
  $("reviewGrid").innerHTML=selected.map(p=>`<article class="workspace-card"><span class="suggestion-pill">${safe(p.status.replaceAll("_"," "))}</span><h3>${safe(p.title)}</h3><p>${safe(p.caption).slice(0,220)}${p.caption.length>220?"…":""}</p><small>${safe(p.channel)} · ${safe(p.scheduled_date)}</small><div><button data-open-review="${safe(p.id)}">Open for review</button></div></article>`).join("")||"<p>No posts awaiting review.</p>";
 }
 function fillEditorExtras(){
@@ -198,6 +198,7 @@ async function changeReviewStatus(status,action){
  if(error){$("editorError").textContent=error.message;return;}
  $("editor").close();await refresh();
  // The calendar is owned by the main app and needs a reload to reflect review action.
+ await window.VubaCalendarReload?.();
  $("reviewGrid").scrollIntoView({block:"nearest"});
 }
 window.VubaStudioPlus={refresh};
