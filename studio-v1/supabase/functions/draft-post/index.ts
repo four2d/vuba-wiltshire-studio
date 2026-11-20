@@ -33,22 +33,28 @@ Deno.serve(async req=>{
   const s=season(new Date().getUTCMonth());
   const system=`You are the social editor for Vuba Wiltshire, a UK trade supplier serving resin-bound installers and landscapers. Choose and draft one genuinely useful post in natural, practical British English. Editorial mix over latest 20 posts: 60% useful trade advice, 20% product and stock, 10% depot/local activity, 10% commercial. Favour an underrepresented category, but an explicitly supplied topic takes precedence. If a TOPIC is supplied, follow that topic faithfully, don't replace it. If no topic is supplied, independently choose one that fits the UK season, the marketing strategy and the previous 20 posts. One clear point, no generic marketing padding. Avoid 'we're thrilled', 'one-stop shop', 'premium solutions', 'for all your resin needs'. STRICT FACTUAL SAFETY: do not invent training, events, actual stock, prices, product identities, hours, deliveries, technical thresholds, installation conditions, coverage, performance claims, timelines, or people. The plan is a direction, not verification of product facts. Supplied URL alone is not evidence that a page was read. If manufacturer technical evidence is missing, frame as helpful planning questions or a prompt to check the current manufacturer instructions rather than asserting technical advice. Do not assume any photograph exists. You are writing a proposed DRAFT, not an approved or published post. Only return a JSON object with the keys topic, title, caption, pillar, source_notes. Use a valid pillar from the supplied pillar list. source_notes must state which statements need verification; no fabricated links. Limit headline to 140 characters and caption to 1400 characters. No markdown code fences.`;
   const input=JSON.stringify({today:new Date().toISOString().slice(0,10),season:s,seasonal_suggestions:seasonal[s],topic:topic||null,working_title:title||null,channel,preferred_pillar:topic?requestedPillar:null,format:String(b.format||"Single image").slice(0,50),user_confirmed_notes:source||null,marketing_plan:plan,recent_posts:recent,pillars});
-  const response=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model:"gpt-4.1-mini",instructions:system,input,max_output_tokens:780,text:{format:{type:"json_object"}}})});
+  // The Responses API supports free-form text; ask for JSON explicitly and
+  // validate its shape ourselves. This avoids model-specific response_format errors.
+  const payload={model:"gpt-4.1-mini",instructions:system,input,max_output_tokens:900};
+  const response=await fetch("https://api.openai.com/v1/responses",{
+   method:"POST",
+   headers:{"Authorization":"Bearer "+apiKey,"Content-Type":"application/json"},
+   body:JSON.stringify(payload)
+  });
   const out=await response.json();
   if(!response.ok){
    const code=String(out?.error?.code||out?.error?.type||"unknown").slice(0,80);
+   const param=String(out?.error?.param||"").slice(0,100);
+   const message=String(out?.error?.message||"").slice(0,320);
+   const safeMessage=message.replace(/sk-[A-Za-z0-9_-]+/g,"[redacted]");
    const hints:Record<string,string>={
-    invalid_api_key:"OpenAI rejected the API key. Check that OPENAI_API_KEY in Supabase contains the complete active API key.",
-    insufficient_quota:"OpenAI API credits or billing are unavailable. Check the API billing and project spending limits.",
-    model_not_found:"The OpenAI API project cannot access the configured model.",
-    rate_limit_exceeded:"The OpenAI API rate limit was reached. Retry shortly.",
-    billing_hard_limit_reached:"The OpenAI API project spending limit has been reached.",
-    invalid_request_error:"The AI request format was rejected; the Studio function needs a correction.",
-    authentication_error:"OpenAI could not authenticate this API key."
+    invalid_api_key:"OpenAI rejected the API key.",
+    insufficient_quota:"OpenAI API billing or credits are unavailable.",
+    model_not_found:"The model is unavailable to this API project.",
+    rate_limit_exceeded:"OpenAI rate limit reached; retry later."
    };
-   const advice=hints[code]||(response.status===401?"OpenAI authentication failed. Check the API key.":response.status===429?"OpenAI rejected the request due to usage limits or API billing.":response.status===400?"OpenAI rejected the request format.":response.status===403?"OpenAI denied access for this API project.":"OpenAI could not complete the request.");
-   console.error("OpenAI drafting failed",JSON.stringify({status:response.status,code,requestId:response.headers.get("x-request-id")}));
-   throw Error("AI provider error ("+response.status+", "+code+"): "+advice);
+   console.error("OpenAI response error",JSON.stringify({status:response.status,code,param,message:safeMessage,requestId:response.headers.get("x-request-id")}));
+   throw Error("AI provider error ("+response.status+", "+code+"): "+(hints[code]||safeMessage||"Check function logs for details."));
   }
   const raw=(out.output||[]).flatMap((o:any)=>o.content||[]).filter((c:any)=>c.type==="output_text").map((c:any)=>c.text).join("");
   let value:any;try{value=JSON.parse(raw)}catch{throw Error("AI returned an unreadable draft; please retry.");}
