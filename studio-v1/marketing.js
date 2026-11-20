@@ -52,7 +52,7 @@ const evergreen=[
  ["A real face behind the depot","Behind the Scenes / Depot","","Requires genuine staff participation and consent.","Single image"],
  ["Site-Day Checklist: three questions before the crew arrives","Project Planning","Site-Day Checklist","Use planning questions, not technical instructions.","Carousel"]
 ];
-let user=null,role=null,plan=null,posts=[],campaignPlans=[],approvedKnowledge=[],suggestions=[],previewIndex=-1,previewDraft=null;
+let user=null,role=null,plan=null,posts=[],campaignPlans=[],approvedKnowledge=[],suggestions=[],previewIndex=-1,previewDraft=null,previewMedia=null,previewImageTicket=0;
 function launchUI(){
  const app=document.getElementById("app"); if(!app||document.getElementById("strategyArea"))return;
  const el=document.createElement("section");el.id="strategyArea";el.className="strategy-area";
@@ -70,8 +70,8 @@ function launchUI(){
  <div class="preview-section"><h3>Image / format brief</h3><p id="previewVisual"></p></div>
  <div class="preview-section"><h3>Draft caption</h3><p class="hint">Generate a draft with AI, or add the idea without a caption.</p><textarea id="previewCaption" class="preview-caption" rows="5" placeholder="Add your own caption, paste one from ChatGPT, or generate when API credits are available."></textarea><p class="hint">Edits remain in this preview until you choose Add to calendar.</p></div>
  <div class="preview-section"><h3>How this will look</h3><div class="workspace-tabs" id="ideaPreviewChannels"><button type="button" data-idea-channel="Instagram" class="active">Instagram</button><button type="button" data-idea-channel="Facebook">Facebook</button><button type="button" data-idea-channel="LinkedIn">LinkedIn</button></div>
- <div class="social-mock"><div class="mock-head"><div class="mock-avatar">VW</div><div><strong>Vuba Wiltshire</strong><small id="ideaMockPlatform">Instagram · Preview</small></div></div><div class="mock-image"><div class="mock-placeholder">Approved photo can be chosen in the post editor</div></div><div class="mock-copy"><h3 id="ideaMockTitle"></h3><p id="ideaMockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div></div>
- <div class="preview-section"><h3>Checks before publishing</h3><p id="previewChecks"></p></div>
+ <div class="social-mock"><div class="mock-head"><div class="mock-avatar">VW</div><div><strong>Vuba Wiltshire</strong><small id="ideaMockPlatform">Instagram · Preview</small></div></div><div class="mock-image" id="ideaMockImage"><div class="mock-placeholder">Looking for a suitable approved photo…</div></div><div class="mock-copy"><h3 id="ideaMockTitle"></h3><p id="ideaMockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div></div>
+ <p id="ideaImageStatus" class="hint">Finding an approved Vuba photo…</p><div class="preview-section"><h3>Checks before publishing</h3><p id="previewChecks"></p></div>
  <p id="previewError" role="status"></p>
  <div class="preview-actions"><button type="button" id="previewAI" class="secondary-btn">Generate AI draft</button><button type="button" id="previewAdd">Add to calendar</button></div>`;
  document.body.appendChild(dialog);
@@ -179,7 +179,8 @@ async function savePlan(e){
 
 function openPreview(index){
  const item=suggestions[index]?.v;if(!item)return;
- previewIndex=index;previewDraft=null;
+ previewIndex=index;previewDraft=null;previewMedia=null;
+ const ticket=++previewImageTicket;
  const [title,pillar,series,notes,format]=item;
  document.getElementById("previewHeading").textContent=title;
  document.getElementById("previewMeta").textContent=[pillar,series||"Standalone",format,item[5]?"Linked to a marketing campaign":null].filter(Boolean).join(" · ");
@@ -188,6 +189,15 @@ function openPreview(index){
  document.getElementById("previewVisual").textContent=format==="Carousel"?"A small sequence of clear, genuine photos or approved educational graphics.":format==="Text-led"?"Text-focused content with a clear practical takeaway.":"Use genuine, relevant Vuba photography or an approved branded graphic — no fabricated products or packaging.";
  document.getElementById("previewChecks").textContent=notes;
  document.getElementById("previewCaption").value="";
+ document.getElementById("ideaMockImage").innerHTML='<div class="mock-placeholder">Looking for a suitable approved photo…</div>';
+ document.getElementById("ideaImageStatus").textContent="Checking approved Vuba photos…";
+ window.VubaMediaAssist?.chooseForBuilder?.([title,pillar].join(" "),{attach:false}).then(match=>{
+  if(previewIndex!==index||ticket!==previewImageTicket)return;
+  previewMedia=match;
+  const image=document.getElementById("ideaMockImage");
+  image.innerHTML=match?.url?'<img src="'+safe(match.url)+'" alt="'+safe(match.description||match.filename)+'">':'<div class="mock-placeholder">No suitable approved Vuba photo</div>';
+  document.getElementById("ideaImageStatus").textContent=match?"Suggested image: "+(match.description||match.filename)+" (check before approval).":"Image needed. Import Vuba photography or prepare a new image brief in the post editor.";
+ }).catch(()=>{if(ticket===previewImageTicket)document.getElementById("ideaImageStatus").textContent="Image lookup unavailable; choose one in the post editor.";});
  document.querySelector("#ideaPreview .social-mock").className="social-mock platform-instagram";
  updateIdeaMock();
  document.getElementById("previewError").textContent="";
@@ -252,7 +262,7 @@ async function addPreviewToCalendar(){
  const editedCaption=document.getElementById("previewCaption").value.trim();
  const payload={
   topic:previewDraft?.topic||v[0],title:(previewDraft?.title||v[0]).slice(0,140),
-  pillar:previewDraft?.pillar||v[1],series:v[2]||null,campaign_id:v[5]||null,
+  pillar:previewDraft?.pillar||v[1],series:v[2]||null,campaign_id:v[5]||null,media_id:previewMedia?.id||null,
   format:["Carousel","Text-led","Reel","Story","Branded graphic"].includes(v[4])?v[4]:"Single image",
   channel:v[4]==="Text-led"?"LinkedIn":"Instagram",
   status:editedCaption?"draft":"idea",scheduled_date:date,
