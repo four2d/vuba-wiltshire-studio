@@ -109,3 +109,4 @@ async function generatePost(){
  }
 }
 $("generate").onclick=generatePost;
+window.VubaCalendarReload=load;
