@@ -209,3 +209,44 @@ body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"]
  --fu-border:var(--theme-edge,#ccc);
  --fu-accent:var(--read-accent,#086a9b)
 }
+
+/* Manual platform analytics, visibly distinct from the internal pipeline. */
+body.studio-shell-ready .foxon-metric-import{
+ margin-top:21px;padding-top:19px;
+ border-top:1px solid var(--fu-border,var(--read-stroke,#454545))
+}
+body.studio-shell-ready .foxon-metric-actions{
+ display:flex;gap:8px;flex-wrap:wrap;align-items:center
+}
+body.studio-shell-ready .foxon-metric-actions>button,
+body.studio-shell-ready .foxon-metric-upload{
+ display:inline-flex;align-items:center;justify-content:center;
+ min-height:36px;padding:8px 12px;border:1px solid var(--fu-border,var(--read-stroke,#555));
+ border-radius:8px;font-size:11px;font-weight:800;cursor:pointer;
+ background:var(--fu-accent,var(--read-accent,#f2c500));
+ color:var(--read-accent-text,#111);line-height:1.25
+}
+body.studio-shell-ready .foxon-metric-upload{position:relative;overflow:hidden}
+body.studio-shell-ready .foxon-metric-upload input{
+ position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer
+}
+body.studio-shell-ready .foxon-metric-stats{
+ margin:13px 0 8px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px
+}
+body.studio-shell-ready .foxon-metric-stats>div{
+ display:grid;gap:6px;padding:12px;
+ border:1px solid var(--fu-border,var(--read-stroke,#454545));border-radius:9px
+}
+body.studio-shell-ready .foxon-metric-stats small{
+ color:var(--fu-muted,var(--read-muted,#bbb));font-size:10px
+}
+body.studio-shell-ready .foxon-metric-stats strong{
+ color:var(--fu-accent,var(--read-accent,#f2c500));font-size:22px;
+ font-weight:850;line-height:1.1
+}
+body.studio-shell-ready .foxon-metric-upload:focus-within{
+ outline:3px solid var(--fu-accent,var(--read-accent,#f2c500));outline-offset:3px
+}
+@media(max-width:720px){
+ body.studio-shell-ready .foxon-metric-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
