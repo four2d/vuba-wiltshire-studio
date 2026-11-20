@@ -68,13 +68,22 @@ function launchUI(){
  <div class="preview-section"><h3>Suggested angle</h3><p id="previewAngle"></p></div>
  <div class="preview-section"><h3>Working headline</h3><p id="previewTitle"></p></div>
  <div class="preview-section"><h3>Image / format brief</h3><p id="previewVisual"></p></div>
- <div class="preview-section"><h3>Draft caption</h3><p class="hint">Generate a draft with AI, or add the idea without a caption.</p><div id="previewCaption" class="preview-caption">No draft generated yet.</div></div>
+ <div class="preview-section"><h3>Draft caption</h3><p class="hint">Generate a draft with AI, or add the idea without a caption.</p><textarea id="previewCaption" class="preview-caption" rows="5" placeholder="Add your own caption, paste one from ChatGPT, or generate when API credits are available."></textarea><p class="hint">Edits remain in this preview until you choose Add to calendar.</p></div>
+ <div class="preview-section"><h3>How this will look</h3><div class="workspace-tabs" id="ideaPreviewChannels"><button type="button" data-idea-channel="Instagram" class="active">Instagram</button><button type="button" data-idea-channel="Facebook">Facebook</button><button type="button" data-idea-channel="LinkedIn">LinkedIn</button></div>
+ <div class="social-mock"><div class="mock-head"><div class="mock-avatar">VW</div><div><strong>Vuba Wiltshire</strong><small id="ideaMockPlatform">Instagram · Preview</small></div></div><div class="mock-image"><div class="mock-placeholder">Approved photo can be chosen in the post editor</div></div><div class="mock-copy"><h3 id="ideaMockTitle"></h3><p id="ideaMockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div></div>
  <div class="preview-section"><h3>Checks before publishing</h3><p id="previewChecks"></p></div>
  <p id="previewError" role="status"></p>
  <div class="preview-actions"><button type="button" id="previewAI" class="secondary-btn">Generate AI draft</button><button type="button" id="previewAdd">Add to calendar</button></div>`;
  document.body.appendChild(dialog);
  document.getElementById("closePreview").onclick=()=>dialog.close();
  document.getElementById("previewAI").onclick=generatePreviewDraft;
+ document.getElementById("previewCaption").oninput=updateIdeaMock;
+ document.getElementById("ideaPreviewChannels").onclick=e=>{
+  const b=e.target.closest("[data-idea-channel]");if(!b)return;
+  document.querySelectorAll("[data-idea-channel]").forEach(x=>x.classList.toggle("active",x===b));
+  document.getElementById("ideaMockPlatform").textContent=b.dataset.ideaChannel+" · Preview";
+  updateIdeaMock();
+ };
  document.getElementById("previewAdd").onclick=()=>addPreviewToCalendar();
 
  document.getElementById("tabSuggestions").onclick=()=>tab("suggestions");
@@ -155,7 +164,8 @@ function openPreview(index){
  document.getElementById("previewTitle").textContent=title;
  document.getElementById("previewVisual").textContent=format==="Carousel"?"A small sequence of clear, genuine photos or approved educational graphics.":format==="Text-led"?"Text-focused content with a clear practical takeaway.":"Use genuine, relevant Vuba photography or an approved branded graphic — no fabricated products or packaging.";
  document.getElementById("previewChecks").textContent=notes;
- document.getElementById("previewCaption").textContent="No draft generated yet. Use Generate AI draft to preview proposed copy, or add this as an idea.";
+ document.getElementById("previewCaption").value="";
+ updateIdeaMock();
  document.getElementById("previewError").textContent="";
  document.getElementById("previewAI").disabled=false;
  document.getElementById("previewAI").textContent="Generate AI draft";
@@ -186,7 +196,8 @@ async function generatePreviewDraft(){
    source_notes:String(data.source_notes||notes).slice(0,3000)
   };
   document.getElementById("previewTitle").textContent=previewDraft.title;
-  document.getElementById("previewCaption").textContent=previewDraft.caption;
+  document.getElementById("previewCaption").value=previewDraft.caption;
+ updateIdeaMock();
   document.getElementById("previewChecks").textContent=previewDraft.source_notes;
   button.textContent="Regenerate AI draft";
  }catch(e){
@@ -194,26 +205,31 @@ async function generatePreviewDraft(){
   button.textContent="Try AI draft again";
  }finally{button.disabled=false;}
 }
+function updateIdeaMock(){
+ document.getElementById("ideaMockTitle").textContent=document.getElementById("previewTitle").textContent;
+ document.getElementById("ideaMockCaption").textContent=document.getElementById("previewCaption").value.trim()||"Caption will appear here when drafted.";
+}
 async function addPreviewToCalendar(){
  const v=suggestions[previewIndex]?.v;if(!v||!user)return;
  const d=new Date();d.setDate(d.getDate()+7);
  const date=[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
  const button=document.getElementById("previewAdd");
  button.disabled=true;document.getElementById("previewError").textContent="";
+ const editedCaption=document.getElementById("previewCaption").value.trim();
  const payload={
   topic:previewDraft?.topic||v[0],title:(previewDraft?.title||v[0]).slice(0,140),
   pillar:previewDraft?.pillar||v[1],series:v[2]||null,
   format:["Carousel","Text-led","Reel","Story","Branded graphic"].includes(v[4])?v[4]:"Single image",
   channel:v[4]==="Text-led"?"LinkedIn":"Instagram",
-  status:previewDraft?"draft":"idea",scheduled_date:date,
-  caption:previewDraft?.caption||"",
+  status:editedCaption?"draft":"idea",scheduled_date:date,
+  caption:editedCaption,
   source_notes:previewDraft?.source_notes||("IDEA ONLY — "+v[3]+"\nMarketing aim: "+(plan?.goal||"").slice(0,220)),
   created_by:user.id,updated_by:user.id
  };
  const {error}=await db.from("studio_posts").insert(payload);
  if(error){button.disabled=false;document.getElementById("previewError").textContent=error.message;return;}
  document.getElementById("ideaPreview").close();
- document.getElementById("suggestionMessage").textContent=(previewDraft?"Draft":"Idea")+" added for "+new Date(date+"T12:00:00").toLocaleDateString("en-GB")+".";
+ document.getElementById("suggestionMessage").textContent=(editedCaption?"Draft":"Idea")+" added for "+new Date(date+"T12:00:00").toLocaleDateString("en-GB")+".";
  await loadAll();
 }
 const {data:{session}}=await db.auth.getSession();await init(session?.user||null);
