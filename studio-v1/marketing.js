@@ -112,7 +112,7 @@ async function loadAll(){
    db.from("studio_marketing_plan").select("*").eq("id",1).single(),
    db.from("studio_posts").select("title,pillar,scheduled_date,status,created_at").order("created_at",{ascending:false}).limit(150),
    db.from("studio_campaigns").select("id,name,objective,audience,key_messages,start_date,end_date,status").in("status",["planning","active"]).limit(100),
-   db.from("studio_brain_entries").select("title,body,category,source_path,source_date").eq("verification","approved").in("category",["Marketing","Product","Audience","Operations"]).limit(60)
+   db.from("studio_brain_entries").select("title,body,category,source_path,source_date").eq("verification","approved").is("archived_at",null).in("category",["Marketing","Product","Audience","Operations"]).limit(60)
   ]);
   if(p.error)throw p.error;if(ps.error)throw ps.error;if(cs.error)throw cs.error;if(brain.error)throw brain.error;
   plan=p.data;posts=ps.data||[];campaignPlans=cs.data||[];approvedKnowledge=brain.data||[];
