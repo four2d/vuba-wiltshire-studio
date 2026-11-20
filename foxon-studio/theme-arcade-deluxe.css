@@ -1,0 +1,241 @@
+/* ARCADE DELUXE — faithful to the approved visual reference.
+   IMPORTANT: visual skin ONLY. No data, routes, page order or grid/layout rewrite.
+   Other 13 themes remain unchanged; this only applies to Arcade. */
+body.studio-shell-ready[data-foxon-theme="arcade"] {
+ --arcade-cream:#fff8da;
+ --arcade-purple:#21123d;
+ --arcade-ink:#0e0c32;
+ --arcade-pink:#ff82ed;
+ --arcade-cyan:#66edff;
+ --arcade-gold:#ffec69;
+ --arcade-border:#c47eff;
+ --arcade-green:#66ff9c;
+ background:#0c0a31!important;
+ color:#fff8e8!important;
+ background-image:radial-gradient(ellipse 62% 32% at 72% 0%,#5a1d826e,transparent),linear-gradient(#0f0c36,#0c0a2e)!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(
+ .studio-navigation,.studio-topbar,.studio-home-main,.studio-automation-panel,.studio-builder-card,
+ .studio-stat,.studio-tip-card,.workspace-card,.suggestion-card,#vubaBrain,.panel
+){image-rendering:auto}
+/* Real dashboard, real data, same exact sections and layout. */
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation {
+ background:linear-gradient(180deg,#171245 0%,#0b1038 100%)!important;
+ border-right:6px ridge #b98aff!important;
+ box-shadow:inset -9px 0 #4a2880,8px 0 0 #14092e!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation::after{
+ background:url('./theme-art/trim-arcade.svg') center/cover no-repeat!important;
+ opacity:.75!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .brand-lockup{
+ border-bottom:4px solid #ff85ee!important;
+ padding-bottom:10px!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .brand-lockup>img{
+ filter:drop-shadow(2px 2px 0 #6d36b0)!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .edition-side-mascot{
+ width:79px!important;height:92px!important;top:6px!important;right:4px!important;
+ opacity:1!important;filter:drop-shadow(2px 3px 0 #a337b2)!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-nav-heading{
+ color:#ffdf6e!important;font-family:'Courier New',monospace!important;
+ letter-spacing:.12em!important;text-transform:uppercase!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation .studio-nav-links a{
+ border-radius:0!important;padding:10px 10px!important;min-height:43px!important;
+ font:800 12px/1.2 'Courier New',monospace!important;letter-spacing:0!important;
+ color:#f6f2ff!important;text-shadow:1px 2px #000!important;
+ border-bottom:1px solid #906ec877!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation .studio-nav-links a .nav-glyph{
+ color:#fff9ad!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation .studio-nav-links a.is-active{
+ background:linear-gradient(180deg,#fff68c,#ffce3d)!important;
+ color:#201035!important;text-shadow:none!important;
+ border:3px solid #fff5ab!important;
+ box-shadow:4px 4px 0 #9a30cb,0 0 0 2px #35136b!important;
+ clip-path:polygon(0 0,94% 0,100% 50%,94% 100%,0 100%)!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation .studio-nav-links a.is-active :is(span,.nav-glyph,.nav-active-mark){
+ color:#201035!important;text-shadow:none!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation .special-edition-plate{
+ background:linear-gradient(#2b1355,#522677)!important;
+ color:#ffe99c!important;
+ border:4px double #f7c56f!important;
+ border-radius:0!important;
+ box-shadow:4px 4px #100b36!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-topbar{
+ background:linear-gradient(180deg,#1a1145,#110d37)!important;
+ border-bottom:5px solid #ff78e9!important;
+ box-shadow:0 5px 0 #5d249e!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-topbar #studioBreadcrumb{
+ font:900 14px/1.3 'Courier New',monospace!important;color:#fef9e6!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(.studio-live-pill,.studio-workspace-label){
+ background:#261650!important;border:2px solid #9b70e6!important;color:#ffe48b!important;
+ border-radius:0!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .topbar-create{
+ background:linear-gradient(#ffea82,#ffa82e)!important;
+ color:#231044!important;border:3px solid #fff49a!important;
+ box-shadow:3px 4px 0 #6b298e!important;border-radius:2px!important
+}
+/* Banner: original Arcade scene, with improved contrast against real text. */
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero{
+ min-height:305px!important;
+ border:5px solid #ff82ef!important;
+ background:#220d51!important;
+ clip-path:none!important;
+ border-radius:0!important;
+ box-shadow:inset 0 0 0 3px #742fba,7px 7px 0 #1b0d3f!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero::after{
+ background-image:linear-gradient(90deg,#140c39f8 0%,#160d39e8 27%,#1a0e3ea6 48%,transparent 85%),url('./theme-art/arcade.svg')!important;
+ background-size:100% 100%,cover!important;background-position:center,right center!important;
+ opacity:1!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .edition-hero-mascot{
+ width:260px!important;height:290px!important;right:8%!important;bottom:-20px!important;
+ opacity:1!important;filter:drop-shadow(6px 4px 0 #190b38)!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-copy h2{
+ color:#fff8f4!important;font:900 clamp(27px,3.05vw,47px)/1.05 'Courier New',monospace!important;
+ letter-spacing:-.06em!important;
+ text-shadow:3px 4px 0 #5b268c,5px 6px 0 #1c0a43!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-copy h2 em{
+ color:#ffed65!important;font-style:normal!important;text-shadow:3px 4px 0 #a12b91!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-copy p{
+ color:#f4ebff!important;text-shadow:1px 2px #211340!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-eyebrow,
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-page-heading .studio-kicker{
+ color:#ffe982!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-actions button:not(.hero-secondary){
+ background:linear-gradient(#80ff9e,#13bc69)!important;color:#0d2930!important;
+ border:4px ridge #b4ffbc!important;border-radius:0!important;
+ box-shadow:4px 4px 0 #37105b!important;
+ font-family:'Courier New',monospace!important;font-weight:900!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-actions .hero-secondary{
+ background:#2b1655ed!important;color:#fff3ff!important;
+ border:3px solid #df9eff!important;border-radius:0!important
+}
+/* Arcade statistics: four real linked metrics, no fabricated score readings. */
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat-grid{
+ gap:14px!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat{
+ min-height:112px!important;
+ background:linear-gradient(150deg,#111344,#1d1340)!important;
+ border:5px ridge #ffe17d!important;border-radius:0!important;
+ box-shadow:inset 0 0 0 2px #b355f4,5px 6px 0 #2e0c59!important;
+ padding:15px!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat::after{opacity:.1!important}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat .stat-top small{
+ color:#fcf5ff!important;font:800 11px/1.35 'Courier New',monospace!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat .stat-mark{
+ border:3px solid #fff0a3!important;border-radius:3px!important;
+ background:#a74aed!important;color:#fff!important;box-shadow:3px 3px #251143!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat .stat-number{
+ color:#fef7f2!important;font:900 32px/1 'Courier New',monospace!important;
+ text-shadow:2px 3px #702daf!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat .stat-foot{
+ color:#b8ffb9!important;font:700 10px/1.4 'Courier New',monospace!important
+}
+/* Material styling of the existing home grid and cards. */
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(
+ .studio-home-main,.studio-automation-panel,.studio-tip-card,
+ .studio-builder-card,.workspace-card,.suggestion-card
+){
+ background:linear-gradient(180deg,#201348,#17123c)!important;
+ border:5px ridge #eb91fa!important;border-radius:0!important;
+ box-shadow:inset 0 0 0 3px #7145b8,6px 7px 0 #09062e!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-section-heading{
+ background:linear-gradient(90deg,#41146d,#23164d)!important;
+ margin:-20px -20px 15px!important;padding:15px 20px!important;
+ border-bottom:4px solid #b76af2!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-section-heading h2,
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(
+ .studio-automation-panel h2,.studio-builder-card h2,.studio-tip-card strong
+){
+ font:900 23px/1.15 'Courier New',monospace!important;
+ color:#ffe56a!important;text-shadow:2px 3px #6b26b8!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-section-heading p{
+ color:#efe4ff!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(.studio-text-btn,.studio-tip-card button){
+ background:#6322a0!important;color:#fff!important;
+ border:2px solid #ba7cfa!important;border-radius:0!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .foxon-feed-card{
+ border:3px solid #a87cfc!important;box-shadow:3px 4px 0 #080628!important;
+ border-radius:3px!important;overflow:hidden!important;
+}
+/* Platform preview backgrounds remain authentic and legible. */
+body.studio-shell-ready[data-foxon-theme="arcade"] .foxon-feed-card :is(
+ .foxon-feed-header,.foxon-feed-caption,.foxon-feed-profile,
+ .foxon-feed-profile strong,.foxon-feed-profile small,.foxon-feed-actions
+){color:#171717!important;background:#fff!important}
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(.editorial-post-card,.editorial-post-details){
+ border-radius:3px!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-builder-card :is(p,.builder-note),
+body.studio-shell-ready[data-foxon-theme="arcade"] :is(
+ .studio-home-main p,.studio-automation-panel p,.studio-tip-card p
+){color:#f0e7ff!important}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-page-heading,
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-interior-heading{
+ border:5px ridge #d784fa!important;
+ box-shadow:5px 6px #211045!important;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-page-heading h1,
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-interior-heading h1{
+ color:#ffe675!important
+}
+/* Noninteractive decorative arcade-control footer: never covers a button. */
+body.studio-shell-ready[data-foxon-theme="arcade"] #studioHome::after{
+ content:"";display:block;position:relative;
+ width:100%;height:112px;margin:22px 0 0;
+ background:url('./theme-art/arcade-control-deck.svg') center bottom/100% 100% no-repeat;
+ pointer-events:none;
+ image-rendering:pixelated;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-navigation .sidebar-bottom{
+ border-top:3px solid #b66fe6!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .foxon-theme-picker{
+ border-top:3px solid #e87bff!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .foxon-theme-picker select{
+ border:3px solid #bc84fa!important;color:#fff!important;background:#241044!important
+}
+@media(max-width:1150px){
+ body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .edition-hero-mascot{right:-25px!important;opacity:.4!important}
+ body.studio-shell-ready[data-foxon-theme="arcade"] .studio-hero .hero-copy{width:100%!important}
+}
+@media(max-width:700px){
+ body.studio-shell-ready[data-foxon-theme="arcade"] .studio-section-heading{
+  margin:-16px -16px 15px!important;padding:12px!important
+ }
+ body.studio-shell-ready[data-foxon-theme="arcade"] #studioHome::after{height:65px}
+ body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat{padding:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body.studio-shell-ready[data-foxon-theme="arcade"] *{animation:none!important}
+}
