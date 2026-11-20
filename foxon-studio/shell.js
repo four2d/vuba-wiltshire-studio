@@ -267,7 +267,7 @@ async function fillCalendar(){
   await window.FOXONMediaAssist?.refresh?.();
   const pillars=["Product Education","FOXON Invoice","FOXON CIS","FOXON Miles","FOXON Gas","Trade Productivity","Behind the Software","Frequently Asked Questions"];
   for(const s of scheduled){
-   const starter=window.FOXONOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length]});
+   const starter=window.FOXONOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length],channel:s.channel});
    if(!starter)throw Error("Offline content templates unavailable. Refresh the Studio.");
    titles.push(starter.title);
    const match=window.FOXONMediaAssist?.bestForText?.([starter.title,starter.topic,starter.pillar].join(" "));
