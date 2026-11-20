@@ -42,3 +42,24 @@ Schema delta is recorded in `supabase/workspace.sql`, applied to this project's 
 **Still not implemented:** native publishing to social networks, analytics integrations, image editing, asset tagging/search, performance dashboards, automatic media licence verification, and browser-to-browser collaboration presence. Human review remains essential. The AI drafting endpoint needs paid OpenAI API credits; ordinary non-AI workflows are independent of that budget.
 
 **QA performed:** JavaScript parse checks, verified RLS for new tables, verified the private Storage bucket, and successfully tested an authenticated administrator creating a campaign and a review post with automatic audit event inside rolled-back SQL transactions. Browser-based end-to-end testing of real uploads, staff approval and signed image display remains outstanding.
+
+## Shared Vuba Brain (20 November 2026)
+
+The new **Vuba Brain** section displays vetted-source knowledge with category/search filters and visible status badges. It uses the private, RLS-protected `studio_brain_entries` table. Schema: `supabase/brain.sql`.
+
+### Sources imported
+
+Eight curated entries, all initially `needs_review`, sourced from the **private** `four2d/Vuba-Wiltshire` repository:
+- `docs/GPT-NOTES.md`
+- `docs/BRAND.md`
+- `docs/TEAM.md`
+
+The source-date and review note are stored per entry. The historical teaser plan and older web handoff remain references, **not confirmed current operations**. Source snapshots from the GitHub repository are not the complete on-Mac `MEMORY.md` or `outbox/FROM-GROK.md` files.
+
+### Review and editorial integration
+
+All signed-in team members can read or search the Brain and submit new entries for review. Admins and approvers can edit entries and mark them `approved` or `superseded`. Only **approved** `Marketing`, `Product`, `Audience` and `Operations` Brain entries can contribute topic candidates to the suggestions engine; other records remain reference/context and do not automatically enter promotional copy.
+
+**No automatic sync:** this release does not read private GitHub from the browser and has no Mac-folder watcher. Ask ChatGPT to refresh the Brain from the private repo through connected tools, or add/edit entries in the UI. A GitHub-side bridge protocol is at `four2d/Vuba-Wiltshire/docs/VUBA-BRAIN-BRIDGE.md`. Browser's **Copy as Grok handoff** only copies text; it cannot write the Mac files.
+
+Security: do not embed private repo tokens or service-role keys in public GitHub Pages files. Approval is a human editorial status; technical/stock claims still require current source verification.
