@@ -18,6 +18,10 @@ assert(upgrade.includes('sessionStorage.setItem'),"Draft recovery should use ses
 assert(!upgrade.includes('localStorage.setItem'),"Never persist captions across browser sessions");
 assert(upgrade.includes('No post is automatically published'),"Publishing disclaimer must remain explicit");
 assert(upgrade.includes('text/csv;charset=utf-8'),"Approved queue must offer portable CSV");
+assert(upgrade.includes("foxonProductFilter"),"Four FOXON product filters must be present");
+assert(upgrade.includes("parseCsv"),"Manual social analytics imports must be parsed locally");
+assert(upgrade.includes("readiness_issues"),"Prepared post exports must flag missing verification or media");
+assert(upgrade.includes("No platform metrics connected or imported"),"Platform numbers must never be fabricated");
 assert(upgrade.includes('^[\\s]*[=+@-]'),"CSV export must defend against spreadsheet formula injection");
 assert(index.includes('studio-upgrades.css'),"New responsive upgrade CSS must be loaded");
 assert(boot.includes('studio-upgrades.js'),"New upgrade module must be loaded");
