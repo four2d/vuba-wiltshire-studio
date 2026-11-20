@@ -148,22 +148,48 @@ function toggleMobileMenu(force){
  $("studioMobileMenu")?.setAttribute("aria-expanded",String(open));
  $("studioNavShade").hidden=!open;
 }
+/* Icons are deliberately a single consistent set of drawn SVG shapes:
+   no Unicode placeholders, emoji, font glyph dependencies or broken circles. */
+const studioIcons={
+ home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
+ calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',
+ builder:'<path d="m12 19 7-7 3 3-7 7H12zM18 13l3-3-3-3-3 3M3 21h7"/>',
+ ideas:'<path d="M9 18h6M10 22h4M8.3 14a7 7 0 1 1 7.4 0c-1 .8-1.7 1.7-1.7 3h-4c0-1.3-.7-2.2-1.7-3z"/>',
+ reviews:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m7.5 12 3 3 6-6"/>',
+ plan:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ campaigns:'<path d="m3 10 11-5v14L3 14zM14 8l5-3v14l-5-3M6 15v5h4v-4"/>',
+ media:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 17 5-5 4 4 3-3 6 5"/>',
+ brain:'<path d="M12 5c-3-2-6-2-9-1v16c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1zM12 5v16"/>',
+ planned:'<rect x="3" y="4" width="18" height="17" rx="2"/><path d="M7 2v4M17 2v4M3 10h18m-13 5 2.5 2.5L16 12"/>',
+ approval:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2m-7-1 2 2 5-5"/>',
+ images:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m3 17 5-5 4 4 3-3 6 5"/><circle cx="8.5" cy="8.5" r="1.3"/>',
+ opportunities:'<path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/>',
+ assistant:'<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/><path d="M19 2v4M17 4h4"/>',
+ spark:'<path d="m12 3 2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/>',
+ add:'<path d="M12 5v14M5 12h14"/>',
+ arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>'
+};
+function studioIcon(name){
+ return '<svg class="studio-icon-svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+(studioIcons[name]||studioIcons.spark)+'</svg>';
+}
 function installNavGlyphs(){
- const icons={
-  home:"M3 11.5 12 4l9 7.5V21H3z M9 21v-7h6v7",
-  calendar:"M3 6h18v15H3z M7 3v6 M17 3v6 M3 11h18",
-  builder:"M4 20h16 M5 15l10-10 4 4-10 10H5z",
-  ideas:"M9 18h6 M10 22h4 M12 2a7 7 0 0 0-4 13c1 1 1 2 1 3h6c0-1 0-2 1-3a7 7 0 0 0-4-13z",
-  reviews:"M4 12l5 5L20 6 M3 3h18v18H3z",
-  plan:"M12 3v18 M3 12h18 M6 6l12 12 M18 6L6 18",
-  campaigns:"M3 11l11-5v12L3 13z M14 8l5-3v14l-5-3 M6 14v6",
-  media:"M3 4h18v16H3z M3 16l6-6 5 5 3-3 4 4 M16 9h.01",
-  brain:"M12 5C9 3 6 4 3 5v15c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-2-9 0z M12 5v16"
- };
  document.querySelectorAll("#studioShell [data-glyph]").forEach(el=>{
-  const path=icons[el.dataset.glyph]||icons.home;
-  el.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+path+'"/></svg>';
+  el.innerHTML=studioIcon(el.dataset.glyph);
  });
+ const placements=[
+  [".studio-stat-grid .studio-stat:nth-child(1) .stat-mark","planned"],
+  [".studio-stat-grid .studio-stat:nth-child(2) .stat-mark","approval"],
+  [".studio-stat-grid .studio-stat:nth-child(3) .stat-mark","images"],
+  [".studio-stat-grid .studio-stat:nth-child(4) .stat-mark","opportunities"],
+  [".studio-automation-panel .automation-icon","assistant"],
+  [".studio-tip-card .tip-spark","spark"],
+  [".studio-builder-card.featured .studio-builder-icon","assistant"],
+  [".studio-builder-card:not(.featured) .studio-builder-icon","add"]
+ ];
+ for(const [selector,name] of placements){
+  const el=document.querySelector("#studioShell "+selector);
+  if(el)el.innerHTML=studioIcon(name);
+ }
 }
 function navigate(name){location.hash=name;route();}
 function currentRoute(){
