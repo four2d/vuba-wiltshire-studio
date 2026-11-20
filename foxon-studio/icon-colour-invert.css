@@ -12,11 +12,12 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-st
  padding:0!important;
  display:grid!important;place-items:center!important;
  flex-shrink:0!important;
- border:0!important;border-radius:8px!important;
+ border:1px solid #171717!important;border-radius:8px!important;
+ border-color:#171717!important;
  box-shadow:none!important;
- background:#080808!important;
- color:#f2c500!important;
- -webkit-text-fill-color:#f2c500!important;
+ background:#171717!important;
+ color:var(--foxon-yellow)!important;
+ -webkit-text-fill-color:var(--foxon-yellow)!important;
  font-family:Arial,'Helvetica Neue',sans-serif!important;
  font-size:17px!important;font-weight:400!important;
  font-style:normal!important;line-height:1!important;
