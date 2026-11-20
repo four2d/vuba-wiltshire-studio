@@ -73,7 +73,7 @@ function render(){
  $("brainCards").innerHTML=filtered.map(x=>`<article class="brain-card">
  <div class="brain-card-head"><span class="brain-tag">${safe(x.category)}</span><span class="brain-status brain-${safe(x.verification)}">${safe(x.verification.replace("_"," "))}</span></div>
  <h3>${safe(x.title)}</h3><p>${safe(x.body).slice(0,340)}${x.body.length>340?"…":""}</p>
- <div class="brain-source">Source: ${safe(x.source_label||"Team entry")} ${x.source_date?"· "+safe(x.source_date):""}<div>${safe(x.source_path||"No path supplied")}</div></div>
+ <div class="brain-source">Source: ${safe(x.source_label||"Team entry")} ${x.source_date?"· "+safe(x.source_date):""}<div>${safe(x.source_path||"No path supplied")}</div>${x.source_label==="Private GitHub: four2d/Vuba-Wiltshire"&&/^[a-zA-Z0-9_./-]+$/.test(x.source_path)?'<a target="_blank" rel="noopener noreferrer" href="https://github.com/four2d/Vuba-Wiltshire/blob/main/'+safe(x.source_path)+'">Open private source</a>':""}</div>
  <button data-brain-id="${safe(x.id)}" type="button">Read ${["admin","approver"].includes(role)?" / review":""}</button></article>`).join("")||"<p>No Brain entries match this filter.</p>";
 }
 function openEntry(entry){
