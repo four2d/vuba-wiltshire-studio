@@ -130,7 +130,7 @@ function updateSelected(){
 async function loadMedia(){
  if(!signedIn)return;
  const ticket=++renderTicket;
- const {data,error}=await db.from("studio_media").select("id,filename,description,usage_rights,approved,file_path").eq("approved",true).order("created_at",{ascending:false}).limit(400);
+ const {data,error}=await db.from("studio_media").select("id,filename,description,usage_rights,approved,file_path").eq("approved",true).is("archived_at",null).like("mime_type","image/%").order("created_at",{ascending:false}).limit(400);
  if(error){if($("imagePickerMessage"))$("imagePickerMessage").textContent=error.message;return;}
  const urls={};
  await Promise.all((data||[]).map(async m=>{
