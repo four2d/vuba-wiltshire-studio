@@ -173,23 +173,21 @@ function studioIcon(name){
  return '<svg class="studio-icon-svg" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+(studioIcons[name]||studioIcons.spark)+'</svg>';
 }
 function installNavGlyphs(){
+ const icons={
+  home:"M3 11.5 12 4l9 7.5V21H3z M9 21v-7h6v7",
+  calendar:"M3 6h18v15H3z M7 3v6 M17 3v6 M3 11h18",
+  builder:"M4 20h16 M5 15l10-10 4 4-10 10H5z",
+  ideas:"M9 18h6 M10 22h4 M12 2a7 7 0 0 0-4 13c1 1 1 2 1 3h6c0-1 0-2 1-3a7 7 0 0 0-4-13z",
+  reviews:"M4 12l5 5L20 6 M3 3h18v18H3z",
+  plan:"M12 3v18 M3 12h18 M6 6l12 12 M18 6L6 18",
+  campaigns:"M3 11l11-5v12L3 13z M14 8l5-3v14l-5-3 M6 14v6",
+  media:"M3 4h18v16H3z M3 16l6-6 5 5 3-3 4 4 M16 9h.01",
+  brain:"M12 5C9 3 6 4 3 5v15c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-2-9 0z M12 5v16"
+ };
  document.querySelectorAll("#studioShell [data-glyph]").forEach(el=>{
-  el.innerHTML=studioIcon(el.dataset.glyph);
+  const path=icons[el.dataset.glyph]||icons.home;
+  el.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+path+'"/></svg>';
  });
- const placements=[
-  [".studio-stat-grid .studio-stat:nth-child(1) .stat-mark","planned"],
-  [".studio-stat-grid .studio-stat:nth-child(2) .stat-mark","approval"],
-  [".studio-stat-grid .studio-stat:nth-child(3) .stat-mark","images"],
-  [".studio-stat-grid .studio-stat:nth-child(4) .stat-mark","opportunities"],
-  [".studio-automation-panel .automation-icon","assistant"],
-  [".studio-tip-card .tip-spark","spark"],
-  [".studio-builder-card.featured .studio-builder-icon","assistant"],
-  [".studio-builder-card:not(.featured) .studio-builder-icon","add"]
- ];
- for(const [selector,name] of placements){
-  const el=document.querySelector("#studioShell "+selector);
-  if(el)el.innerHTML=studioIcon(name);
- }
 }
 function navigate(name){location.hash=name;route();}
 function currentRoute(){
