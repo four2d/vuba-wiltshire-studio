@@ -202,3 +202,6 @@ body.studio-shell-ready .layout{margin-bottom:12px}
  .studio-brand{min-width:0}
  .studio-page-intro h1{font-size:1.65rem}
 }
+
+body.studio-shell-ready #strategyArea>.strategy-tabs{display:none}
+body.studio-shell-ready #workspacePlus>.workspace-tabs{display:none}
