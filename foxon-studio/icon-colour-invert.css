@@ -4,10 +4,10 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark,
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.amber,
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.rose,
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat .stat-mark.blue {
- background:#080808!important;
- color:#f2c500!important;
- -webkit-text-fill-color:#f2c500!important;
- border:1px solid #554a17!important;
+ background:#f2c500!important;
+ color:#080808!important;
+ -webkit-text-fill-color:#080808!important;
+ border:1px solid #f2c500!important;
 }
 body.studio-shell-ready[data-foxon-theme="classic"] :is(.studio-builder-icon,.automation-icon){
  background:#101010!important;
