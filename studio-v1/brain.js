@@ -90,16 +90,17 @@ function openEntry(entry){
  f.elements.verification.value=entry?.verification||"needs_review";
  for(const field of f.querySelectorAll("input:not([type=hidden]), textarea, select"))field.disabled=!!entry&&!lead;
  $("saveBrain").hidden=!!entry&&!lead;
- $("brainArchive").hidden=!entry||!lead||!!entry.archived_at;
- $("brainArchive").textContent="Archive entry";
+ $("brainArchive").hidden=!entry||!lead;
+ $("brainArchive").textContent=entry?.archived_at?"Restore entry":"Archive entry";
  $("brainDialogTitle").textContent=entry?"Vuba Brain · "+entry.title:"Add knowledge for review";
  $("brainFormError").textContent="";
  $("brainDialog").showModal();
 }
 async function archiveEntry(){
  if(!selection||!["admin","approver"].includes(role))return;
- if(!confirm("Archive this Brain entry? It will be excluded from active knowledge and future content suggestions. You can show archived entries to review them later."))return;
- const {error}=await db.from("studio_brain_entries").update({archived_at:new Date().toISOString(),archived_by:user.id,updated_by:user.id}).eq("id",selection.id);
+ const restoring=!!selection.archived_at;
+ if(!confirm(restoring?"Restore this Brain entry to active knowledge?":"Archive this Brain entry? It will be excluded from active knowledge and content suggestions."))return;
+ const {error}=await db.from("studio_brain_entries").update({archived_at:restoring?null:new Date().toISOString(),archived_by:restoring?null:user.id,updated_by:user.id}).eq("id",selection.id);
  if(error){$("brainFormError").textContent=error.message;return;}
  $("brainDialog").close();selection=null;await load();document.dispatchEvent(new Event("vuba-brain-updated"));
 }
