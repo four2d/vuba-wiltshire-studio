@@ -250,3 +250,21 @@ body.studio-shell-ready .foxon-metric-upload:focus-within{
 @media(max-width:720px){
  body.studio-shell-ready .foxon-metric-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
+
+/* Product-specific navigation, not misleading social-platform colour codes. */
+body.studio-shell-ready .foxon-product-filter{
+ display:inline-flex;gap:8px;align-items:center;
+ color:var(--read-text,#f4f4f4);font-size:11px;font-weight:800
+}
+body.studio-shell-ready .foxon-product-filter select{
+ padding:7px 9px;min-width:114px;min-height:34px;
+ color:var(--read-text,#f4f4f4);background:var(--read-field,var(--theme-panel,#191919));
+ border:1px solid var(--fu-border,var(--read-stroke,#555));border-radius:7px
+}
+body.studio-shell-ready #calendar button[data-post][hidden]{
+ display:none!important
+}
+body.studio-shell-ready #calendar button[data-product="invoice"]{border-left:4px solid #e7bf2e!important}
+body.studio-shell-ready #calendar button[data-product="cis"]{border-left:4px solid #43a8ed!important}
+body.studio-shell-ready #calendar button[data-product="miles"]{border-left:4px solid #6bc87c!important}
+body.studio-shell-ready #calendar button[data-product="gas"]{border-left:4px solid #e89351!important}
