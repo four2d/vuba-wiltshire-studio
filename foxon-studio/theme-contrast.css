@@ -290,3 +290,29 @@ body.studio-shell-ready[data-foxon-theme="slate"] .studio-navigation a.is-active
 body.studio-shell-ready[data-foxon-theme="slate"] .studio-navigation a.is-active span{
  color:var(--neutral-ink)!important
 }
+
+/* Brain modals and inline links have ID-specific FOXON rules that otherwise
+   survive on the three light palettes. */
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(#brainDialog,#brainDocumentDialog){
+ background:var(--read-panel)!important;color:var(--read-text)!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(#brainDialog,#brainDocumentDialog) :is(h2,h3,label,strong){
+ color:var(--read-text)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(#brainDialog,#brainDocumentDialog) :is(.hint,p,small){
+ color:var(--read-muted)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(#brainDialog,#brainDocumentDialog) :is(input,textarea,select){
+ background:var(--read-field)!important;color:var(--read-field-text)!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(#brainDialog,#brainDocumentDialog) :is(input:disabled,textarea:disabled,select:disabled){
+ color:var(--read-muted)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ #vubaBrain .brain-source a,#vubaBrain .brain-dropzone>span button,
+ #vubaBrain .brain-library-note a,.mm-breadcrumb>button:not(:disabled),
+ .studio-link-tools a
+){color:var(--read-accent)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-head{
+ color:var(--read-text)!important
+}
