@@ -1,0 +1,33 @@
+// Offline editorial starters: no external AI calls, no API credit usage.
+// These are transparent templates, not model-generated copy. Staff must fact-check.
+(function(){
+ const entries=[
+ {title:"Before the Pour: questions to settle before the crew arrives",topic:"Planning conditions and responsibilities before a resin-bound installation",pillar:"Project Planning",series:"Before the Pour",format:"Carousel",caption:"Before a resin-bound job starts, a few clear questions are worth asking.\n\nHas the scope been agreed? Who is checking the site conditions against the current product guidance? Have the team and customer agreed what happens if plans need to change?\n\nIt's a planning conversation, not a technical specification — but it can help everyone start the day with the same expectations.\n\nWhat would you add to that checklist?\n\n#ResinBound #InstallerAdvice #WiltshireTrades"},
+ {title:"Choosing a resin blend: check samples in real daylight",topic:"Looking at physical resin-bound colour samples in natural light",pillar:"Blends & Colour Inspiration",series:"Blend of the Week",format:"Single image",caption:"When comparing resin-bound blends, a photograph is only part of the picture.\n\nReal samples in natural light can help with the colour conversation — especially when the finished area will see a mix of sunshine and shade.\n\nTake time to look at the options in the setting where they'll be used.\n\nWhat's your favourite way to help customers narrow down their choice?"},
+ {title:"A useful site-day handover starts with questions",topic:"Installer project handover questions",pillar:"Project Planning",series:"Site-Day Checklist",format:"Text-led",caption:"A good handover isn't about a longer checklist. It's about making sure the important questions have answers.\n\n• What is included in the agreed scope?\n• Who is responsible for confirming site readiness?\n• Which current manufacturer instructions apply?\n• Who will update the customer if the programme changes?\n\nClear communication before work starts can help make the day easier to manage.\n\nWhat would you add?"},
+ {title:"Ask Vuba Wiltshire: what would you like explained?",topic:"Collecting genuine questions from resin-bound installers",pillar:"FAQs & Myth Busting",series:"Ask Vuba Wiltshire",format:"Single image",caption:"Got a resin-bound question you'd like to see covered?\n\nWe're collecting the practical questions that installers and landscapers want properly answered — from project planning to choosing materials.\n\nSend us yours. We'll check the relevant manufacturer guidance before sharing a technical answer.\n\nWhat should we cover first?\n\n#AskVubaWiltshire #ResinBound"},
+ {title:"The little details that make project planning clearer",topic:"Project planning and customer communication",pillar:"Installer Advice",series:"Installer Tip",format:"Carousel",caption:"Some of the most useful project decisions happen before work starts.\n\nConfirm what has been agreed, identify who is checking the site and product guidance, and make sure everyone knows who to contact if something changes.\n\nIt's not flashy content, but practical communication matters on a busy job.\n\nWhat is the one question you always ask before scheduling a crew?"},
+ {title:"Why local trade relationships matter",topic:"Practical questions for a local trade supplier",pillar:"Commercial / Sales",series:"",format:"Text-led",caption:"A useful trade supplier should make conversations easier, not more complicated.\n\nWhen planning a job, it helps to know which product details, sample options and ordering questions need confirming before decisions are made.\n\nIf you're working on a resin-bound project around Wiltshire, what information would you most like to have to hand at the planning stage?"},
+ {title:"Winter planning: leave room for the conditions",topic:"Seasonal schedule planning for resin-bound installers",pillar:"Project Planning",series:"Before the Pour",format:"Carousel",caption:"Winter job planning is a good time to be clear about what is confirmed — and what depends on the actual site conditions.\n\nReview the forecast, assess the site, and refer to the current manufacturer's instructions for the system being used. Avoid promising an installation date before those checks are complete.\n\nGood questions early can prevent awkward conversations later.\n\n#ResinBound #WinterPlanning"},
+ {title:"Behind the depot: tell the real story",topic:"Genuine Vuba Wiltshire team and depot update",pillar:"Behind the Scenes / Depot",series:"",format:"Single image",caption:"The best behind-the-scenes posts start with something real.\n\nA photo of the team, a genuine delivery or a useful conversation from the trade counter can tell a much stronger story than a stock image.\n\nWhat would you like to see more of from Vuba Wiltshire?\n\n[Add an approved real photograph and verify the accompanying details before publishing.]"}
+ ];
+ const clean=s=>String(s||"").trim().replace(/\s+/g," ").slice(0,300);
+ window.VubaOfflineDraft=function(args={}){
+  const topic=clean(args.topic);
+  const history=(args.existingTitles||[]).map(x=>String(x).toLowerCase());
+  let seed=entries.find(x=>!history.some(h=>h.includes(x.title.toLowerCase())))||entries[Math.floor(new Date().getDate()/4)%entries.length];
+  if(topic){
+   const lower=topic.toLowerCase();
+   seed=entries.find(x=>x.title.toLowerCase().includes(lower)||x.topic.toLowerCase().includes(lower))||null;
+   if(!seed){
+    const short=topic.slice(0,115);
+    return {
+      topic,title:short,caption:"A practical question for resin-bound installers and landscapers: "+short.replace(/[.?!]+$/,"")+"?\n\nBefore making a decision, what needs confirming on site, what guidance applies, and who can provide an accurate answer?\n\nShare your experience or the questions you'd like us to explore next.\n\n[Editorial starter: replace these prompts with a specific, verified takeaway before publishing.]",
+      pillar:args.pillar||"Project Planning",format:"Text-led",series:"",
+      source_notes:"OFFLINE EDITORIAL STARTER, not AI-generated. Topic supplied by staff. Replace generic prompts with a verified insight and approved imagery before review."
+    };
+   }
+  }
+  return {...seed,topic:topic||seed.topic,source_notes:"OFFLINE EDITORIAL STARTER, not AI-generated. Review against Vuba Wiltshire marketing plan. Verify all technical claims and imagery; use only real approved photographs."};
+ };
+})();
