@@ -18,9 +18,11 @@ function buildShell(){
  const shell=document.createElement("div");shell.id="studioShell";
  shell.innerHTML=`
  <aside class="studio-navigation" aria-label="Studio navigation">
-  <div class="brand-lockup">
+  <div class="brand-lockup"><span class="neutral-brand-lockup"><span class="neutral-brand-icon">▦</span><span><strong>Social Studio</strong><small>Content workspace</small></span></span>
    <img src="foxon-logo-horizontal-dark.svg" alt="FOXON SOFTWARE" width="216" height="64">
    <small class="foxon-product-label">SOCIAL STUDIO</small>
+   <span class="special-edition-plate" aria-hidden="true"></span>
+   <span class="edition-side-mascot" aria-hidden="true"></span>
   </div>
   <div class="studio-workspace-label"><span class="workspace-live-dot"></span> WORKSPACE <span class="workspace-chevron">⌄</span></div>
   <div class="studio-nav-scroll">
@@ -33,6 +35,7 @@ function buildShell(){
     ${pages.filter(x=>["plan","campaigns","media","brain"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
    </div>
   </div>
+  <div class="foxon-theme-picker"><label for="foxonThemeSelect">STUDIO APPEARANCE</label><select id="foxonThemeSelect" aria-label="FOXON Studio theme"><option value="classic">FOXON Classic · Yellow</option><option value="graphite">Graphite · Steel</option><option value="midnight">Midnight · Electric Blue</option><option value="forest">Forest · Lime</option><option value="copper">Workshop · Copper</option><optgroup label="Unbranded workspace themes"><option value="paper">Paper · Minimal Light</option><option value="slate">Slate · Modern Dark</option><option value="ocean">Ocean · Soft Blue</option><option value="sand">Sand · Warm Neutral</option></optgroup><optgroup label="Special edition themes"><option value="futuristic">Futuristic · Neon Circuit</option><option value="steampunk">Steampunk · Brass & Gears</option><option value="christmas">Christmas · Evergreen & Gold</option><option value="synthwave">Synthwave · Sunset Neon</option><option value="arcade">Arcade · Retro Pixels</option></optgroup></select></div>
   <div class="sidebar-bottom">
    <div class="sidebar-brand-chip"><span>F</span><div><strong>FOXON Software</strong><small>Team workspace</small></div></div>
    <button type="button" id="sidebarSignout" class="sidebar-signout">Sign out <span>↗</span></button>
@@ -44,6 +47,8 @@ function buildShell(){
   <div class="studio-page-heading"><div><span class="studio-kicker">FOXON SOCIAL CONTROL</span><h1>BUILT FOR THE TRADE.</h1><p>Real products. Strong stories. FOXON through and through.</p></div><div class="heading-date" id="overviewDate"></div></div>
   <div class="studio-hero">
    <div class="hero-grid-overlay" aria-hidden="true"></div>
+   <span class="special-hero-plate" aria-hidden="true"></span>
+   <span class="edition-hero-mascot" aria-hidden="true"></span>
    <div class="hero-copy"><span class="hero-eyebrow"><span></span> TOOLS THAT GRAFT</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan hard-working social posts for FOXON Invoice, CIS, Miles and Gas. Use real app screens, sharp headlines and the proper FOXON look.</p>
    <div class="hero-actions"><button type="button" id="heroFillCalendar">PLAN THE NEXT 4 WEEKS</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
    <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>FOXON SOFTWARE</span><span>✦</span></div></div></div>
@@ -81,6 +86,20 @@ function buildShell(){
  $("studioMobileMenu").onclick=()=>toggleMobileMenu();
  $("studioNavShade").onclick=()=>toggleMobileMenu(false);
  $("overviewDate").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ const themePicker=$("foxonThemeSelect");
+ const themes=new Set(["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"]);
+ let savedTheme="classic";
+ try{savedTheme=localStorage.getItem("foxon-studio-theme")||"classic";}catch{}
+ if(!themes.has(savedTheme))savedTheme="classic";
+ themePicker.value=savedTheme;
+ document.body.dataset.foxonTheme=savedTheme;
+ applyEditionDetails(savedTheme);
+ themePicker.onchange=()=>{
+  if(!themes.has(themePicker.value))return;
+  document.body.dataset.foxonTheme=themePicker.value;
+  applyEditionDetails(themePicker.value);
+  try{localStorage.setItem("foxon-studio-theme",themePicker.value);}catch{}
+ };
  installNavGlyphs();
  $("builderSuggest").onclick=()=>{$("autoSuggest")?.click();};
  $("builderBlank").onclick=()=>{$("new")?.click();};
@@ -91,6 +110,37 @@ function buildShell(){
  watch.observe(root,{childList:true});
  document.body.classList.add("studio-shell-ready");
  route();
+}
+/* Presentation-only special-edition headings. No content metrics or post data altered. */
+function applyEditionDetails(theme){
+ const themes={
+  futuristic:["NEON COMMAND","FOXON SOCIAL STUDIO","COMMAND CENTRE.","Plan content, navigate your calendar and keep your creative mission moving."],
+  steampunk:["THE CONTENT WORKSHOP","FOXON SOCIAL STUDIO","THE CONTENT ENGINE.","Turn your ideas into polished posts with the precision of a fine machine."],
+  christmas:["CHRISTMAS EDITION","FOXON SOCIAL STUDIO","FESTIVE WORKSHOP.","Plan your Christmas messages and keep every seasonal post on track."],
+  synthwave:["AFTER DARK","FOXON SOCIAL STUDIO","CREATE THE FUTURE.","Bold ideas, sharp visuals and a calendar that never misses a beat."],
+  arcade:["ARCADE MODE","FOXON SOCIAL STUDIO","LEVEL UP.","Ideas, posts and approvals: your content missions start here."]
+ };
+ const section=$("studioHome");
+ if(!section)return;
+ const eyebrow=section.querySelector(".hero-eyebrow");
+ const heading=section.querySelector(".hero-copy h2");
+ const copy=section.querySelector(".hero-copy>p");
+ if(!eyebrow||!heading||!copy)return;
+ if(!window.__foxonOriginalHero)window.__foxonOriginalHero={
+   eyebrow:eyebrow.innerHTML,heading:heading.innerHTML,copy:copy.textContent
+ };
+ const t=themes[theme];
+ if(!t){
+   eyebrow.innerHTML=window.__foxonOriginalHero.eyebrow;
+   heading.innerHTML=window.__foxonOriginalHero.heading;
+   copy.textContent=window.__foxonOriginalHero.copy;
+ }else{
+   eyebrow.replaceChildren();
+   const led=document.createElement("span");eyebrow.append(led,document.createTextNode(" "+t[0]));
+   heading.replaceChildren(document.createTextNode(t[1]),document.createElement("br"));
+   const em=document.createElement("em");em.textContent=t[2];heading.append(em);
+   copy.textContent=t[3];
+ }
 }
 function toggleMobileMenu(force){
  const open=typeof force==="boolean"?force:!document.body.classList.contains("studio-nav-open");
