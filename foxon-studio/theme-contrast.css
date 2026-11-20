@@ -283,3 +283,10 @@ body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"]
 body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-navigation a.is-active span{
  color:var(--neutral-ink)!important
 }
+
+/* Slate is unbranded too: its selected navigation uses a dark soft surface,
+   not the pale accent button surface. */
+body.studio-shell-ready[data-foxon-theme="slate"] .studio-navigation a.is-active,
+body.studio-shell-ready[data-foxon-theme="slate"] .studio-navigation a.is-active span{
+ color:var(--neutral-ink)!important
+}
