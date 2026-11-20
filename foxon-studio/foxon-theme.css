@@ -822,3 +822,27 @@ body.studio-shell-ready #foxonArtPreview img{
  display:block;max-height:350px;width:auto;max-width:100%;object-fit:contain;
  background:#080808;border:1px solid #565656;border-radius:8px
 }
+
+/* Restore original four dashboard glyphs after experimental icon system.
+   Explicitly undo the old font-size:0/icon-box styling, including Safari
+   stylesheets left in cache. Preserve all other layout and theme choices. */
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark,
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark.amber,
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark.rose,
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark.blue{
+ font-family:Arial,'Helvetica Neue',sans-serif!important;
+ font-size:19px!important;font-weight:700!important;line-height:1!important;
+ width:29px!important;height:29px!important;min-width:29px!important;
+ padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ border:0!important;border-radius:8px!important;box-shadow:none!important;
+ background:#2d270d!important;color:#f2c500!important;
+ opacity:1!important;visibility:visible!important;
+ -webkit-text-fill-color:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"])
+ .studio-stat-grid .studio-stat .stat-mark{
+ background:var(--read-soft,var(--theme-panel))!important;
+ color:var(--read-accent,var(--theme-accent))!important;
+ -webkit-text-fill-color:var(--read-accent,var(--theme-accent))!important;
+ border:1px solid var(--read-stroke,var(--theme-edge))!important;
+}
