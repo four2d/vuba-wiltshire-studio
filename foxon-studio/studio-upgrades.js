@@ -9,14 +9,14 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  const dateToday=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");};
  const plusDays=(days)=>{const d=new Date();d.setDate(d.getDate()+days);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");};
  const fmt=d=>{if(!d)return "Unscheduled";const v=new Date(d+"T12:00:00");return Number.isNaN(v.getTime())?d:v.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});};
- const state={user:null,role:"",posts:[],approvedMedia:new Set(),brain:[],mode:"month",dragId:null,busy:false};
+ const state={user:null,role:"",posts:[],approvedMedia:new Set(),brain:[],mode:"month",dragId:null,busy:false,importedMetrics:[]};
  const allowedRoles=new Set(["admin","approver","editor"]);
  const editorFields=["title","topic","date","postChannel","pillar","format","series","caption","source","postStatus"];
  function sourceName(p){const s=[p.title||"",p.topic||"",p.pillar||""].join(" ").toLowerCase();for(const n of ["invoice","cis","miles","gas"])if(new RegExp("(^|[^a-z])"+n+"([^a-z]|$)").test(s))return "FOXON "+(n==="cis"?"CIS":n[0].toUpperCase()+n.slice(1));return "General";}
  function guardNote(p){const issues=[];if(!String(p.caption||"").trim())issues.push("caption missing");if(!p.media_id)issues.push("approved image not selected");else if(!state.approvedMedia.has(p.media_id))issues.push("image not approved");if(!String(p.source_notes||"").trim())issues.push("source notes missing");return issues;}
  async function init(user){
   state.user=user||null;
-  if(!user){document.querySelectorAll(".foxon-upgrade").forEach(n=>n.remove());state.posts=[];return;}
+  if(!user){document.querySelectorAll(".foxon-upgrade").forEach(n=>n.remove());state.posts=[];state.importedMetrics=[];return;}
   const m=await db.from("studio_members").select("role").eq("user_id",user.id).maybeSingle();
   if(m.error||!m.data)return;
   state.role=m.data.role;
@@ -25,7 +25,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  async function mountWhenReady(){
   for(let i=0;i<35&&!byId("studioShell");i++)await new Promise(r=>setTimeout(r,100));
   if(!byId("studioShell")||!state.user)return;
-  mountDashboard();mountCalendar();mountBuilder();
+  mountDashboard();mountMetricImport();mountCalendar();mountBuilder();
   await refresh();
  }
  async function refresh(){
@@ -59,6 +59,78 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   grid.insertAdjacentElement("afterend",panel);
   byId("foxonRefreshInsights").addEventListener("click",refresh);
   byId("foxonExportQueue").addEventListener("click",exportQueue);
+ }
+ function mountMetricImport(){
+  if(byId("foxonMetricImport"))return;
+  const parent=byId("foxonActionCentre");if(!parent)return;
+  const section=document.createElement("section");section.id="foxonMetricImport";section.className="foxon-metric-import";
+  section.innerHTML='<div class="foxon-upgrade-heading"><div><small>PLATFORM RESULTS · MANUAL IMPORT</small><h2>Social performance</h2><p>Bring in a CSV from the social platforms. Data remains in this browser session.</p></div><div class="foxon-metric-actions"><button type="button" id="foxonMetricTemplate">CSV template</button><label class="foxon-metric-upload">Import CSV<input type="file" id="foxonMetricFile" accept=".csv,text/csv"></label></div></div><p id="foxonMetricStatus" role="status" class="foxon-upgrade-fine">No platform metrics connected or imported. Workflow counts above are not impressions or engagement.</p><div id="foxonMetricTotals" aria-live="polite"></div>';
+  parent.appendChild(section);
+  byId("foxonMetricTemplate").addEventListener("click",()=>{
+   const fields="date,channel,post_id,impressions,clicks,reactions,comments,shares\r\n";
+   const url=URL.createObjectURL(new Blob([fields],{type:"text/csv;charset=utf-8"}));
+   const a=document.createElement("a");a.href=url;a.download="foxon-social-metrics-template.csv";a.click();
+   setTimeout(()=>URL.revokeObjectURL(url),1000);
+  });
+  byId("foxonMetricFile").addEventListener("change",async event=>{
+   const file=event.target.files?.[0];if(!file)return;
+   try{
+    if(file.size>2_000_000)throw Error("CSV exceeds the 2 MB limit.");
+    const rows=parseCsv(await file.text());
+    const names=["date","channel","impressions","clicks","reactions","comments","shares"];
+    if(!rows.length)throw Error("CSV has no rows.");
+    const headers=rows[0].map(v=>v.trim().toLowerCase());
+    for(const name of names)if(!headers.includes(name))throw Error('Required column missing: '+name);
+    const col=name=>headers.indexOf(name);
+    const data=[];const known=new Set();
+    for(const row of rows.slice(1,5002)){
+     if(!row.some(x=>String(x).trim()))continue;
+     const get=name=>String(row[col(name)]??"").trim();
+     const date=get("date"),channel=get("channel"),id=col("post_id")>=0?get("post_id"):"";
+     if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(new Date(date+"T12:00:00").getTime()))throw Error("Use YYYY-MM-DD dates.");
+     if(!["LinkedIn","Facebook","Instagram"].includes(channel))throw Error("Channel must be LinkedIn, Facebook or Instagram.");
+     const item={date,channel,id};
+     for(const k of ["impressions","clicks","reactions","comments","shares"]){
+      const v=Number(get(k));if(!Number.isSafeInteger(v)||v<0)throw Error(k+" must contain a non-negative whole number.");
+      item[k]=v;
+     }
+     const key=date+"|"+channel+"|"+id;
+     if(id&&known.has(key))throw Error("Duplicate post_id for the same channel and date.");
+     if(id)known.add(key);data.push(item);
+    }
+    if(!data.length)throw Error("No valid metric rows found.");
+    if(rows.length>5002)throw Error("File exceeds 5,000 metric rows.");
+    state.importedMetrics=data;renderImportedMetrics();
+    byId("foxonMetricStatus").textContent=data.length+" user-supplied metric row(s) imported from "+file.name+". Figures are not independently verified or synced to FOXON Studio.";
+   }catch(error){byId("foxonMetricStatus").textContent="Import not completed: "+(error.message||String(error));}
+   finally{event.target.value="";}
+  });
+ }
+ function parseCsv(raw){
+  const text=String(raw).replace(/^\uFEFF/,"");
+  const rows=[];let row=[],value="",quoted=false;
+  for(let i=0;i<text.length;i++){
+   const c=text[i];
+   if(c==='"'&&quoted&&text[i+1]==='"'){value+='"';i++;continue;}
+   if(c==='"'){quoted=!quoted;continue;}
+   if(c===","&&!quoted){row.push(value);value="";continue;}
+   if((c==="\n"||c==="\r")&&!quoted){
+    if(c==="\r"&&text[i+1]==="\n")i++;
+    row.push(value);rows.push(row);row=[];value="";continue;
+   }
+   value+=c;
+  }
+  if(quoted)throw Error("CSV contains an unclosed quoted value.");
+  if(value||row.length){row.push(value);rows.push(row);}
+  return rows;
+ }
+ function renderImportedMetrics(){
+  const host=byId("foxonMetricTotals");if(!host)return;
+  const arr=state.importedMetrics;if(!arr.length){host.textContent="";return;}
+  const total=k=>arr.reduce((sum,x)=>sum+x[k],0);
+  const impress=total("impressions"),clicks=total("clicks"),engagements=total("reactions")+total("comments")+total("shares");
+  const pct=(num,den)=>den?(100*num/den).toFixed(2)+"%":"—";
+  host.innerHTML='<div class="foxon-metric-stats"><div><small>Impressions</small><strong>'+impress.toLocaleString("en-GB")+'</strong></div><div><small>Clicks</small><strong>'+clicks.toLocaleString("en-GB")+'</strong></div><div><small>Engagements</small><strong>'+engagements.toLocaleString("en-GB")+'</strong></div><div><small>Click rate</small><strong>'+pct(clicks,impress)+'</strong></div></div><div class="foxon-channel-row">'+["LinkedIn","Facebook","Instagram"].map(c=>'<span>'+esc(c)+': <strong>'+arr.filter(x=>x.channel===c).reduce((sum,x)=>sum+x.impressions,0).toLocaleString("en-GB")+' impressions</strong></span>').join("")+'</div><p class="foxon-upgrade-fine">Imported session data only. Engagements = reactions + comments + shares. Click rate = clicks ÷ impressions. These figures have not been reconciled with platform accounts.</p>';
  }
  function renderDashboard(mediaWarning,brainWarning){
   const root=byId("foxonActionCentre");if(!root)return;
