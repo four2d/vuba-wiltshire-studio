@@ -233,7 +233,7 @@ async function refreshDashboard(){
   return '<button type="button" class="editorial-post-card" data-dash-edit="'+esc(p.id)+'">'+
    '<span class="editorial-post-art art-'+i%4+'">'+
     (image?'<img loading="lazy" src="'+esc(image)+'" alt="Approved FOXON post image">':
-    '<span class="editorial-art-pattern"><span></span><span></span><span></span></span><span class="editorial-image-needed">IMAGE TO ADD</span>')+
+    '<span class="foxon-preview-design" aria-hidden="true"><span class="foxon-preview-kicker">TOOLS THAT GRAFT</span><span class="foxon-preview-title">'+esc(p.title)+'</span><span class="foxon-preview-stripe"></span><span class="foxon-preview-mark">FOXON / '+esc(p.pillar||"SOCIAL")+'</span></span><span class="editorial-image-needed">ARTWORK NEEDED</span>')+
     '<span class="editorial-channel">'+esc(symbols[p.channel]||"✦")+'</span></span>'+
    '<span class="editorial-post-details"><span class="editorial-post-meta">'+esc(date)+' <span>·</span> '+esc(p.channel)+'</span>'+
    '<strong>'+esc(p.title)+'</strong><span class="editorial-status status-'+esc(p.status)+'"><i></i>'+esc(status)+'</span></span></button>';
