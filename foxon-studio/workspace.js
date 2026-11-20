@@ -91,7 +91,7 @@ async function refresh(){
  renderCampaigns();renderMedia();renderReviews();
  const c=$("postCampaign"),m=$("postMedia");
  if(c){const old=c.value;c.innerHTML='<option value="">No campaign</option>'+state.campaigns.map(x=>'<option value="'+safe(x.id)+'">'+safe(x.name)+'</option>').join("");c.value=old;}
- if(m){const old=m.value;m.innerHTML='<option value="">No image selected</option>'+state.media.filter(x=>x.approved&&!x.archived_at&&x.mime_type.startsWith("image/")).map(x=>'<option value="'+safe(x.id)+'">'+safe(x.description||x.filename)+'</option>').join("");m.value=old;}
+ if(m){const old=m.value;m.innerHTML='<option value="">No image selected</option>'+state.media.filter(x=>!x.archived_at&&x.mime_type.startsWith("image/")&&(x.approved||state.posts.some(p=>p.media_id===x.id))).map(x=>'<option value="'+safe(x.id)+'">'+safe(x.description||x.filename)+'</option>').join("");m.value=old;}
 }
 function renderCampaigns(){
  $("newCampaign").hidden=!["admin","approver"].includes(state.role);
