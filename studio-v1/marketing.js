@@ -182,13 +182,23 @@ function openPreview(index){
  updateIdeaMock();
  document.getElementById("previewError").textContent="";
  document.getElementById("previewAI").disabled=false;
- document.getElementById("previewAI").textContent="Generate AI draft";
+ document.getElementById("previewAI").textContent=cfg.aiEnabled===false?"Create offline starter":"Generate AI draft";
  document.getElementById("previewAdd").disabled=false;
  document.getElementById("previewAdd").textContent="Add to calendar";
  document.getElementById("ideaPreview").showModal();
 }
 async function generatePreviewDraft(){
  const item=suggestions[previewIndex]?.v;if(!item)return;
+ if(cfg.aiEnabled===false){
+  const starter=window.VubaOfflineDraft?.({topic:item[0],pillar:item[1]});
+  if(!starter)return;
+  previewDraft={topic:item[0],title:item[0].slice(0,140),caption:starter.caption,pillar:item[1],source_notes:item[3]+"\\n"+starter.source_notes};
+  document.getElementById("previewCaption").value=starter.caption;
+  document.getElementById("previewChecks").textContent=previewDraft.source_notes;
+  document.getElementById("previewAI").textContent="Refresh offline starter";
+  document.getElementById("previewError").textContent="Offline template, not live AI. Please tailor the caption to this specific idea.";
+  updateIdeaMock();return;
+ }
  const [title,pillar,,notes,format]=item;
  const button=document.getElementById("previewAI");
  button.disabled=true;button.textContent="Generating…";
