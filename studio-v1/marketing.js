@@ -52,7 +52,7 @@ const evergreen=[
  ["A real face behind the depot","Behind the Scenes / Depot","","Requires genuine staff participation and consent.","Single image"],
  ["Site-Day Checklist: three questions before the crew arrives","Project Planning","Site-Day Checklist","Use planning questions, not technical instructions.","Carousel"]
 ];
-let user=null,role=null,plan=null,posts=[],suggestions=[],previewIndex=-1,previewDraft=null;
+let user=null,role=null,plan=null,posts=[],campaignPlans=[],suggestions=[],previewIndex=-1,previewDraft=null;
 function launchUI(){
  const app=document.getElementById("app"); if(!app||document.getElementById("strategyArea"))return;
  const el=document.createElement("section");el.id="strategyArea";el.className="strategy-area";
@@ -108,12 +108,13 @@ async function init(u){
 }
 async function loadAll(){
  try{
-  const [p,ps]=await Promise.all([
+  const [p,ps,cs]=await Promise.all([
    db.from("studio_marketing_plan").select("*").eq("id",1).single(),
-   db.from("studio_posts").select("title,pillar,scheduled_date,status,created_at").order("created_at",{ascending:false}).limit(150)
+   db.from("studio_posts").select("title,pillar,scheduled_date,status,created_at").order("created_at",{ascending:false}).limit(150),
+   db.from("studio_campaigns").select("id,name,objective,audience,key_messages,start_date,end_date,status").in("status",["planning","active"]).limit(100)
   ]);
-  if(p.error)throw p.error;if(ps.error)throw ps.error;
-  plan=p.data;posts=ps.data||[];
+  if(p.error)throw p.error;if(ps.error)throw ps.error;if(cs.error)throw cs.error;
+  plan=p.data;posts=ps.data||[];campaignPlans=cs.data||[];
   const form=document.getElementById("strategyForm");
   for(const key of ["goal","audience","priorities","campaigns","seasonal_notes","confirmed_events","cadence"])form.elements[key].value=plan[key]||"";
   const editable=["admin","approver"].includes(role);
@@ -127,6 +128,17 @@ const normal=s=>s.toLowerCase().replace(/[^a-z0-9 ]/g,"").split(/\s+/).filter(w=
 function generateSuggestions(){
  const now=new Date();const month=now.getMonth();const season=seasonSets.find(s=>s.months.includes(month));
  const candidates=[...season.items,...evergreen];
+ // Actual planned or active campaigns contribute topics to the editorial queue.
+ for(const c of campaignPlans){
+  const focus=String(c.key_messages||c.objective||c.name).split(/[\n;]+/).map(x=>x.trim()).filter(Boolean).slice(0,3);
+  for(const angle of focus){
+   candidates.push([
+    c.name+": "+angle.slice(0,96),"Project Planning","",
+    "Marketing campaign brief: "+c.name+". Objective: "+(c.objective||"Not entered")+". Audience: "+(c.audience||"Not entered")+". Do not assert campaign claims without evidence.",
+    "Text-led",c.id
+   ]);
+  }
+ }
  // Campaign and seasonal focus become ideas to research, never factual captions.
  const focus=[plan.campaigns,plan.seasonal_notes,plan.priorities].filter(Boolean);
  for(const f of focus){const sections=f.split(/[\n;]+/).map(t=>t.trim()).filter(t=>t.length>=8).slice(0,5);
@@ -139,7 +151,7 @@ function generateSuggestions(){
   const cat=pillars[v[1]],difference=targets[cat]*(recent.length+1)-(counts[cat]||0);
   const words=normal(v[0]);const repeated=titles.some(t=>words.filter(w=>t.includes(w)).length>=Math.min(3,words.length));
   const planHit=normal(plan.priorities+" "+plan.campaigns+" "+plan.seasonal_notes).filter(w=>words.includes(w)).length;
-  return {v,score:difference*3+Math.min(planHit,4)- (repeated?12:0)+(season.items.includes(v)?2:0)-i*.005,repeated};
+  return {v,score:difference*3+Math.min(planHit,4)- (repeated?12:0)+(season.items.includes(v)?2:0)+(v[5]?4:0)-i*.005,repeated};
  }).sort((a,b)=>b.score-a.score).filter(x=>!x.repeated);
  suggestions=ranked.slice(0,8);
  document.getElementById("seasonIntro").textContent=season.label+" planning · "+now.toLocaleDateString("en-GB",{month:"long",year:"numeric"})+" · prioritising gaps in the last 20 posts";
@@ -160,7 +172,7 @@ function openPreview(index){
  previewIndex=index;previewDraft=null;
  const [title,pillar,series,notes,format]=item;
  document.getElementById("previewHeading").textContent=title;
- document.getElementById("previewMeta").textContent=[pillar,series||"Standalone",format].join(" · ");
+ document.getElementById("previewMeta").textContent=[pillar,series||"Standalone",format,item[5]?"Linked to a marketing campaign":null].filter(Boolean).join(" · ");
  document.getElementById("previewAngle").textContent="The post should give a useful, trade-focused angle on: "+title+".";
  document.getElementById("previewTitle").textContent=title;
  document.getElementById("previewVisual").textContent=format==="Carousel"?"A small sequence of clear, genuine photos or approved educational graphics.":format==="Text-led"?"Text-focused content with a clear practical takeaway.":"Use genuine, relevant Vuba photography or an approved branded graphic — no fabricated products or packaging.";
@@ -220,7 +232,7 @@ async function addPreviewToCalendar(){
  const editedCaption=document.getElementById("previewCaption").value.trim();
  const payload={
   topic:previewDraft?.topic||v[0],title:(previewDraft?.title||v[0]).slice(0,140),
-  pillar:previewDraft?.pillar||v[1],series:v[2]||null,
+  pillar:previewDraft?.pillar||v[1],series:v[2]||null,campaign_id:v[5]||null,
   format:["Carousel","Text-led","Reel","Story","Branded graphic"].includes(v[4])?v[4]:"Single image",
   channel:v[4]==="Text-led"?"LinkedIn":"Instagram",
   status:editedCaption?"draft":"idea",scheduled_date:date,
