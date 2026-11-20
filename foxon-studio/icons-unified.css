@@ -1,0 +1,134 @@
+/* FOXON ICON SYSTEM — one consistent 24 × 24 optical grid.
+   Loads last. No emoji/font fallbacks and no filled yellow glyph squares.
+   Only decorative icon slots are changed, never the workflow or page layout. */
+body.studio-shell-ready .foxon-icon{
+ display:block!important;box-sizing:content-box!important;flex:0 0 auto!important;
+ width:20px!important;height:20px!important;min-width:20px!important;min-height:20px!important;
+ max-width:20px!important;max-height:20px!important;
+ fill:none!important;stroke:currentColor!important;stroke-width:1.85!important;
+ stroke-linecap:round!important;stroke-linejoin:round!important;
+ overflow:visible!important;vertical-align:middle!important;
+ opacity:1!important;visibility:visible!important;
+}
+body.studio-shell-ready .studio-navigation .nav-glyph{
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ flex:0 0 22px!important;width:22px!important;height:22px!important;min-width:22px!important;
+ font-size:0!important;background:transparent!important;border:0!important;
+}
+body.studio-shell-ready .studio-navigation .nav-glyph .foxon-icon{
+ width:19px!important;height:19px!important;min-width:19px!important;min-height:19px!important;
+}
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark,
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark.amber,
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark.rose,
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark.blue{
+ display:flex!important;align-items:center!important;justify-content:center!important;
+ flex:0 0 38px!important;width:38px!important;height:38px!important;
+ min-width:38px!important;min-height:38px!important;
+ padding:0!important;margin:0!important;
+ border-radius:10px!important;font-size:0!important;
+ background:var(--foxon-icon-surface,#121212)!important;
+ color:var(--foxon-icon-ink,#f2c500)!important;
+ -webkit-text-fill-color:currentColor!important;
+ border:1px solid var(--foxon-icon-border,#585020)!important;
+ box-shadow:none!important;
+}
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark .foxon-icon{
+ width:23px!important;height:23px!important;min-width:23px!important;min-height:23px!important;
+ stroke:var(--foxon-icon-ink,#f2c500)!important;color:var(--foxon-icon-ink,#f2c500)!important;
+}
+body.studio-shell-ready :is(.studio-automation-panel .automation-icon,
+ .studio-builder-card .studio-builder-icon,
+ .studio-tip-card .tip-spark){
+ display:inline-flex!important;align-items:center!important;justify-content:center!important;
+ font-size:0!important;
+ background:var(--foxon-icon-surface,#121212)!important;
+ color:var(--foxon-icon-ink,#f2c500)!important;
+ border:1px solid var(--foxon-icon-border,#585020)!important;
+ box-shadow:none!important;
+ border-radius:10px!important;
+}
+body.studio-shell-ready :is(.studio-automation-panel .automation-icon,
+ .studio-builder-card .studio-builder-icon,
+ .studio-tip-card .tip-spark) .foxon-icon{
+ color:var(--foxon-icon-ink,#f2c500)!important;stroke:var(--foxon-icon-ink,#f2c500)!important;
+ width:22px!important;height:22px!important;
+}
+body.studio-shell-ready .studio-tip-card .tip-spark{
+ width:37px!important;height:37px!important;min-width:37px!important;min-height:37px!important;
+}
+body.studio-shell-ready :is(.studio-builder-card .builder-visual-chip,.studio-text-btn,
+ .studio-builder-card button,.studio-tip-card button,.studio-automation-panel button,
+ #heroExploreIdeas,#topbarNewPost,.sidebar-signout) .foxon-icon{
+ display:inline-block!important;width:16px!important;height:16px!important;
+ min-width:16px!important;min-height:16px!important;vertical-align:middle!important;
+ margin:0!important;
+}
+body.studio-shell-ready .studio-builder-card .builder-visual-chip{
+ display:inline-flex!important;align-items:center!important;gap:7px!important
+}
+body.studio-shell-ready .studio-builder-card .builder-note>span{
+ display:inline-flex!important;align-items:center!important;vertical-align:middle!important
+}
+body.studio-shell-ready .studio-builder-card .builder-note .foxon-icon{
+ width:16px!important;height:16px!important;min-width:16px!important;min-height:16px!important;
+}
+body.studio-shell-ready #topbarNewPost>span{
+ display:inline-flex!important;vertical-align:middle!important;align-items:center!important
+}
+body.studio-shell-ready #topbarNewPost .foxon-icon{
+ color:inherit!important;stroke:currentColor!important
+}
+/* FOXON Classic: the user's preferred yellow line icons on black. */
+body.studio-shell-ready[data-foxon-theme="classic"]{
+ --foxon-icon-ink:#f2c500;
+ --foxon-icon-surface:#101010;
+ --foxon-icon-border:#50451b;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation a:not(.is-active) .nav-glyph,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation a:not(.is-active) .nav-glyph .foxon-icon{
+ color:#f2c500!important;stroke:#f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation a.is-active .nav-glyph,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation a.is-active .nav-glyph .foxon-icon{
+ color:#080808!important;stroke:#080808!important;
+}
+/* Other themes retain their distinct accent colour on an appropriately
+   contrasting solid base, rather than inheriting FOXON Classic yellow. */
+body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]){
+ --foxon-icon-ink:var(--read-accent,var(--theme-accent,#f2c500));
+ --foxon-icon-surface:var(--read-field,var(--theme-nav,#101010));
+ --foxon-icon-border:var(--read-stroke,var(--theme-edge,#555));
+}
+body.studio-shell-ready[data-foxon-theme="paper"],
+body.studio-shell-ready[data-foxon-theme="ocean"],
+body.studio-shell-ready[data-foxon-theme="sand"]{
+ --foxon-icon-ink:var(--theme-accent);
+ --foxon-icon-surface:var(--theme-panel);
+ --foxon-icon-border:var(--theme-edge);
+}
+/* A selected navigation item uses the contrast-safe inverse foreground. */
+body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"])
+ .studio-navigation a.is-active .nav-glyph,
+body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"])
+ .studio-navigation a.is-active .nav-glyph .foxon-icon{
+ color:inherit!important;stroke:currentColor!important;
+}
+/* In light unbranded themes, the active item is a pale tinted surface. */
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"])
+ .studio-navigation a.is-active .nav-glyph .foxon-icon{
+ color:var(--neutral-ink)!important;stroke:var(--neutral-ink)!important;
+}
+/* Arcade gets crisp pixel-framed icon slots, without altering the card grid. */
+body.studio-shell-ready[data-foxon-theme="arcade"]{
+ --foxon-icon-ink:#ffe977;
+ --foxon-icon-surface:#241447;
+ --foxon-icon-border:#a775f6;
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat-grid .stat-mark{
+ border-radius:3px!important;border-width:2px!important
+}
+/* Never recolour real social-platform iconography and previews. */
+body.studio-shell-ready :is(.social-mock,.foxon-feed-card) .foxon-icon{
+ color:#171717!important;stroke:#171717!important;
+}
