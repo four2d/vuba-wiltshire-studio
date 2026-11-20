@@ -33,7 +33,7 @@ function buildShell(){
     ${pages.filter(x=>["plan","campaigns","media","brain"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
    </div>
   </div>
-  <div class="foxon-theme-picker"><label for="foxonThemeSelect">STUDIO APPEARANCE</label><select id="foxonThemeSelect" aria-label="FOXON Studio theme"><option value="classic">FOXON Classic · Yellow</option><option value="graphite">Graphite · Steel</option><option value="midnight">Midnight · Electric Blue</option><option value="forest">Forest · Lime</option><option value="copper">Workshop · Copper</option><optgroup label="Unbranded workspace themes"><option value="paper">Paper · Minimal Light</option><option value="slate">Slate · Modern Dark</option><option value="ocean">Ocean · Soft Blue</option><option value="sand">Sand · Warm Neutral</option></optgroup></select></div>
+  <div class="foxon-theme-picker"><label for="foxonThemeSelect">STUDIO APPEARANCE</label><select id="foxonThemeSelect" aria-label="FOXON Studio theme"><option value="classic">FOXON Classic · Yellow</option><option value="graphite">Graphite · Steel</option><option value="midnight">Midnight · Electric Blue</option><option value="forest">Forest · Lime</option><option value="copper">Workshop · Copper</option><optgroup label="Unbranded workspace themes"><option value="paper">Paper · Minimal Light</option><option value="slate">Slate · Modern Dark</option><option value="ocean">Ocean · Soft Blue</option><option value="sand">Sand · Warm Neutral</option></optgroup><optgroup label="Special edition themes"><option value="futuristic">Futuristic · Neon Circuit</option><option value="steampunk">Steampunk · Brass & Gears</option><option value="christmas">Christmas · Evergreen & Gold</option><option value="synthwave">Synthwave · Sunset Neon</option><option value="arcade">Arcade · Retro Pixels</option></optgroup></select></div>
   <div class="sidebar-bottom">
    <div class="sidebar-brand-chip"><span>F</span><div><strong>FOXON Software</strong><small>Team workspace</small></div></div>
    <button type="button" id="sidebarSignout" class="sidebar-signout">Sign out <span>↗</span></button>
@@ -83,7 +83,7 @@ function buildShell(){
  $("studioNavShade").onclick=()=>toggleMobileMenu(false);
  $("overviewDate").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
  const themePicker=$("foxonThemeSelect");
- const themes=new Set(["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand"]);
+ const themes=new Set(["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"]);
  let savedTheme="classic";
  try{savedTheme=localStorage.getItem("foxon-studio-theme")||"classic";}catch{}
  if(!themes.has(savedTheme))savedTheme="classic";
