@@ -85,7 +85,7 @@ $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))retur
 async function generatePost(){
  $("editorError").textContent="";
  if(C.aiEnabled===false){
-  const starter=window.VubaOfflineDraft?.({topic:$("topic").value.trim(),pillar:$("pillar").value,existingTitles:posts.map(p=>p.title)});
+  const starter=window.VubaOfflineDraft?.({topic:$("topic").value.trim(),pillar:$("pillar").value,existingTitles:posts.map(p=>p.title),channel:$("postChannel").value});
   if(!starter)return alertError("Offline suggestions are not loaded. Please refresh.");
   $("topic").value=starter.topic;
   $("title").value=starter.title;
