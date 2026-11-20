@@ -18,7 +18,7 @@ function buildShell(){
  const shell=document.createElement("div");shell.id="studioShell";
  shell.innerHTML=`
  <nav class="studio-navigation" aria-label="Studio pages"><div class="studio-brand"><span class="studio-brand-mark">V</span><strong>Social Studio</strong><small>Vuba Wiltshire</small></div>
-  <div class="studio-nav-links">${pages.map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'">'+esc(name)+'</a>').join("")}</div>
+  <div class="studio-nav-links">${pages.filter(x=>["home","calendar","builder","ideas","reviews"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'">'+esc(name)+'</a>').join("")}<details id="studioMore" class="studio-more"><summary>More</summary><div class="studio-more-menu">${pages.filter(x=>["plan","campaigns","media","brain"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'">'+esc(name)+'</a>').join("")}</div></details></div>
  </nav>
  <section id="studioHome" class="studio-page" aria-label="Overview">
   <div class="studio-hero"><div><span class="studio-kicker">WORKSPACE OVERVIEW</span><h1>Welcome to Vuba Social Studio.</h1><p>Your marketing at a glance. Create, review and approve from one place.</p></div><button type="button" id="homeCreatePost">+ New post</button></div>
@@ -70,6 +70,7 @@ function route(){
   a.classList.toggle("is-active",on);
   if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");
  });
+ const more=$("studioMore");if(more){more.classList.toggle("has-active",["plan","campaigns","media","brain"].includes(name));more.open=false;}
  applyVisibility();
  if(name==="home")refreshDashboard();
  if(name==="campaigns"||name==="media"||name==="reviews")window.VubaStudioPlus?.refresh?.();
