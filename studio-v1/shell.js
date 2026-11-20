@@ -132,7 +132,6 @@ function route(){
   a.classList.toggle("is-active",on);
   if(on)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");
  });
- const more=$("studioMore");if(more){more.classList.toggle("has-active",["plan","campaigns","media","brain"].includes(name));more.open=false;}
  applyVisibility();
  if(name==="home")refreshDashboard();
  window.scrollTo?.({top:0,behavior:"instant"});
@@ -148,6 +147,7 @@ function applyVisibility(){
  show($("calendarPage"),p==="calendar");
  const area=$("workspacePlus");
  show(area,["campaigns","media","reviews"].includes(p));
+ updateSectionHeading(p);
  const map={campaigns:"campaigns",media:"assets",reviews:"reviews"};
  if(area){
   const tab=area.querySelector('[data-section="'+(map[p]||"campaigns")+'"]');
@@ -161,6 +161,25 @@ function applyVisibility(){
  }
  show($("vubaBrain"),p==="brain");
  show($("brainJump"),false);
+}
+function updateSectionHeading(page){
+ const configs={
+  campaigns:["CAMPAIGN PLANNING","Shape the story.","Create and manage connected campaigns, audiences and outcomes."],
+  media:["YOUR CREATIVE ASSETS","Make it visual.","Import authentic Vuba photography, approve assets and build a usable visual library."],
+  reviews:["EDITORIAL APPROVALS","Ready for your review.","See what needs a decision, request changes and keep a clear approval history."],
+  ideas:["EDITORIAL INSPIRATION","Fresh perspectives.","Trade-first content ideas informed by season, strategy and your approved knowledge."],
+  plan:["THE BIGGER PICTURE","Plan with purpose.","Keep your shared marketing priorities and objectives in one place."]
+ };
+ const settings=configs[page];
+ if(!settings)return;
+ const target=(["campaigns","media","reviews"].includes(page)?$("workspacePlus"):$("strategyArea"));
+ if(!target)return;
+ let heading=target.querySelector(":scope > .studio-interior-heading");
+ if(!heading){
+  heading=document.createElement("header");heading.className="studio-interior-heading";
+  target.insertBefore(heading,target.firstChild);
+ }
+ heading.innerHTML='<span class="studio-kicker">'+esc(settings[0])+'</span><h1>'+esc(settings[1])+'</h1><p>'+esc(settings[2])+'</p>';
 }
 function slotDates(){
  const start=new Date();start.setHours(12,0,0,0);
