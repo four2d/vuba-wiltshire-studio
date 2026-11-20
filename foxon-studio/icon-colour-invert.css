@@ -63,3 +63,34 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-tip-card .tip-spark 
  display:inline-grid;place-items:center;
  width:34px;height:34px;
 }
+
+/* Visibility safeguard for FOXON Classic icons, including selected nav links.
+   Explicit stroke and text fill prevent inherited active-state colours
+   from making the icon disappear into its background. */
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.amber,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.rose,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.blue{
+ background-color:#171717!important;
+ border-color:#171717!important;
+ color:#f2c500!important;
+ -webkit-text-fill-color:#f2c500!important;
+ text-shadow:0 0 .35px #f2c500!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a .nav-glyph,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a.is-active .nav-glyph{
+ background-color:#171717!important;
+ border-color:#171717!important;
+ color:#f2c500!important;
+ -webkit-text-fill-color:#f2c500!important;
+ opacity:1!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a .nav-glyph svg,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a.is-active .nav-glyph svg,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a .nav-glyph svg path{
+ color:#f2c500!important;
+ stroke:#f2c500!important;
+ fill:none!important;
+ opacity:1!important;
+ visibility:visible!important;
+}
