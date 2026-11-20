@@ -1,0 +1,30 @@
+name: FOXON Studio smoke checks
+on:
+  push:
+    paths:
+      - "foxon-studio/**"
+      - ".github/workflows/foxon-studio-smoke.yml"
+  pull_request:
+    paths:
+      - "foxon-studio/**"
+      - ".github/workflows/foxon-studio-smoke.yml"
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript syntax
+        run: |
+          node --check foxon-studio/app.js
+          node --check foxon-studio/shell.js
+          node --check foxon-studio/studio-upgrades.js
+          node --check foxon-studio/workspace.js
+          node --check foxon-studio/marketing.js
+          node --check foxon-studio/brain.js
+      - name: Verify FOXON interface safeguards
+        run: node foxon-studio/tests/smoke.mjs
