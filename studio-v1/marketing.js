@@ -52,7 +52,7 @@ const evergreen=[
  ["A real face behind the depot","Behind the Scenes / Depot","","Requires genuine staff participation and consent.","Single image"],
  ["Site-Day Checklist: three questions before the crew arrives","Project Planning","Site-Day Checklist","Use planning questions, not technical instructions.","Carousel"]
 ];
-let user=null,role=null,plan=null,posts=[],suggestions=[];
+let user=null,role=null,plan=null,posts=[],suggestions=[],previewIndex=-1,previewDraft=null;
 function launchUI(){
  const app=document.getElementById("app"); if(!app||document.getElementById("strategyArea"))return;
  const el=document.createElement("section");el.id="strategyArea";el.className="strategy-area";
@@ -60,12 +60,29 @@ function launchUI(){
  <section id="suggestionPanel" class="panel"><div class="strategy-head"><div><h2>What should we post next?</h2><p id="seasonIntro">Ideas tailored to the season, editorial balance and your plan.</p></div><button id="refreshSuggestions" type="button">Refresh suggestions</button></div><p class="hint">Suggestions are briefs, not finished captions. Facts, photos and technical guidance must be verified before approval.</p><div id="suggestionCards" class="suggestion-cards"></div><p id="suggestionMessage" role="status"></p></section>
  <section id="planPanel" class="panel" hidden><div class="strategy-head"><div><h2>Vuba Wiltshire marketing plan</h2><p>One shared strategy for all staff. It informs the next round of suggested posts.</p></div><span id="planPermission" class="hint"></span></div><form id="strategyForm"><label>Overall aim<textarea name="goal" rows="2" required></textarea></label><label>Primary audience<textarea name="audience" rows="2" required></textarea></label><label>Current priorities<textarea name="priorities" rows="3" required></textarea></label><label>Campaigns and key messages<textarea name="campaigns" rows="3" placeholder="Only add real agreed campaigns."></textarea></label><label>Seasonal focus<textarea name="seasonal_notes" rows="3" placeholder="What's especially relevant for installers this season?"></textarea></label><label>Confirmed events and dates<textarea name="confirmed_events" rows="3" placeholder="Training, open days, launches — confirmed dates only."></textarea></label><label>Posting rhythm<textarea name="cadence" rows="2"></textarea></label><div class="strategy-head"><button id="saveStrategy" type="submit">Save shared plan</button><span id="strategyMessage" role="status"></span></div></form></section>`;
  app.insertBefore(el,app.querySelector(".metrics"));
+ const dialog=document.createElement("dialog");
+ dialog.id="ideaPreview";
+ dialog.setAttribute("aria-labelledby","previewHeading");
+ dialog.innerHTML=`<div class="preview-header"><div><small class="suggestion-pill">EDITORIAL PREVIEW</small><h2 id="previewHeading">Suggested post</h2></div><button type="button" id="closePreview" aria-label="Close preview">×</button></div>
+ <div id="previewMeta" class="preview-meta"></div>
+ <div class="preview-section"><h3>Suggested angle</h3><p id="previewAngle"></p></div>
+ <div class="preview-section"><h3>Working headline</h3><p id="previewTitle"></p></div>
+ <div class="preview-section"><h3>Image / format brief</h3><p id="previewVisual"></p></div>
+ <div class="preview-section"><h3>Draft caption</h3><p class="hint">Generate a draft with AI, or add the idea without a caption.</p><div id="previewCaption" class="preview-caption">No draft generated yet.</div></div>
+ <div class="preview-section"><h3>Checks before publishing</h3><p id="previewChecks"></p></div>
+ <p id="previewError" role="status"></p>
+ <div class="preview-actions"><button type="button" id="previewAI" class="secondary-btn">Generate AI draft</button><button type="button" id="previewAdd">Add to calendar</button></div>`;
+ document.body.appendChild(dialog);
+ document.getElementById("closePreview").onclick=()=>dialog.close();
+ document.getElementById("previewAI").onclick=generatePreviewDraft;
+ document.getElementById("previewAdd").onclick=()=>addPreviewToCalendar();
+
  document.getElementById("tabSuggestions").onclick=()=>tab("suggestions");
  document.getElementById("tabPlan").onclick=()=>tab("plan");
  document.getElementById("refreshSuggestions").onclick=()=>loadAll();
  document.getElementById("strategyForm").onsubmit=savePlan;
  document.getElementById("suggestionCards").onclick=async ev=>{
- const b=ev.target.closest("button[data-idea]");if(!b)return;await addIdea(Number(b.dataset.idea),b);
+ const b=ev.target.closest("button[data-preview]");if(!b)return;openPreview(Number(b.dataset.preview));
  };
 }
 function tab(mode){
@@ -116,7 +133,7 @@ function generateSuggestions(){
  }).sort((a,b)=>b.score-a.score).filter(x=>!x.repeated);
  suggestions=ranked.slice(0,8);
  document.getElementById("seasonIntro").textContent=season.label+" planning · "+now.toLocaleDateString("en-GB",{month:"long",year:"numeric"})+" · prioritising gaps in the last 20 posts";
- document.getElementById("suggestionCards").innerHTML=suggestions.map(({v},i)=>`<article class="suggestion-card"><span class="suggestion-pill">${safe(v[1])} · ${safe(pillars[v[1]])}</span><h3>${safe(v[0])}</h3><p>${safe(v[3])}</p><div class="suggestion-foot"><small>${safe(v[2]||"Standalone")} · ${safe(v[4])}</small><button data-idea="${i}" type="button">Add idea to calendar</button></div></article>`).join("");
+ document.getElementById("suggestionCards").innerHTML=suggestions.map(({v},i)=>`<article class="suggestion-card"><span class="suggestion-pill">${safe(v[1])} · ${safe(pillars[v[1]])}</span><h3>${safe(v[0])}</h3><p>${safe(v[3])}</p><div class="suggestion-foot"><small>${safe(v[2]||"Standalone")} · ${safe(v[4])}</small><button data-preview="${i}" type="button">Preview post</button></div></article>`).join("");
  if(!suggestions.length)document.getElementById("suggestionCards").textContent="Your recent posts cover these topics. Update the marketing plan to develop more angles.";
 }
 async function savePlan(e){
@@ -127,20 +144,76 @@ async function savePlan(e){
  document.getElementById("strategyMessage").textContent=error?error.message:"Shared marketing plan saved.";
  if(!error)await loadAll();
 }
-async function addIdea(i,button){
- const v=suggestions[i]?.v;if(!v)return;
+
+function openPreview(index){
+ const item=suggestions[index]?.v;if(!item)return;
+ previewIndex=index;previewDraft=null;
+ const [title,pillar,series,notes,format]=item;
+ document.getElementById("previewHeading").textContent=title;
+ document.getElementById("previewMeta").textContent=[pillar,series||"Standalone",format].join(" · ");
+ document.getElementById("previewAngle").textContent="The post should give a useful, trade-focused angle on: "+title+".";
+ document.getElementById("previewTitle").textContent=title;
+ document.getElementById("previewVisual").textContent=format==="Carousel"?"A small sequence of clear, genuine photos or approved educational graphics.":format==="Text-led"?"Text-focused content with a clear practical takeaway.":"Use genuine, relevant Vuba photography or an approved branded graphic — no fabricated products or packaging.";
+ document.getElementById("previewChecks").textContent=notes;
+ document.getElementById("previewCaption").textContent="No draft generated yet. Use Generate AI draft to preview proposed copy, or add this as an idea.";
+ document.getElementById("previewError").textContent="";
+ document.getElementById("previewAI").disabled=false;
+ document.getElementById("previewAI").textContent="Generate AI draft";
+ document.getElementById("previewAdd").disabled=false;
+ document.getElementById("previewAdd").textContent="Add to calendar";
+ document.getElementById("ideaPreview").showModal();
+}
+async function generatePreviewDraft(){
+ const item=suggestions[previewIndex]?.v;if(!item)return;
+ const [title,pillar,,notes,format]=item;
+ const button=document.getElementById("previewAI");
+ button.disabled=true;button.textContent="Generating…";
+ document.getElementById("previewError").textContent="";
+ try{
+  const {data,error}=await db.functions.invoke(cfg.aiFunction||"draft-post",{body:{
+   topic:title, title:"",pillar,source:"Editorial brief only (not verified facts): "+notes,
+   channel:format==="Text-led"?"LinkedIn":"Instagram",format
+  }});
+  if(error){
+   let message=error.message||"AI generation failed";
+   try{const detail=await error.context?.json();message=detail?.error||message;}catch(_){}
+   throw Error(message);
+  }
+  if(!data?.caption)throw Error("The AI returned no caption.");
+  previewDraft={
+   topic:String(data.topic||title).slice(0,300),title:String(data.title||title).slice(0,140),
+   caption:String(data.caption).slice(0,1400),pillar:Object.prototype.hasOwnProperty.call(pillars,data.pillar)?data.pillar:pillar,
+   source_notes:String(data.source_notes||notes).slice(0,3000)
+  };
+  document.getElementById("previewTitle").textContent=previewDraft.title;
+  document.getElementById("previewCaption").textContent=previewDraft.caption;
+  document.getElementById("previewChecks").textContent=previewDraft.source_notes;
+  button.textContent="Regenerate AI draft";
+ }catch(e){
+  document.getElementById("previewError").textContent=e.message||String(e);
+  button.textContent="Try AI draft again";
+ }finally{button.disabled=false;}
+}
+async function addPreviewToCalendar(){
+ const v=suggestions[previewIndex]?.v;if(!v||!user)return;
  const d=new Date();d.setDate(d.getDate()+7);
  const date=[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
- button.disabled=true;
- const {error}=await db.from("studio_posts").insert({
-  title:v[0].slice(0,140),pillar:v[1],series:v[2]||null,format:v[4]==="Carousel"?"Carousel":v[4]==="Text-led"?"Text-led":"Single image",
-  channel:v[4]==="Text-led"?"LinkedIn":"Instagram",status:"idea",scheduled_date:date,
-  caption:"",source_notes:"IDEA ONLY — "+v[3]+"\nMarketing aim: "+plan.goal.slice(0,220),
+ const button=document.getElementById("previewAdd");
+ button.disabled=true;document.getElementById("previewError").textContent="";
+ const payload={
+  topic:previewDraft?.topic||v[0],title:(previewDraft?.title||v[0]).slice(0,140),
+  pillar:previewDraft?.pillar||v[1],series:v[2]||null,
+  format:["Carousel","Text-led","Reel","Story","Branded graphic"].includes(v[4])?v[4]:"Single image",
+  channel:v[4]==="Text-led"?"LinkedIn":"Instagram",
+  status:previewDraft?"draft":"idea",scheduled_date:date,
+  caption:previewDraft?.caption||"",
+  source_notes:previewDraft?.source_notes||("IDEA ONLY — "+v[3]+"\nMarketing aim: "+(plan?.goal||"").slice(0,220)),
   created_by:user.id,updated_by:user.id
- });
- if(error){button.disabled=false;document.getElementById("suggestionMessage").textContent=error.message;return;}
- document.getElementById("suggestionMessage").textContent="Idea added for "+new Date(date+"T12:00:00").toLocaleDateString("en-GB")+". Refresh the calendar to see it.";
- button.textContent="Added";
+ };
+ const {error}=await db.from("studio_posts").insert(payload);
+ if(error){button.disabled=false;document.getElementById("previewError").textContent=error.message;return;}
+ document.getElementById("ideaPreview").close();
+ document.getElementById("suggestionMessage").textContent=(previewDraft?"Draft":"Idea")+" added for "+new Date(date+"T12:00:00").toLocaleDateString("en-GB")+".";
  await loadAll();
 }
 const {data:{session}}=await db.auth.getSession();await init(session?.user||null);
