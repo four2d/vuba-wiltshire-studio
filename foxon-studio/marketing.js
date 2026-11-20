@@ -115,7 +115,7 @@ function generateSuggestions(){
  const counts={};Object.keys(targets).forEach(k=>counts[k]=0);
  for(const p of recent){const cat=pillars[p.pillar];if(cat)counts[cat]++;}
  const titles=posts.map(p=>normal(p.title).join(" "));
- const ranked=candidates.map((v,i)=>{
+ const ranked=candidates.filter(v=>!/^Planning brief:/i.test(v[0]) && !/^From FOXON Brain:/i.test(v[0]) && !v[0].includes(": TOOLS THAT GRAFT | Fortnight")).map((v,i)=>{
   const cat=pillars[v[1]],difference=targets[cat]*(recent.length+1)-(counts[cat]||0);
   const words=normal(v[0]);const repeated=titles.some(t=>words.filter(w=>t.includes(w)).length>=Math.min(3,words.length));
   const planHit=normal(plan.priorities+" "+plan.campaigns+" "+plan.seasonal_notes).filter(w=>words.includes(w)).length;
