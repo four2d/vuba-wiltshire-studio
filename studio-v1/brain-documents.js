@@ -162,7 +162,8 @@ function openEditor(doc){
  const form=$("brainDocumentForm");form.reset();
  for(const key of ["id","title","description","verification","extracted_text"])form.elements[key].value=doc[key]||"";
  $("brainDocEditorMessage").textContent="";
- $("brainDocArchive").hidden=!!doc.archived_at;
+ $("brainDocArchive").hidden=false;
+ $("brainDocArchive").textContent=doc.archived_at?"Restore document":"Archive document";
  $("brainDocumentDialog").showModal();
 }
 async function saveDocument(e){
@@ -177,8 +178,9 @@ async function saveDocument(e){
 async function archiveDocument(){
  if(!["admin","approver"].includes(role))return;
  const id=$("brainDocumentForm").elements.id.value;
- if(!confirm("Archive this document? It will disappear from active Brain search, but the original will remain available in Show archived."))return;
- const {error}=await db.from("studio_brain_documents").update({archived_at:new Date().toISOString(),updated_by:user.id}).eq("id",id);
+ const doc=documents.find(x=>x.id===id),restoring=!!doc?.archived_at;
+ if(!confirm(restoring?"Restore this document to the active Brain library?":"Archive this document? It will disappear from active search, but the original remains available in Show archived."))return;
+ const {error}=await db.from("studio_brain_documents").update({archived_at:restoring?null:new Date().toISOString(),updated_by:user.id}).eq("id",id);
  if(error){$("brainDocEditorMessage").textContent=error.message;return;}
  $("brainDocumentDialog").close();await load();
 }
