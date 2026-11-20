@@ -75,6 +75,7 @@ $("postForm").onsubmit=async e=>{
  if(!$("title").value.trim())return alertError("Add a title or use Suggest AI post to write one.");
  if(["approved","scheduled"].includes(status)&&!["admin","approver"].includes(role))return alertError("Only an approver can approve posts.");
  if(status==="scheduled"&&!($("caption").value.trim()))return alertError("A scheduled post needs a caption.");
+ if(!id&&window.FoxonArtworkAutoOnSave)await window.FoxonArtworkAutoOnSave();
  const payload={campaign_id:$("postCampaign")?.value||null,media_id:$("postMedia")?.value||null,review_note:$("reviewNote")?.value.trim()||"",topic:$("topic").value.trim()||$("title").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
  if(!id)payload.created_by=user.id;
  const q=id?db.from("studio_posts").update(payload).eq("id",id):db.from("studio_posts").insert(payload);
