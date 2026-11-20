@@ -103,35 +103,49 @@ function build(){
  $("brainDocArchive").onclick=archiveDocument;
 }
 async function uploadFiles(files){
- if(busy)return;
- const message=$("brainUploadFeedback");
+ const message=$("brainUploadFeedback");if(!message)return;
+ if(busy){message.textContent="An upload is already running. Please let it finish before adding more.";return;}
+ if(!files.length){message.textContent="No files selected. Drop a PDF, DOCX, TXT or Markdown file.";return;}
  if(files.length>10){message.textContent="Please upload up to 10 documents at a time.";return;}
- if(!files.length)return;
- busy=true;
- const errors=[];let success=0;
+ if(!user){message.textContent="Please sign in to FOXON Studio before uploading.";return;}
+ busy=true;const errors=[];let success=0;
  try{
   for(let i=0;i<files.length;i++){
    const file=files[i],type=mimeFor(file.name);
-   if(!allowed.includes(ext(file.name))||!type||!file.size||file.size>maxBytes){errors.push(file.name+": unsupported type or over 15 MB.");continue;}
-   message.textContent="Processing "+(i+1)+"/"+files.length+": "+file.name;
-   const extracted=await extract(file);
-   const path=user.id+"/"+crypto.randomUUID()+"-"+file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-130);
-   const uploaded=await db.storage.from(bucket).upload(path,file,{contentType:type,upsert:false});
-   if(uploaded.error){errors.push(file.name+": "+uploaded.error.message);continue;}
-   const saved=await db.from("studio_brain_documents").insert({
-    filename:file.name.slice(0,255),title:file.name.replace(/\.[^.]+$/,"").slice(0,250),
-    storage_path:path,mime_type:type,file_size:file.size,
-    extracted_text:extracted.text,extraction_status:extracted.status,
-    description:extracted.note,uploaded_by:user.id,updated_by:user.id,verification:"needs_review"
-   });
-   if(saved.error){
-    await db.storage.from(bucket).remove([path]).catch(()=>{});
-    errors.push(file.name+": "+saved.error.message);continue;
+   if(!allowed.includes(ext(file.name))||!type||!file.size||file.size>maxBytes){
+    errors.push(file.name+": unsupported file type, empty file or over 15 MB.");continue;
    }
-   success++;
+   try{
+    message.textContent="Uploading "+(i+1)+" of "+files.length+": "+file.name+"…";
+    const extracted=await extract(file);
+    const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-130);
+    const path=user.id+"/"+crypto.randomUUID()+"-"+safeName;
+    const uploaded=await db.storage.from(bucket).upload(path,file,{contentType:type,upsert:false});
+    if(uploaded.error)throw Error("Private storage rejected file: "+uploaded.error.message);
+    const saved=await db.from("studio_brain_documents").insert({
+     filename:file.name.slice(0,255),title:file.name.replace(/\\.[^.]+$/,"").slice(0,250),
+     storage_path:path,mime_type:type,file_size:file.size,
+     extracted_text:extracted.text,extraction_status:extracted.status,
+     description:extracted.note,uploaded_by:user.id,updated_by:user.id,verification:"needs_review"
+    }).select("id").single();
+    if(saved.error||!saved.data?.id){
+     // The original file remains private; attempt cleanup only on metadata failure.
+     await db.storage.from(bucket).remove([path]).catch(()=>{});
+     throw Error("Document database save failed: "+(saved.error?.message||"No saved record returned"));
+    }
+    success++;
+    message.textContent=success+" document(s) securely saved. Continuing…";
+   }catch(e){
+    errors.push(file.name+": "+(e?.message||String(e)));
+    console.error("FOXON Brain document upload",e);
+   }
   }
-  message.textContent=success+" document(s) added for review."+ (errors.length?" Issues: "+errors.join(" | ").slice(0,450):"")+" Originals stored privately; extracted text is searchable.";
-  await load();
+  try{await load();}catch(e){errors.push("Refresh list: "+(e?.message||String(e)));}
+  message.textContent=(success?success+" document(s) uploaded and saved privately as Needs review. ":"No documents were saved. ")+
+   (errors.length?"Errors: "+errors.join(" | ").slice(0,1100):"You can now find them in the Documents list below.");
+ }catch(e){
+  message.textContent="UPLOAD FAILED: "+(e?.message||String(e));
+  console.error("FOXON Brain upload failure",e);
  }finally{busy=false;}
 }
 async function load(){
