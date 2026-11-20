@@ -1,0 +1,149 @@
+/* FOXON-only theme. Based on the supplied 22 Oct 2026 FOXON Brand Guidelines
+   and FOXON Books. Loaded AFTER the shared Studio styles. No Vuba assets touched. */
+:root{
+ --studio-navy:#0b0b0b;--studio-navy-deep:#050505;--studio-teal:#f2c500;--studio-red:#f2c500;
+ --studio-ink:#f5f5f5;--studio-muted:#b0b0b0;--studio-page:#0b0b0b;--studio-card:#171717;
+ --studio-stroke:#353535;--studio-radius:12px;--studio-shadow:0 6px 0 #0005;
+ --foxon-black:#0b0b0b;--foxon-yellow:#f2c500;--foxon-panel:#151515;--foxon-stroke:#333;
+ font-family:'Helvetica Neue',Arial,sans-serif;color-scheme:dark;
+}
+body{background:#0b0b0b;color:#f5f5f5;font-family:'Helvetica Neue',Arial,sans-serif}
+h1,h2,h3,.studio-page-heading h1,.hero-copy h2,.studio-section-heading h2,.studio-stat .stat-number,.studio-builder-card h2{
+ font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ font-weight:700;letter-spacing:.012em!important;text-transform:uppercase;line-height:1.05
+}
+p,.studio-page-heading p,.studio-stat .stat-foot{color:#c4c4c4}
+button{min-height:44px;border-radius:12px;font-weight:750;letter-spacing:.01em;background:#f2c500;color:#0b0b0b}
+button:hover:not(:disabled){filter:brightness(1.1)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #f2c500!important;outline-offset:3px}
+input,select,textarea{border-radius:10px;background:#101010;color:#fff;border:1px solid #555;min-height:44px}
+input::placeholder,textarea::placeholder{color:#aaa}
+input:focus,textarea:focus,select:focus{border-color:#f2c500}
+label{color:#e4e4e4}
+.panel, .workspace-card,.suggestion-card,.studio-builder-card,.studio-stat,.brain-card,.media-card,.campaign-card{
+ background:#171717!important;border:1px solid #343434!important;border-radius:12px!important;color:#f5f5f5;box-shadow:none!important
+}
+.studio-navigation{
+ background:#090909!important;color:#fff!important;border-right:1px solid #2b2b2b!important;
+ box-shadow:none!important;padding-top:19px!important
+}
+.studio-navigation:before{
+ content:"";height:8px;flex:0 0 8px;margin:0 0 18px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 22px,#0b0b0b 22px 44px)
+}
+.brand-lockup{padding:7px 7px 26px!important;display:block!important}
+.brand-lockup .brand-monogram,.brand-lockup>div:not(.brand-monogram){display:none!important}
+.brand-lockup:before{
+ content:"";display:block;width:216px;height:68px;max-width:100%;
+ background:url('./foxon-logo-horizontal-dark.svg') no-repeat left center/contain;
+}
+.studio-workspace-label{border-color:#4b410b!important;background:#19170a;color:#f2c500!important;border-radius:8px!important}
+.workspace-live-dot{background:#f2c500!important;box-shadow:0 0 0 3px #f2c50022!important}
+.studio-nav-heading{color:#e6b900!important}
+.studio-nav-links a{color:#c4c4c4!important;border-radius:10px!important;font-size:13px}
+.studio-nav-links a:hover{background:#242424!important;color:#fff!important}
+.studio-nav-links a.is-active{background:#f2c500!important;color:#080808!important;font-weight:800}
+.studio-nav-links a.is-active .nav-glyph,.studio-nav-links a.is-active .nav-active-mark{color:#080808!important}
+.is-active .nav-active-mark{background:#080808!important}
+.sidebar-bottom{border-color:#343434!important}
+.sidebar-brand-chip>span{
+ background:#f2c500!important;color:#0b0b0b!important;
+ font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif
+}
+.sidebar-brand-chip small{color:#aaa!important}
+.sidebar-signout{background:transparent!important;color:#d2d2d2!important}
+.studio-topbar{border-color:#303030!important}
+#studioBreadcrumb{color:#d0d0d0!important}
+.studio-live-pill{background:#24200a!important;color:#f2c500!important;border-color:#584910!important}
+.studio-live-pill i{background:#f2c500!important}
+.topbar-create{background:#f2c500!important;color:#0b0b0b!important;border:1px solid #f2c500!important}
+.topbar-create span{color:#0b0b0b!important}
+.studio-kicker,.section-eyebrow,.brain-eyebrow{color:#f2c500!important;letter-spacing:.14em}
+.studio-page-heading h1{color:#fff!important;font-size:clamp(30px,3.7vw,51px)}
+.heading-date{color:#bbb}
+.studio-hero{
+ background:radial-gradient(ellipse at 86% 32%,#3a3000 0%,#17150c 36%,#0b0b0b 74%)!important;
+ border:2px solid #45400e;border-radius:12px!important;min-height:292px;
+}
+.studio-hero:before{
+ content:"";height:12px;position:absolute;top:0;left:0;right:0;z-index:4;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 22px,#0b0b0b 22px 44px)
+}
+.hero-grid-overlay{opacity:.06!important}
+.hero-eyebrow{color:#f2c500!important}
+.hero-eyebrow>span{background:#f2c500!important}
+.hero-copy h2{color:#fff!important;font-size:clamp(32px,3.6vw,58px)!important;max-width:650px;line-height:1.02!important}
+.hero-copy h2 em{color:#f2c500!important}
+.hero-copy p{color:#ddd!important;max-width:500px;font-size:13px!important}
+.hero-actions button{background:#f2c500!important;color:#0b0b0b!important;font-size:13px;border-radius:12px!important}
+.hero-actions .hero-secondary{background:transparent!important;color:#f2c500!important}
+.hero-graphic{opacity:.16;filter:grayscale(1) sepia(1);transform:rotate(-7deg) scale(.85)}
+.graphic-card-front{border:3px solid #f2c500}
+.graphic-mini-dot{background:#f2c500}
+.studio-stat{border-top:4px solid #f2c500!important}
+.studio-stat:hover{border-color:#f2c500!important}
+.stat-top small,.stat-foot{color:#bbb!important}
+.stat-number,.studio-stat strong,.metrics strong{color:#f2c500!important}
+.stat-mark,.stat-mark.amber,.stat-mark.rose,.stat-mark.blue{background:#2d270d!important;color:#f2c500!important}
+.studio-text-btn,.studio-tip-card button{color:#f2c500!important}
+.studio-tip-card,.studio-automation-panel{background:#151515!important;border:1px solid #383838!important;color:#fff!important}
+.studio-section-heading h2,.studio-builder-card h2,.studio-home-main h2{color:#fff!important}
+.studio-section-heading p,.studio-home-main p,.studio-builder-card p,.studio-automation-panel p{color:#bbb!important}
+.studio-builder-card.featured{border-top:5px solid #f2c500!important}
+.studio-builder-icon,.automation-icon{background:#f2c500!important;color:#0b0b0b!important}
+.studio-builder-icon.secondary{background:#282828!important;color:#f2c500!important}
+.studio-builder-card button,#fillCalendar{background:#f2c500!important;color:#0b0b0b!important}
+.builder-visual,.builder-visual.simple{background:#0b0b0b!important;border-color:#5c4d10!important}
+.builder-visual-chip,.builder-card-index{color:#f2c500!important}
+.builder-visual-photo,.builder-corner-accent{color:#f2c500!important}
+.progress-track{background:#414141!important}
+#planProgressBar{background:#f2c500!important}
+.studio-footnote{color:#bbb!important}
+#app>.top,.metrics>div,.day,.strategy-tabs button,.workspace-tabs button{background:#171717;color:#fff;border-color:#3b3b3b}
+.day{border:1px solid #3b3b3b!important}
+.day.today{border-color:#f2c500!important;box-shadow:inset 0 0 0 1px #f2c500}
+.daynum,.weekdays,.metrics span,.balanceRow{color:#ddd!important}
+.day button{background:#343434;color:white}
+.day button.review{background:#6c5318!important;color:#fff}
+.day button.approved{background:#246344!important;color:#fff}
+.day button.scheduled{background:#584b12!important;color:#fff}
+.day button.idea{background:#444!important;color:#fff}
+.filters select{background:#121212;color:#fff}
+.strategy-tabs button.active,.workspace-tabs button.active{background:#f2c500!important;color:#0b0b0b!important}
+.strategy-tabs button,.workspace-tabs button{border:1px solid #555!important;background:#252525!important;color:#fff!important}
+.workspace-tabs button.active{border-color:#f2c500!important}
+.workspace-card h3,.suggestion-card h3,.brain-card h3{color:#fff}
+.workspace-card p,.suggestion-card p,.brain-card p,.workspace-card small{color:#c9c9c9!important}
+.asset-thumb,.mock-image{background:#222!important;color:#c6c6c6}
+.social-mock{background:#fff!important;color:#141414!important}
+.social-mock .mock-copy p,.social-mock .mock-head small{color:#303030!important}
+.mock-avatar{background:#0b0b0b!important;color:#f2c500!important}
+#vubaBrain,.brain-card,.review-history{background:#151515!important;border-color:#383838!important;color:#eee!important}
+.brain-summary span,.brain-tag{background:#272727;color:#f2c500!important;border-color:#484848!important}
+dialog{background:#151515;color:#fff;border:1px solid #f2c500!important;border-radius:14px!important}
+dialog::backdrop{background:#000b}
+.dialogHead button,.secondary-btn,.editor-extras button,.preview-header button{background:#252525!important;color:#f2c500!important}
+.preview-section,.review-history p,.balanceRow,.upcomingItem{border-color:#353535!important}
+.preview-caption{background:#0e0e0e!important;border-color:#555!important;color:#fff}
+.preview-meta,#assetMessage,.suggestion-pill{color:#f2c500!important}
+.danger{background:#b82d2d!important;color:#fff!important}
+#logout{background:#f2c500!important;color:#0b0b0b!important}
+#auth,#setup{margin:7vh auto;background:#151515!important}
+#auth:before,#setup:before{
+ content:"";display:block;height:86px;width:230px;max-width:100%;margin:0 0 20px;
+ background:url('./foxon-logo-horizontal-dark.svg') left center/contain no-repeat
+}
+#auth h1,#setup h1{font-size:34px;color:white}
+#auth p,#setup p{color:#ddd}
+.studio-link-tools small{color:#c9c9c9}
+@media(max-width:900px){
+ body.studio-shell-ready #app{padding-left:24px!important;padding-right:24px!important}
+ .studio-navigation{width:min(300px,86vw)!important}
+ .studio-navigation:before{margin-top:0}
+}
+@media(max-width:600px){
+ .studio-hero{padding:32px 20px!important}
+ .hero-graphic{display:none!important}
+ .brand-lockup:before{width:195px}
+}
+@media(prefers-reduced-motion:reduce){button,.studio-page{transition:none!important;animation:none!important}}
