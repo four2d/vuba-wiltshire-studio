@@ -3,7 +3,7 @@ const cfg=window.VUBA_CONFIG;
 const db=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
 const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-let signedIn=null,media=[],signedUrls={},selectedMedia="",renderTicket=0;
+let signedIn=null,media=[],signedUrls={},selectedMedia="",renderTicket=0,batchOffset=0;
 const maxFile=10*1024*1024;
 const permitted=new Set(["image/jpeg","image/png","image/webp"]);
 function imageWords(str){
@@ -40,7 +40,7 @@ function install(){
  <label>Choose folder<input id="folderPicker" type="file" accept="image/jpeg,image/png,image/webp" webkitdirectory directory multiple></label>
  <div class="folder-import-actions"><button type="button" id="importFolder">Import selected photos</button><span class="hint" id="folderFileCount">No folder selected</span></div>
  <p id="folderImportStatus" role="status"></p>
- <p class="hint">10MB per image, up to 40 files per import batch; larger collections can be imported in successive batches. Other file types are skipped.</p>
+ <p class="hint">10MB per image, 40 files per batch; for larger folders click Import next batch until complete. Other file types are skipped.</p>
  </div>`);
  const chooser=document.createElement("dialog");chooser.id="postImagePicker";
  chooser.innerHTML=`<div class="dialogHead"><h2>Choose a genuine Vuba image</h2><button id="closeImagePicker" type="button" aria-label="Close">×</button></div>
@@ -72,7 +72,7 @@ function install(){
  };
  $("clearPostImage").onclick=()=>{$("postMedia").value="";selectedMedia="";updateSelected();chooser.close();};
  $("postMedia").onchange=updateSelected;
- $("folderPicker").onchange=()=>{$("folderFileCount").textContent=$("folderPicker").files.length+" selected files";};
+ $("folderPicker").onchange=()=>{batchOffset=0;$("folderFileCount").textContent=$("folderPicker").files.length+" selected files";$("importFolder").textContent="Import selected photos";};
  $("importFolder").onclick=importFolder;
  document.addEventListener("vuba-media-updated",loadMedia);
  updateSelected();
@@ -117,13 +117,14 @@ async function importFolder(){
  const images=files.filter(f=>permitted.has(f.type)||/\.(jpe?g|png|webp)$/i.test(f.name)).filter(f=>f.size>0&&f.size<=maxFile);
  if(!images.length){out.textContent="No JPEG, PNG or WebP files under 10MB were selected.";return;}
  // Explicit per-click upper limit prevents browser freeze and uncontrolled writes.
- if(images.length>40){out.textContent=images.length+" eligible images selected. Choose a smaller subfolder or a batch of up to 40 files.";return;}
+ const batch=images.slice(batchOffset,batchOffset+40);
+ if(!batch.length){batchOffset=0;out.textContent="Import completed. Select another folder to continue.";return;}
  button.disabled=true;
  let uploaded=0,errors=[],skipped=files.length-images.length;
- for(let i=0;i<images.length;i++){
-  const file=images[i],name=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-100);
+ for(let i=0;i<batch.length;i++){
+  const file=batch[i],name=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-100);
   const original=(file.webkitRelativePath||file.name).slice(0,500);
-  out.textContent="Importing "+(i+1)+"/"+images.length+" · "+file.name;
+  out.textContent="Importing "+(batchOffset+i+1)+"/"+images.length+" · "+file.name;
   const path=signedIn.id+"/"+crypto.randomUUID()+"-"+name;
   const mime=file.type||(/\.png$/i.test(name)?"image/png":/\.webp$/i.test(name)?"image/webp":"image/jpeg");
   const {error:storageError}=await db.storage.from("vuba-approved-media").upload(path,file,{upsert:false,contentType:mime});
@@ -135,9 +136,12 @@ async function importFolder(){
    await db.storage.from("vuba-approved-media").remove([path]);
   }else uploaded++;
  }
- out.textContent=uploaded+" photo(s) imported, "+skipped+" skipped, "+errors.length+" failed. All imported photos await approval."+(errors.length?" First error: "+errors[0]:"");
+ batchOffset+=batch.length;
+ const remain=images.length-batchOffset;
+ out.textContent=uploaded+" photo(s) imported in this batch, "+skipped+" unsupported/oversized skipped, "+errors.length+" failed. All imported photos await approval."+(errors.length?" First error: "+errors[0]:"")+(remain?" "+remain+" remaining. Click Import next batch.":" Folder import complete.");
  button.disabled=false;
- $("folderPicker").value="";$("folderFileCount").textContent="No folder selected";
+ if(remain){button.textContent="Import next batch ("+Math.min(40,remain)+")";$("folderFileCount").textContent=batchOffset+" of "+images.length+" eligible images processed";}
+ else{$("folderPicker").value="";$("folderFileCount").textContent="No folder selected";button.textContent="Import selected photos";batchOffset=0;}
  await window.VubaStudioPlus?.refresh?.();
 }
 async function start(u){
