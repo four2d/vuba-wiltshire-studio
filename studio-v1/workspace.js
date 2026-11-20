@@ -181,6 +181,7 @@ async function showPlatform(channel){
  if(!state.currentPost)return;
  document.querySelectorAll("[data-channel]").forEach(b=>b.classList.toggle("active",b.dataset.channel===channel));
  $("mockPlatform").textContent=channel+" · Preview";
+ document.querySelector("#platformPreview .social-mock").className="social-mock platform-"+channel.toLowerCase();
  $("mockTitle").textContent=state.currentPost.title||"Working headline";
  $("mockCaption").textContent=state.currentPost.caption||"No caption yet. Add a caption or generate one when AI credits are available.";
  const url=state.urls[state.currentPost.media_id];
