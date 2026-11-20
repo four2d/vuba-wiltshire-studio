@@ -132,3 +132,27 @@ body.studio-shell-ready[data-foxon-theme="arcade"] .studio-stat-grid .stat-mark{
 body.studio-shell-ready :is(.social-mock,.foxon-feed-card) .foxon-icon{
  color:#171717!important;stroke:#171717!important;
 }
+
+/* Utility controls: consistently spaced icons, retaining original labels. */
+body.studio-shell-ready .foxon-icon-button{
+ display:inline-flex!important;align-items:center!important;justify-content:center;
+ gap:8px!important
+}
+body.studio-shell-ready #mmDrop .mm-drop-icon.foxon-icon-button{
+ display:flex!important;justify-content:center!important
+}
+body.studio-shell-ready .foxon-icon-button .foxon-icon{
+ display:inline-block!important;width:17px!important;height:17px!important;
+ min-width:17px!important;min-height:17px!important;
+ vertical-align:middle!important;color:inherit!important;stroke:currentColor!important
+}
+body.studio-shell-ready #mmDrop .mm-drop-icon .foxon-icon{
+ width:26px!important;height:26px!important;
+ min-width:26px!important;min-height:26px!important
+}
+/* Never allow an old zero-font rule to make icons disappear. */
+body.studio-shell-ready .studio-stat .stat-mark .foxon-icon,
+body.studio-shell-ready .studio-automation-panel .automation-icon .foxon-icon,
+body.studio-shell-ready .studio-tip-card .tip-spark .foxon-icon{
+ visibility:visible!important;opacity:1!important
+}
