@@ -94,3 +94,32 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a .nav-gly
  opacity:1!important;
  visibility:visible!important;
 }
+
+/* SVG stat glyphs are real inline artwork, not font characters.
+   Explicit stroke/fill prevents Safari text-fill and inherited theme rules
+   from hiding strokes on the dark stat tile. */
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol {
+ display:block!important;
+ width:20px!important;height:20px!important;
+ min-width:20px!important;min-height:20px!important;
+ flex:0 0 20px!important;
+ fill:none!important;
+ stroke:currentColor!important;
+ stroke-width:2!important;
+ stroke-linecap:round!important;
+ stroke-linejoin:round!important;
+ overflow:visible!important;
+ opacity:1!important;
+ visibility:visible!important;
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol,
+body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol :is(path,rect,circle) {
+ stroke:#f2c500!important;
+ fill:none!important;
+ opacity:1!important;
+ visibility:visible!important;
+}
+body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol :is(path,rect,circle) {
+ fill:none!important;
+ stroke:currentColor;
+}
