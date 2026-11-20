@@ -125,10 +125,10 @@ async function processBatch(){
     const path=user.id+"/"+crypto.randomUUID()+"-"+name;
     const upload=await db.storage.from("foxon-approved-media").upload(path,file,{contentType:types[ext(file.name)],upsert:false});
     if(upload.error)throw Error(upload.error.message);
-    const added=await db.from("studio_media").insert({file_path:path,filename:file.name.slice(0,255),description:file.name,usage_rights:queue.rights,mime_type:types[ext(file.name)],folder_path:folder,tags:[],approved:false,uploaded_by:user.id});
-    if(added.error){
+    const added=await db.from("studio_media").insert({file_path:path,filename:file.name.slice(0,255),description:file.name,usage_rights:queue.rights,mime_type:types[ext(file.name)],folder_path:folder,tags:[],approved:false,uploaded_by:user.id}).select("id").single();
+    if(added.error||!added.data?.id){
      await db.storage.from("foxon-approved-media").remove([path]).catch(()=>{});
-     throw Error(added.error.message);
+     throw Error(added.error?.message||"Media database save did not return a record.");
     }
     queue.success++;
    }catch(e){queue.errors.push(file.name+": "+e.message);}
