@@ -126,3 +126,4 @@ async function generatePost(){
 }
 $("generate").onclick=generatePost;
 window.VubaCalendarReload=load;
+window.VubaOpenPost=id=>{const post=posts.find(p=>p.id===id);if(post)edit(post);};
