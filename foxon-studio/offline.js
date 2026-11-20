@@ -123,6 +123,21 @@ function offlineDraft(args={}){
      hook+"\n\n"+detail.point+"\n\nReal app screens. Built for the trade. Coming soon.\n\nSee the FOXON line-up via the link in bio.\n\n#ToolsThatGraft #FOXONSoftware":
      "PAPERWORK AFTER THE JOB?\n\nMeet FOXON Invoice, CIS, Miles and Gas. Four tools, one trade-first attitude.\n\nReal screens. No nonsense. Coming soon.\n\nExplore via the link in bio.\n\n#FOXONSoftware #ToolsThatGraft"
  };
+ // Deliberate rhythm: some short punchy hooks and occasional detailed posts.
+ // This changes the length while keeping each channel's own voice.
+ const count=(args.existingTitles||[]).length;
+ if(count%5===1){
+   if(channel==="Facebook")captions[channel]=detail?
+     hook+"\\n\\n"+detail.point+"\\n\\nWhat would make your working day easier?\\n\\nhttps://foxonsoftware.com/":
+     "NO NONSENSE. JUST WORK.\\n\\nInvoice. CIS. Miles. Gas.\\n\\nWhich one would be useful in your working week?\\n\\nhttps://foxonsoftware.com/";
+   if(channel==="LinkedIn")captions[channel]=detail?
+     hook+"\\n\\n"+detail.point+"\\n\\nA simple workflow is only useful if it matches how tradespeople actually work. That's the FOXON design principle.\\n\\nhttps://foxonsoftware.com/":
+     "A useful trade tool starts with a real job, not a feature list.\\n\\nThat's the thinking behind FOXON's four focused apps.\\n\\nhttps://foxonsoftware.com/";
+   if(channel==="Instagram")captions[channel]=hook+"\\n\\nReal trade-focused software. Coming soon.\\n\\nSee the screens via our link in bio.\\n\\n#ToolsThatGraft";
+ }
+ if(count%5===4 && channel==="Instagram"){
+   captions[channel]=detail?hook+"\\n\\n"+detail.point+"\\n\\n"+detail.detail+"\\n\\nSwipe the real app screens. Which part would you use most?\\n\\nFOXON — BUILT FOR THE TRADE.\\n\\n#FOXONSoftware #ToolsThatGraft":captions[channel];
+ }
  const suffix="FOXON OFFLINE "+channel.toUpperCase()+" EDITORIAL STARTER. Audience: "+channelRules[channel].audience+". Suggested length: "+channelRules[channel].target+". Artwork: "+channelRules[channel].visual+". CTA: "+channelRules[channel].cta+". Read and adapt this generic draft; confirm relevance to the selected topic, product features and image before approval. Never auto-publish. Avoid identical cross-platform captions.";
  return {topic:topic||seed.topic,title:hook,pillar:args.pillar||seed.pillar,series:seed.series,format:channel==="Instagram"?"Carousel":channel==="LinkedIn"?"Single image":"Single image",caption:captions[channel],source_notes:suffix};
 }
