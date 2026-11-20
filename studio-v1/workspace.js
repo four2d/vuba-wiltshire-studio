@@ -64,26 +64,6 @@ function build(){
  $("requestChanges").onclick=()=>changeReviewStatus("changes_requested","changes_requested");
  $("approvePost").onclick=()=>changeReviewStatus("approved","approved");
  $("postStatus").insertAdjacentHTML("beforeend",'<option value="changes_requested">Changes requested</option>');
- // Original app's save handler includes a separate payload, so this module
- // persists campaign and media on its own follow-up save with RLS enforced.
- const originalSubmit=$("postForm").onsubmit;
- $("postForm").onsubmit=async e=>{
-  e.preventDefault();
-  const postId=$("postId").value;
-  if(!postId){
-   await originalSubmit(e);
-   // The original handler closes dialog after saving. Match the newly inserted row.
-   if(!$("editor").open)await assignNewPost();
-  }else{
-   const campaignId=$("postCampaign").value||null,mediaId=$("postMedia").value||null,note=$("reviewNote").value.trim();
-   await originalSubmit(e);
-   if(!$("editor").open){
-    const {error}=await db.from("studio_posts").update({campaign_id:campaignId,media_id:mediaId,review_note:note,updated_by:state.user.id}).eq("id",postId);
-    if(error)alert(error.message);
-    await refresh();
-   }
-  }
- };
  const originalEditor=$("new").onclick;
  $("new").onclick=()=>{originalEditor();fillEditorExtras();};
  $("autoSuggest").onclick=()=>{originalEditor();fillEditorExtras();$("generate").click();};
