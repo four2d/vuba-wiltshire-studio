@@ -21,6 +21,7 @@ function buildShell(){
   <div class="brand-lockup"><span class="neutral-brand-lockup"><span class="neutral-brand-icon">▦</span><span><strong>Social Studio</strong><small>Content workspace</small></span></span>
    <img src="foxon-logo-horizontal-dark.svg" alt="FOXON SOFTWARE" width="216" height="64">
    <small class="foxon-product-label">SOCIAL STUDIO</small>
+   <span class="special-edition-plate" aria-hidden="true"></span>
   </div>
   <div class="studio-workspace-label"><span class="workspace-live-dot"></span> WORKSPACE <span class="workspace-chevron">⌄</span></div>
   <div class="studio-nav-scroll">
@@ -45,6 +46,7 @@ function buildShell(){
   <div class="studio-page-heading"><div><span class="studio-kicker">FOXON SOCIAL CONTROL</span><h1>BUILT FOR THE TRADE.</h1><p>Real products. Strong stories. FOXON through and through.</p></div><div class="heading-date" id="overviewDate"></div></div>
   <div class="studio-hero">
    <div class="hero-grid-overlay" aria-hidden="true"></div>
+   <span class="special-hero-plate" aria-hidden="true"></span>
    <div class="hero-copy"><span class="hero-eyebrow"><span></span> TOOLS THAT GRAFT</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan hard-working social posts for FOXON Invoice, CIS, Miles and Gas. Use real app screens, sharp headlines and the proper FOXON look.</p>
    <div class="hero-actions"><button type="button" id="heroFillCalendar">PLAN THE NEXT 4 WEEKS</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
    <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>FOXON SOFTWARE</span><span>✦</span></div></div></div>
