@@ -231,3 +231,55 @@ body.studio-shell-ready .foxon-feed-card .foxon-feed-missing{
  background:#0b0b0b!important;color:#f2c500!important
 }
 body.studio-shell-ready .foxon-feed-card .foxon-feed-missing small{color:#fff!important}
+
+/* Higher-specificity corrections for historical !important rules. */
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-stat .stat-top small,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-stat .stat-foot,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-stat .stat-top small,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-automation-panel .automation-disclaimer,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-automation-panel .progress-label,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-automation-panel .automation-progress small,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-tip-card p,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-builder-card p,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-builder-card .builder-note,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-home-main p,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-knowledge-header p,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-doc-heading p,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-card p,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-source,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-doc-info small,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-doc-info>span{
+ color:var(--read-muted)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-card h3,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-doc-info strong,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-doc-heading h3,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-knowledge-header h3,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-filter label,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) #vubaBrain .brain-doc-tools label{
+ color:var(--read-text)!important
+}
+/* The Brain's dark hero is a deliberate illustrated surface even on light
+   themes; preserve white lettering there rather than recolouring it dark. */
+body.studio-shell-ready #vubaBrain .brain-command h2,
+body.studio-shell-ready #vubaBrain .brain-command p,
+body.studio-shell-ready #vubaBrain .brain-command .brain-overview-bar>p,
+body.studio-shell-ready #vubaBrain .brain-command .brain-overview-bar>div span{
+ color:#f6f6f6!important
+}
+body.studio-shell-ready #vubaBrain .brain-command h2 em,
+body.studio-shell-ready #vubaBrain .brain-command .brain-overview-bar>div strong{
+ color:#f2c500!important
+}
+/* Ensure selected blue/green/orange status controls still show readable text. */
+body.studio-shell-ready .mm-state{color:var(--read-text)!important}
+body.studio-shell-ready .mm-state.ok{color:var(--read-text)!important}
+body.studio-shell-ready :is(
+ .studio-navigation a.is-active,.studio-navigation a.is-active span,
+ .topbar-create,.topbar-create span,#fillCalendar,#fillCalendar span,
+ .studio-builder-card>button,.studio-builder-card>button span
+){color:var(--read-accent-text)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-navigation a.is-active,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-navigation a.is-active span{
+ color:var(--neutral-ink)!important
+}
