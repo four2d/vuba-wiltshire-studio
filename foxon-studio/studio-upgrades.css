@@ -1,0 +1,191 @@
+/* FOXON Studio upgrade, scoped components only. No theme or layout reset. */
+body.studio-shell-ready .foxon-upgrade{font-family:'Helvetica Neue',Arial,sans-serif;box-sizing:border-box}
+body.studio-shell-ready .foxon-upgrade-panel{
+ --fu-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fu-text:var(--read-text,#f4f4f4);
+ --fu-muted:var(--read-muted,#bcbcbc);
+ --fu-panel:var(--read-soft,var(--theme-panel,#171717));
+ --fu-border:var(--read-stroke,var(--theme-edge,#4b4b4b));
+ margin:0 0 25px;padding:23px;border:1px solid var(--fu-border);
+ border-radius:14px;background:var(--fu-panel);color:var(--fu-text)
+}
+body.studio-shell-ready[data-foxon-theme="classic"] .foxon-upgrade-panel{
+ --fu-accent:#f2c500;--fu-text:#f5f5f5;--fu-muted:#b6b6b6;
+ --fu-panel:#151515;--fu-border:#383838
+}
+body.studio-shell-ready .foxon-upgrade-heading{
+ display:flex;align-items:start;justify-content:space-between;gap:15px;flex-wrap:wrap
+}
+body.studio-shell-ready .foxon-upgrade-heading small{
+ display:block;margin:0 0 7px;color:var(--fu-accent,var(--read-accent,#f2c500));
+ font-size:10px;letter-spacing:.11em;font-weight:850
+}
+body.studio-shell-ready .foxon-upgrade-heading h2{
+ font-size:23px;letter-spacing:.01em;margin:0 0 5px;line-height:1.15;
+ color:var(--fu-text,var(--read-text,#f5f5f5))
+}
+body.studio-shell-ready .foxon-upgrade-heading h3{
+ margin:0;font-size:17px;color:var(--read-text,#f5f5f5)
+}
+body.studio-shell-ready .foxon-upgrade-heading p{
+ color:var(--fu-muted,var(--read-muted,#aaa));margin:0;font-size:12px;line-height:1.45
+}
+body.studio-shell-ready .foxon-upgrade-heading>button,
+body.studio-shell-ready .foxon-quality-actions>button{
+ min-height:37px;padding:8px 13px;border:1px solid var(--fu-border,var(--read-stroke,#4a4a4a));
+ background:var(--fu-accent,var(--read-accent,#f2c500));
+ color:var(--read-accent-text,#111);border-radius:8px;
+ font:800 11px/1.3 'Helvetica Neue',Arial,sans-serif;cursor:pointer;
+}
+body.studio-shell-ready .foxon-upgrade-note{
+ min-height:0;font-size:12px;line-height:1.45;color:var(--fu-muted,var(--read-muted,#bbb));
+ margin:10px 0
+}
+body.studio-shell-ready .foxon-upgrade-note:empty{display:none}
+body.studio-shell-ready .foxon-action-items{
+ margin:17px 0 19px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px
+}
+body.studio-shell-ready .foxon-action-items>button{
+ display:flex;gap:9px;align-items:center;text-align:left;width:100%;
+ padding:13px 10px;border:1px solid var(--fu-border);
+ background:var(--fu-panel);border-radius:10px;color:var(--fu-text);
+ cursor:pointer;min-width:0
+}
+body.studio-shell-ready .foxon-action-items>button:hover,
+body.studio-shell-ready .foxon-agenda>button:hover{border-color:var(--fu-accent,var(--read-accent,#f2c500))}
+body.studio-shell-ready .foxon-action-items>button>strong{
+ font-size:27px;font-weight:900;line-height:1;
+ color:var(--fu-accent,var(--read-accent,#f2c500));
+ font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif
+}
+body.studio-shell-ready .foxon-action-items>button>span:nth-child(2){min-width:0;flex:1;display:grid;gap:5px}
+body.studio-shell-ready .foxon-action-items b{font-size:11px;line-height:1.3;color:var(--fu-text)}
+body.studio-shell-ready .foxon-action-items small{
+ font-size:10px;line-height:1.4;color:var(--fu-muted)
+}
+body.studio-shell-ready .foxon-action-items>button>span:last-child{font-size:15px;color:var(--fu-accent)}
+body.studio-shell-ready .foxon-analytics-heading{
+ padding-top:16px;border-top:1px solid var(--fu-border)
+}
+body.studio-shell-ready .foxon-analytics{margin-top:15px}
+body.studio-shell-ready .foxon-analytics-row{
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:13px
+}
+body.studio-shell-ready .foxon-analytics-unit>span{
+ display:flex;justify-content:space-between;gap:8px;
+ color:var(--fu-text);font-size:11px;text-transform:capitalize
+}
+body.studio-shell-ready .foxon-analytics-unit strong{color:var(--fu-accent)}
+body.studio-shell-ready .foxon-meter{
+ margin:8px 0;height:6px;background:var(--fu-border);
+ border-radius:20px;overflow:hidden
+}
+body.studio-shell-ready .foxon-meter i{
+ display:block;height:100%;background:var(--fu-accent);border-radius:20px
+}
+body.studio-shell-ready .foxon-channel-row{
+ display:flex;gap:15px;flex-wrap:wrap;margin:12px 0 0;
+ color:var(--fu-muted);font-size:11px
+}
+body.studio-shell-ready .foxon-channel-row strong{color:var(--fu-text)}
+body.studio-shell-ready .foxon-upgrade-fine{
+ font-size:11px;line-height:1.5;color:var(--fu-muted,var(--read-muted,#bcbcbc));
+ margin:12px 0 0
+}
+body.studio-shell-ready .foxon-calendar-tools{
+ --fu-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fu-border:var(--read-stroke,var(--theme-edge,#454545));
+ display:flex;align-items:center;flex-wrap:wrap;gap:12px;
+ margin:14px 0;padding:8px 0;color:var(--read-text,#f4f4f4)
+}
+body.studio-shell-ready .foxon-calendar-toggle{
+ display:inline-flex;align-items:center;padding:3px;gap:2px;
+ border:1px solid var(--fu-border);border-radius:10px
+}
+body.studio-shell-ready .foxon-calendar-toggle button{
+ min-height:32px;padding:6px 13px;cursor:pointer;border:0;border-radius:7px;
+ color:var(--read-text,#f4f4f4);background:transparent;
+ font-size:12px;font-weight:700
+}
+body.studio-shell-ready .foxon-calendar-toggle button[aria-pressed="true"]{
+ background:var(--fu-accent);color:var(--read-accent-text,#141414)
+}
+body.studio-shell-ready .foxon-calendar-instruction,
+body.studio-shell-ready #foxonCalendarStatus{
+ font-size:11px;line-height:1.4;color:var(--read-muted,#bbb)
+}
+body.studio-shell-ready #foxonCalendarStatus:not(:empty){flex-basis:100%}
+body.studio-shell-ready .calendar .day[data-date]{
+ outline-offset:-3px
+}
+body.studio-shell-ready .calendar .day[data-date]:has(button[draggable="true"]){
+ cursor:default
+}
+body.studio-shell-ready .calendar button[data-post][draggable="true"]{
+ cursor:grab
+}
+body.studio-shell-ready .foxon-agenda{
+ --fu-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fu-border:var(--read-stroke,var(--theme-edge,#454545));
+ max-height:580px;overflow:auto;border:1px solid var(--fu-border);
+ border-radius:10px;margin:10px 0
+}
+body.studio-shell-ready .foxon-agenda[hidden]{display:none!important}
+body.studio-shell-ready .foxon-agenda>button{
+ display:flex;align-items:center;text-align:left;gap:13px;padding:13px;
+ background:transparent;color:var(--read-text,#fff);
+ border:0;border-bottom:1px solid var(--fu-border);width:100%;cursor:pointer
+}
+body.studio-shell-ready .foxon-agenda>button:last-child{border-bottom:0}
+body.studio-shell-ready .foxon-agenda-date{
+ flex:0 0 90px;font-size:11px;font-weight:800;color:var(--fu-accent)
+}
+body.studio-shell-ready .foxon-agenda-main{flex:1;min-width:0;display:grid;gap:5px}
+body.studio-shell-ready .foxon-agenda-main strong{
+ color:var(--read-text,#fff);font-size:12px;line-height:1.35
+}
+body.studio-shell-ready .foxon-agenda-main small{
+ color:var(--read-muted,#bbb);font-size:10px
+}
+body.studio-shell-ready .foxon-quality{
+ --fu-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fu-border:var(--read-stroke,var(--theme-edge,#444));
+ border:1px solid var(--fu-border);border-radius:12px;
+ background:var(--read-soft,var(--theme-panel,#171717));
+ color:var(--read-text,#f5f5f5);padding:14px;margin:17px 0
+}
+body.studio-shell-ready .foxon-quality>p{
+ font-size:12px;line-height:1.5;color:var(--read-text,#f5f5f5)
+}
+body.studio-shell-ready .foxon-quality>small{
+ font-size:10px;line-height:1.5;color:var(--read-muted,#bbb)
+}
+body.studio-shell-ready .foxon-quality-actions{
+ display:flex;align-items:end;flex-wrap:wrap;gap:9px;margin:10px 0
+}
+body.studio-shell-ready .foxon-quality-actions>label{
+ display:grid;gap:5px;flex:1;min-width:170px;font-size:11px;
+ color:var(--read-text,#fff)
+}
+body.studio-shell-ready .foxon-quality-actions select{
+ min-height:37px;max-width:100%;border-radius:7px;
+ background:var(--read-field,#222);color:var(--read-text,#fff);
+ border:1px solid var(--fu-border)
+}
+body.studio-shell-ready .foxon-quality-actions>button{
+ --fu-border:var(--read-stroke,#444)
+}
+@media(max-width:1150px){
+ body.studio-shell-ready .foxon-action-items{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+ body.studio-shell-ready .foxon-upgrade-panel{padding:15px}
+ body.studio-shell-ready .foxon-action-items{grid-template-columns:minmax(0,1fr)}
+ body.studio-shell-ready .foxon-analytics-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.studio-shell-ready .foxon-upgrade-heading h2{font-size:20px}
+ body.studio-shell-ready .foxon-agenda-date{flex-basis:75px}
+ body.studio-shell-ready .foxon-calendar-instruction{flex-basis:100%}
+}
+@media(prefers-reduced-motion:reduce){
+ body.studio-shell-ready .foxon-upgrade *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
