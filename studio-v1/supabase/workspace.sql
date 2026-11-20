@@ -49,7 +49,7 @@ alter table public.studio_review_events enable row level security;
 revoke all on public.studio_campaigns,public.studio_media,public.studio_review_events from anon;
 grant select,insert,update on public.studio_campaigns to authenticated;
 grant select,insert,update on public.studio_media to authenticated;
-grant select,insert on public.studio_review_events to authenticated;
+grant select on public.studio_review_events to authenticated;
 
 create policy "Staff can read campaigns" on public.studio_campaigns for select to authenticated using(studio_private.studio_role() is not null);
 create policy "Leads can create campaigns" on public.studio_campaigns for insert to authenticated with check(studio_private.studio_role() in ('admin','approver') and created_by=(select auth.uid()));
@@ -58,7 +58,6 @@ create policy "Staff can read media" on public.studio_media for select to authen
 create policy "Staff can register uploads" on public.studio_media for insert to authenticated with check(studio_private.studio_role() is not null and uploaded_by=(select auth.uid()) and approved=false and file_path like (select auth.uid())::text||'/%');
 create policy "Leads can approve media" on public.studio_media for update to authenticated using(studio_private.studio_role() in ('admin','approver')) with check(studio_private.studio_role() in ('admin','approver'));
 create policy "Staff can view review events" on public.studio_review_events for select to authenticated using(studio_private.studio_role() is not null);
-create policy "Staff can submit reviews" on public.studio_review_events for insert to authenticated with check(studio_private.studio_role() is not null and actor_id=(select auth.uid()) and (action in ('submitted','returned_to_draft') or studio_private.studio_role() in ('admin','approver')));
 
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
  values('vuba-approved-media','vuba-approved-media',false,10485760,array['image/jpeg','image/png','image/webp'])
@@ -84,9 +83,10 @@ begin
  new.updated_at=now();return new;
 end $$;
 
-create or replace function public.log_studio_review_transition() returns trigger language plpgsql security invoker set search_path='' as $$
+create or replace function studio_private.log_studio_review_transition() returns trigger language plpgsql security definer set search_path='' as $
 declare review_action text;
 begin
+ if (select auth.uid()) is null then raise exception 'Authenticated staff required for review transition'; end if;
  if tg_op='UPDATE' and new.status is not distinct from old.status then return new; end if;
  review_action := case
   when new.status='review' then 'submitted'
@@ -100,6 +100,6 @@ begin
  end if;
  return new;
 end $$;
-revoke all on function public.log_studio_review_transition() from public,anon;
+revoke all on function studio_private.log_studio_review_transition() from public,anon,authenticated;
 drop trigger if exists studio_review_transition on public.studio_posts;
-create trigger studio_review_transition after insert or update of status on public.studio_posts for each row execute function public.log_studio_review_transition();
+create trigger studio_review_transition after insert or update of status on public.studio_posts for each row execute function studio_private.log_studio_review_transition();
