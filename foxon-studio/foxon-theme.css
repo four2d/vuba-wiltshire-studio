@@ -307,3 +307,104 @@ body.studio-shell-ready .social-mock .mock-copy p{color:#222!important}
  body.studio-shell-ready .editorial-post-art{height:155px}
  body.studio-shell-ready .foxon-preview-title{font-size:19px}
 }
+
+
+/* FOXON-only feed preview cards — show what will be posted, not invented graphics. */
+body.studio-shell-ready .foxon-feed-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px
+}
+body.studio-shell-ready .foxon-feed-card{
+ display:flex;flex-direction:column;align-items:stretch;gap:0;
+ min-width:0;min-height:380px;padding:0;text-align:left;
+ background:#fff!important;color:#171717!important;border:1px solid #555!important;
+ border-radius:12px!important;overflow:hidden;box-shadow:none;
+ font:400 12px/1.45 'Helvetica Neue',Arial,sans-serif!important;letter-spacing:normal!important
+}
+body.studio-shell-ready .foxon-feed-card:hover,
+body.studio-shell-ready .foxon-feed-card:focus-visible{
+ border:2px solid #f2c500!important;filter:none!important
+}
+body.studio-shell-ready .foxon-feed-header{
+ display:flex;align-items:center;gap:9px;padding:10px 11px;min-height:58px;
+ background:#fff;color:#121212;border-bottom:1px solid #ebebeb
+}
+body.studio-shell-ready .foxon-feed-header>img{
+ width:51px;height:37px;max-width:51px;object-fit:contain;
+ background:#0b0b0b;padding:5px;border-radius:5px
+}
+body.studio-shell-ready .foxon-feed-profile{display:grid;gap:2px;min-width:0;flex:1}
+body.studio-shell-ready .foxon-feed-profile strong{font-weight:800;font-size:11px;white-space:nowrap;color:#171717}
+body.studio-shell-ready .foxon-feed-profile small{color:#666;font-size:10px;white-space:nowrap}
+body.studio-shell-ready .foxon-feed-channel{
+ background:#eaeaea;border-radius:4px;min-width:23px;height:23px;display:grid;
+ place-items:center;font-size:12px;font-weight:900;color:#333
+}
+body.studio-shell-ready .foxon-feed-body{display:flex;flex-direction:column;flex:1;min-width:0}
+body.studio-shell-ready .foxon-feed-media{display:block;min-width:0}
+body.studio-shell-ready .foxon-feed-image{display:block;width:100%;overflow:hidden;background:#0b0b0b}
+body.studio-shell-ready .foxon-feed-image img{
+ display:block;width:100%;height:100%;object-fit:contain;background:#0b0b0b
+}
+body.studio-shell-ready .foxon-feed-missing{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:7px;min-height:112px;padding:18px 12px;
+ color:#f2c500!important;text-align:center;background:#0b0b0b;
+ border-top:4px solid #f2c500;border-bottom:4px solid #f2c500;
+ font:800 12px/1.3 'Helvetica Neue',Arial,sans-serif;
+}
+body.studio-shell-ready .foxon-feed-missing small{font:500 10px/1.5 'Helvetica Neue',Arial,sans-serif;color:#f4f4f4!important}
+body.studio-shell-ready .foxon-feed-card.platform-instagram .foxon-feed-image{aspect-ratio:1}
+body.studio-shell-ready .foxon-feed-card.platform-instagram .foxon-feed-missing{min-height:160px}
+body.studio-shell-ready .foxon-feed-card.platform-facebook .foxon-feed-image,
+body.studio-shell-ready .foxon-feed-card.platform-linkedin .foxon-feed-image{aspect-ratio:1.91}
+body.studio-shell-ready .foxon-feed-caption{
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:7;
+ overflow:hidden;white-space:pre-line;padding:11px 12px;margin:0;
+ color:#181818!important;background:#fff!important;
+ font:500 11px/1.5 'Helvetica Neue',Arial,sans-serif!important;
+ text-transform:none!important;letter-spacing:normal!important;overflow-wrap:anywhere
+}
+body.studio-shell-ready .foxon-feed-card.platform-instagram .foxon-feed-caption{-webkit-line-clamp:4}
+body.studio-shell-ready .foxon-feed-card .foxon-feed-caption.is-empty{color:#8b3434!important}
+body.studio-shell-ready .foxon-feed-actions{
+ display:block;color:#333!important;background:#fff!important;
+ border-top:1px solid #e9e9e9;padding:7px 12px 4px;font-size:17px
+}
+body.studio-shell-ready .foxon-feed-footer{
+ display:flex;justify-content:space-between;align-items:flex-end;gap:8px;
+ margin-top:auto;padding:9px 12px 12px;background:#f4f4f4;color:#242424;border-top:1px solid #ddd
+}
+body.studio-shell-ready .foxon-feed-footer strong{
+ color:#202020!important;font:800 10px/1.35 'Helvetica Neue',Arial,sans-serif!important;
+ letter-spacing:0!important;text-transform:none!important;flex:1;overflow:hidden;
+ display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical
+}
+body.studio-shell-ready .foxon-feed-state{
+ background:#252525;color:#fff;padding:3px 5px;border-radius:4px;
+ text-transform:uppercase;font:800 9px/1.4 'Helvetica Neue',Arial,sans-serif!important;
+ white-space:nowrap
+}
+#platformPreview .mock-avatar{
+ display:grid;place-items:center;width:46px;height:46px;border-radius:8px!important;
+ background:#0b0b0b!important;padding:4px;overflow:hidden
+}
+#platformPreview .mock-avatar img{display:block;width:100%;height:100%;object-fit:contain}
+#platformPreview .mock-copy p{
+ white-space:pre-wrap!important;color:#171717!important;
+ font:500 14px/1.5 'Helvetica Neue',Arial,sans-serif!important
+}
+#platformPreview .mock-placeholder{
+ background:#0b0b0b;color:#f2c500!important;
+ border-top:5px solid #f2c500;
+ text-align:center;padding:35px 20px;font-weight:800;letter-spacing:.02em
+}
+#platformPreview .mock-placeholder small{display:block;color:#fff!important;font-weight:500;padding-top:10px}
+#platformPreview .mock-image:has(.mock-placeholder){aspect-ratio:1.6;background:#0b0b0b!important}
+#platformPreview .social-mock.platform-instagram .mock-image:has(.mock-placeholder){aspect-ratio:1}
+@media(max-width:1200px){
+ body.studio-shell-ready .foxon-feed-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ body.studio-shell-ready .foxon-feed-grid{grid-template-columns:minmax(0,1fr)}
+ body.studio-shell-ready .foxon-feed-card{min-height:340px}
+}
