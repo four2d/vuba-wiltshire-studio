@@ -795,3 +795,30 @@ body.studio-shell-ready .studio-interior-heading .subtitle{
 body.studio-shell-ready .studio-interior-heading .studio-kicker{
   color:#f2c500!important;
 }
+
+/* FOXON per-post generated artwork controls */
+body.studio-shell-ready .foxon-art-generator{
+ display:grid;gap:12px;padding:16px;background:#141414!important;
+ color:#f5f5f5!important;border:1px solid #555;border-left:4px solid #f2c500;border-radius:10px;
+}
+body.studio-shell-ready .foxon-art-generator h3{
+ margin:0;color:#fff!important;font:800 20px/1.12 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ text-transform:uppercase;
+}
+body.studio-shell-ready .foxon-art-generator p,
+body.studio-shell-ready #foxonArtStatus{color:#ddd!important;margin:0;font-size:12px;line-height:1.5}
+body.studio-shell-ready .foxon-art-generator label{color:#fff!important}
+body.studio-shell-ready .foxon-art-generator .foxon-art-checkbox{
+ display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;
+}
+body.studio-shell-ready .foxon-art-generator input[type=checkbox]{
+ width:18px!important;height:18px!important;min-height:18px!important;
+ accent-color:#f2c500;flex-shrink:0
+}
+body.studio-shell-ready #generateFOXONArt{
+ background:#f2c500!important;color:#0b0b0b!important;font-weight:800;
+}
+body.studio-shell-ready #foxonArtPreview img{
+ display:block;max-height:350px;width:auto;max-width:100%;object-fit:contain;
+ background:#080808;border:1px solid #565656;border-radius:8px
+}
