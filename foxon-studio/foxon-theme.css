@@ -408,3 +408,215 @@ body.studio-shell-ready .foxon-feed-state{
  body.studio-shell-ready .foxon-feed-grid{grid-template-columns:minmax(0,1fr)}
  body.studio-shell-ready .foxon-feed-card{min-height:340px}
 }
+
+
+/* FOXON BRAIN — official brand pass.
+   Black #0B0B0B, Yellow #F2C500; no Vuba blue/red, circles or ghosted text.
+   Scoped to FOXON-only theme, leaving the shared logic unchanged. */
+body.studio-shell-ready #vubaBrain{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ padding:0!important;color:#f5f5f5
+}
+#vubaBrain .brain-command{
+ position:relative;min-height:285px;overflow:hidden;align-items:center;
+ border:1px solid #574912!important;border-radius:12px!important;
+ background:radial-gradient(ellipse at 80% 35%,#292308 0%,#141414 49%,#0b0b0b 90%)!important;
+ color:#fff!important;isolation:isolate
+}
+#vubaBrain .brain-command::before{
+ content:"";display:block;position:absolute;top:0;left:0;right:0;height:13px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 22px,#0b0b0b 22px 44px);z-index:3
+}
+#vubaBrain .brain-command-copy{max-width:610px;position:relative;z-index:2}
+#vubaBrain .brain-overline{color:#f2c500!important;letter-spacing:.15em!important;font-weight:850}
+#vubaBrain .brain-overline-dot{background:#f2c500!important;box-shadow:0 0 0 3px #f2c50022}
+#vubaBrain .brain-command h2{
+ font:800 clamp(32px,4vw,55px)/1.02 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ letter-spacing:.01em!important;text-transform:uppercase!important;color:#fff!important
+}
+#vubaBrain .brain-command h2 em{font-style:normal!important;color:#f2c500!important}
+#vubaBrain .brain-command p{font-size:13px!important;color:#e2e2e2!important;line-height:1.65!important}
+#vubaBrain .brain-command-actions button{min-height:44px;border-radius:12px!important;font-weight:850!important;font-size:12px!important}
+#vubaBrain .brain-action-primary{background:#f2c500!important;color:#0b0b0b!important;border:2px solid #f2c500!important}
+#vubaBrain .brain-action-outline{background:#181818!important;color:#f2c500!important;border:2px solid #f2c500!important}
+#vubaBrain .foxon-brain-brand{
+ right:22px!important;top:50%!important;transform:translateY(-50%)!important;
+ width:290px!important;height:225px!important;border:2px solid #f2c500;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:12px;padding:28px 24px 16px;background:#080808!important;border-radius:3px!important;
+ box-shadow:8px 8px 0 #f2c5001f;opacity:1!important
+}
+#vubaBrain .foxon-brain-hazard{
+ position:absolute;top:0;left:0;right:0;height:14px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 16px,#0b0b0b 16px 32px)
+}
+#vubaBrain .foxon-brain-brand img{display:block;max-width:100%;width:210px;height:auto;object-fit:contain}
+#vubaBrain .foxon-brain-brand strong{
+ font:800 20px/1.1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ color:#f2c500;text-align:center;letter-spacing:.03em
+}
+#vubaBrain .foxon-brain-brand-line{
+ color:#fff!important;font-size:10px!important;font-weight:850!important;letter-spacing:.14em!important
+}
+#vubaBrain .brain-overview-bar{
+ display:flex;flex-wrap:wrap;gap:0;background:#171717!important;border:1px solid #414141!important;
+ border-radius:12px!important;box-shadow:none!important
+}
+#vubaBrain .brain-overview-bar>div{border-right:1px solid #484848!important}
+#vubaBrain .brain-overview-bar>div strong{
+ font:800 30px/1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ color:#f2c500!important
+}
+#vubaBrain .brain-overview-bar>div span{color:#e4e4e4!important;font-weight:750!important;font-size:11px!important}
+#vubaBrain .brain-overview-bar>p{color:#d4d4d4!important;max-width:260px!important}
+#vubaBrain .brain-workspace-nav{border-color:#494949!important;margin-bottom:24px}
+#vubaBrain .brain-workspace-nav button{
+ color:#e1e1e1!important;background:#202020!important;border:1px solid #484848!important;
+ border-radius:9px 9px 0 0!important;padding:12px 21px!important;min-height:44px
+}
+#vubaBrain .brain-workspace-nav button.active{
+ background:#f2c500!important;color:#0b0b0b!important;border-color:#f2c500!important;
+ font-weight:900!important
+}
+#vubaBrain .brain-knowledge-header h3,#vubaBrain .brain-doc-heading h3{
+ color:#fff!important;font:800 25px/1.08 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ letter-spacing:.012em!important;text-transform:uppercase
+}
+#vubaBrain .brain-knowledge-header p,#vubaBrain .brain-doc-heading p{color:#d4d4d4!important;font-size:12px!important}
+#vubaBrain .brain-refresh{
+ background:#252525!important;color:#f2c500!important;border:1px solid #777!important;
+ border-radius:9px!important;min-height:44px
+}
+#vubaBrain .brain-filter{
+ background:#171717!important;border:1px solid #464646!important;
+ border-radius:12px!important;box-shadow:none!important
+}
+#vubaBrain .brain-filter label{color:#ededed!important;font-size:11px!important}
+#vubaBrain .brain-filter input,#vubaBrain .brain-filter select,
+#vubaBrain .brain-doc-tools input,#vubaBrain .brain-doc-tools select{
+ background:#090909!important;color:#fff!important;border:1px solid #777!important;
+ border-radius:9px!important;min-height:44px
+}
+#vubaBrain .brain-filter input::placeholder,#vubaBrain .brain-doc-tools input::placeholder{color:#bbb!important}
+#vubaBrain .brain-show-archived input,#vubaBrain .brain-archived-toggle input{
+ accent-color:#f2c500!important;min-height:auto!important;width:auto!important
+}
+#vubaBrain .brain-library-note{color:#d1d1d1!important;font-size:11px!important}
+#vubaBrain .brain-card{
+ display:flex;flex-direction:column;gap:12px;background:#171717!important;
+ border:1px solid #444!important;border-top:4px solid #f2c500!important;
+ border-radius:10px!important;box-shadow:none!important;color:#fff!important;min-width:0
+}
+#vubaBrain .brain-card:hover{border-color:#f2c500!important;box-shadow:none!important}
+#vubaBrain .brain-card-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#vubaBrain .brain-tag{
+ background:#302908!important;color:#f2c500!important;border:1px solid #66540b!important;
+ border-radius:5px!important;font-size:10px!important;font-weight:850!important
+}
+#vubaBrain .brain-status{
+ background:#292929!important;border:1px solid #666!important;border-radius:5px!important;
+ color:#e8e8e8!important;font-size:10px!important;font-weight:850!important;padding:5px 8px
+}
+#vubaBrain .brain-status.brain-approved{border-color:#719d74!important;color:#c7f5ce!important}
+#vubaBrain .brain-status.brain-needs_review{border-color:#d6a934!important;color:#ffe49e!important}
+#vubaBrain .brain-status.brain-superseded{border-color:#888!important;color:#ddd!important}
+#vubaBrain .brain-card h3{
+ color:#fff!important;font:800 20px/1.14 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ letter-spacing:.01em!important;text-transform:uppercase;margin:0
+}
+#vubaBrain .brain-card p{color:#dedede!important;line-height:1.55!important;font-size:12px!important}
+#vubaBrain .brain-source{color:#c6c6c6!important;font-size:11px!important;overflow-wrap:anywhere}
+#vubaBrain .brain-source a{color:#f2c500!important;text-decoration:underline}
+#vubaBrain .brain-card button{
+ background:#f2c500!important;color:#0b0b0b!important;border-radius:9px!important;
+ margin-top:auto!important;min-height:44px!important;font-weight:850!important
+}
+#vubaBrain #brainMessage{color:#dedede!important}
+
+/* The document panel and dropzone must look like FOXON, not a light Vuba panel. */
+#vubaBrain #brainDocumentZone,.brain-document-zone,
+#vubaBrain[data-brain-view="documents"] .brain-document-zone{
+ background:#151515!important;color:#fff!important;border:1px solid #444!important;
+ border-radius:12px!important;box-shadow:none!important
+}
+#vubaBrain .brain-doc-heading h3{color:#fff!important}
+#vubaBrain .brain-doc-total{
+ background:#302908!important;color:#f2c500!important;border:1px solid #65520a!important;
+ border-radius:7px!important;font-size:11px!important
+}
+#vubaBrain .brain-dropzone{
+ border:2px dashed #f2c500!important;border-radius:10px!important;
+ background:#0b0b0b!important;color:#fff!important;min-height:200px!important
+}
+#vubaBrain .brain-dropzone:hover,#vubaBrain .brain-dropzone.dragging,#vubaBrain .brain-dropzone:focus-visible{
+ background:#29240a!important;outline:2px solid #f2c500!important;outline-offset:2px
+}
+#vubaBrain .brain-drop-icon{
+ width:54px!important;height:54px!important;border-radius:8px!important;
+ background:#f2c500!important;color:#0b0b0b!important;font-weight:900!important
+}
+#vubaBrain .brain-dropzone strong{
+ color:#fff!important;font:800 24px/1.1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ text-transform:uppercase!important
+}
+#vubaBrain .brain-dropzone>span,#vubaBrain .brain-dropzone small{color:#d7d7d7!important}
+#vubaBrain .brain-dropzone>span button{
+ color:#f2c500!important;background:transparent!important;
+ text-decoration:underline!important;font-size:12px!important;min-height:44px!important
+}
+#vubaBrain .brain-upload-feedback{color:#f2c500!important;font-size:12px!important}
+#vubaBrain .brain-doc-tools label{color:#efefef!important}
+#vubaBrain .brain-document-row{
+ background:#202020!important;color:#f5f5f5!important;border:1px solid #494949!important;
+ border-left:4px solid #f2c500!important;border-radius:9px!important
+}
+#vubaBrain .brain-doc-filetype{
+ background:#f2c500!important;color:#0b0b0b!important;border-radius:6px!important;
+ font-size:11px!important;font-weight:900!important
+}
+#vubaBrain .brain-doc-info strong{color:#fff!important;font-size:13px!important}
+#vubaBrain .brain-doc-info small,#vubaBrain .brain-doc-info>span{color:#d3d3d3!important}
+#vubaBrain .brain-doc-actions button{
+ background:#f2c500!important;color:#0b0b0b!important;border-radius:8px!important;
+ min-height:44px!important;font-weight:800!important
+}
+#vubaBrain .brain-doc-empty{color:#d6d6d6!important}
+#brainDialog,#brainDocumentDialog{
+ background:#151515!important;color:#fff!important;border:1px solid #f2c500!important;
+ border-radius:12px!important
+}
+#brainDialog .dialogHead,#brainDocumentDialog .dialogHead{border-color:#444!important}
+#brainDialog h2,#brainDocumentDialog h2{color:#fff!important;font-size:24px!important}
+#brainDialog label,#brainDocumentDialog label{color:#eee!important}
+#brainDialog input,#brainDialog select,#brainDialog textarea,
+#brainDocumentDialog input,#brainDocumentDialog select,#brainDocumentDialog textarea{
+ background:#0b0b0b!important;color:#fff!important;border:1px solid #777!important
+}
+#brainDialog input:disabled,#brainDialog select:disabled,#brainDialog textarea:disabled,
+#brainDocumentDialog input:disabled,#brainDocumentDialog select:disabled,#brainDocumentDialog textarea:disabled{
+ color:#ccc!important;opacity:.8
+}
+#brainDialog .hint,#brainDocumentDialog .hint{color:#ddd!important}
+#brainDialog #saveBrain,#brainDocumentDialog button[type="submit"]{
+ background:#f2c500!important;color:#0b0b0b!important;min-height:44px!important
+}
+#brainDialog #brainCopy{background:#292929!important;color:#fff!important;border:1px solid #777!important}
+#brainDialog .brain-danger-action,#brainDocumentDialog .brain-danger-action{background:#b32e2e!important;color:#fff!important}
+@media(max-width:1100px){
+ #vubaBrain .foxon-brain-brand{width:230px!important;right:14px!important}
+ #vubaBrain .brain-command-copy{max-width:70%}
+}
+@media(max-width:850px){
+ #vubaBrain .foxon-brain-brand{display:none!important}
+ #vubaBrain .brain-command-copy{max-width:100%!important}
+ #vubaBrain .brain-overview-bar>div{min-width:100px;padding:9px 12px;margin:0}
+}
+@media(max-width:550px){
+ #vubaBrain .brain-command{padding:38px 20px 23px!important;min-height:0!important}
+ #vubaBrain .brain-overview-bar{padding:10px!important}
+ #vubaBrain .brain-overview-bar>div{flex:1 1 30%!important;min-width:80px!important;margin:0!important}
+ #vubaBrain .brain-overview-bar>p{display:block!important;max-width:none!important;flex:1 1 100%!important}
+ #vubaBrain .brain-workspace-nav button{flex:1!important;padding:12px 10px!important}
+ #vubaBrain #brainDocumentZone{padding:15px!important}
+ #vubaBrain .brain-document-row{align-items:flex-start}
+}
