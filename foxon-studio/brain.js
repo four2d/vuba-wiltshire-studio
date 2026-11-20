@@ -13,14 +13,14 @@ function build(){
  <div class="brain-command">
    <div class="brain-command-copy">
      <div class="brain-overline"><span class="brain-overline-dot"></span> FOXON SOFTWARE / KNOWLEDGE BASE</div>
-     <h2>Everything we know.<br><em>All in one place.</em></h2>
-     <p>One trusted home for brand guidance, product references and decisions — so every piece of content starts with the right facts.</p>
+     <h2>KNOW THE FACTS.<br><em>MAKE IT COUNT.</em></h2>
+     <p>Approved FOXON brand rules, product facts and working documents. The right knowledge behind every post.</p>
      <div class="brain-command-actions">
        <button type="button" id="newBrainEntry" class="brain-action-primary">＋ Add knowledge</button>
        <button type="button" id="brainOpenDocuments" class="brain-action-outline">⇧ Upload documents</button>
      </div>
    </div>
-   <div class="brain-command-art" aria-hidden="true"><div class="brain-art-circle one"></div><div class="brain-art-circle two"></div><div class="brain-art-sheet back"><span></span><span></span></div><div class="brain-art-sheet front"><span class="brain-art-sigil">V</span><span></span><span></span><span></span></div></div>
+   <div class="brain-command-art foxon-brain-brand" aria-hidden="true"><div class="foxon-brain-hazard"></div><img src="foxon-logo-horizontal-dark.svg" alt="" width="235" height="71"><strong>TOOLS THAT GRAFT</strong><span class="foxon-brain-brand-line">BUILT FOR THE TRADE.</span></div>
  </div>
  <div class="brain-overview-bar">
   <div><strong id="brainCount">—</strong><span>Knowledge entries</span></div>
