@@ -63,3 +63,18 @@ All signed-in team members can read or search the Brain and submit new entries f
 **No automatic sync:** this release does not read private GitHub from the browser and has no Mac-folder watcher. Ask ChatGPT to refresh the Brain from the private repo through connected tools, or add/edit entries in the UI. A GitHub-side bridge protocol is at `four2d/Vuba-Wiltshire/docs/VUBA-BRAIN-BRIDGE.md`. Browser's **Copy as Grok handoff** only copies text; it cannot write the Mac files.
 
 Security: do not embed private repo tokens or service-role keys in public GitHub Pages files. Approval is a human editorial status; technical/stock claims still require current source verification.
+
+
+## Image-first content workflow (20 November 2026)
+
+The post editor now includes **Choose photo from library** and **Prepare image brief**.
+
+* The photo chooser searches and ranks **approved** private media by filenames, descriptions and the current post topic/caption. Relevance is a simple keyword match; it does **not** run a paid AI image-recognition service and staff must inspect the image.
+* The editor can attach a chosen photo to a draft; it is saved as `studio_posts.media_id` on the normal post save. Platform preview displays the selected signed image.
+* **Prepare image brief** creates a detailed, copyable prompt for generating new imagery through ChatGPT. The Studio itself does not call an image generation API. Upload the resulting image into Creative library for approval and then attach it to a post.
+* **Creative library > Import a photo folder** uses the browser's folder picker to import image files from a directory on the staff member's Mac, including the `OneDrive_1_19-11-2026` desktop folder when the user selects it. This app cannot read a desktop folder invisibly or remotely. Import never deletes or changes original files.
+* Upload is via the logged-in staff account to the private `vuba-approved-media` bucket with RLS. Supported formats: JPEG, PNG, WebP; max 10 MB each. Imports run in groups of 40 files, with a Next batch button. Other files and larger images are skipped. Each import requires a usage-rights statement.
+* All uploaded photos are `approved=false` until an admin or approver verifies the image and rights. No user-generated or AI-generated artwork should be depicted as a documented customer project without verification.
+* Do not use imagery from unrelated Cherry/FOXON libraries for Vuba Wiltshire. Confirm photographic rights, faces and trademarks before approval.
+
+The app code does not contain OpenAI API keys or a new paid image-generation integration. ChatGPT generation here in the conversation is a separate activity; the resulting images still require upload and approval.
