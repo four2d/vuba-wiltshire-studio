@@ -189,3 +189,23 @@ body.studio-shell-ready .foxon-quality-actions>button{
 @media(prefers-reduced-motion:reduce){
  body.studio-shell-ready .foxon-upgrade *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
 }
+/* Respect the native hidden state even when older grid CSS sets display. */
+body.studio-shell-ready #calendar[hidden],
+body.studio-shell-ready .weekdays[hidden],
+body.studio-shell-ready #foxonAgenda[hidden]{
+ display:none!important
+}
+/* Visible keyboard focus on all new interactive surfaces. */
+body.studio-shell-ready .foxon-upgrade :is(button,select):focus-visible{
+ outline:3px solid var(--read-accent,var(--theme-accent,#f2c500))!important;
+ outline-offset:3px!important
+}
+/* Keep internal content previews independent of the light theme's chrome. */
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"])
+ .foxon-upgrade-panel{
+ --fu-text:var(--read-text,#16222a);
+ --fu-muted:var(--read-muted,#4b5860);
+ --fu-panel:var(--theme-panel,#fff);
+ --fu-border:var(--theme-edge,#ccc);
+ --fu-accent:var(--read-accent,#086a9b)
+}
