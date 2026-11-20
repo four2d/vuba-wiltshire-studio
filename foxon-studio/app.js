@@ -43,7 +43,7 @@ function render(){
  const first=new Date(month.getFullYear(),month.getMonth(),1);const offset=(first.getDay()+6)%7;const start=new Date(first);start.setDate(start.getDate()-offset);
  const today=iso(new Date());let html="";
  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const day=iso(d);const dayPosts=f.filter(p=>p.scheduled_date===day);
- html+='<div class="day '+(d.getMonth()!==month.getMonth()?"out ":"")+(day===today?"today":"")+'"><span class="daynum">'+d.getDate()+'</span>'+dayPosts.map(p=>'<button data-post="'+esc(p.id)+'" class="'+esc(p.status)+'" title="'+esc(p.channel+" · "+p.status)+'">'+esc(p.title)+'</button>').join("")+'</div>';
+ html+='<div class="day '+(d.getMonth()!==month.getMonth()?"out ":"")+(day===today?"today":"")+'" data-date="'+day+'"><span class="daynum">'+d.getDate()+'</span>'+dayPosts.map(p=>'<button data-post="'+esc(p.id)+'" class="'+esc(p.status)+'" draggable="'+(["idea","draft"].includes(p.status)?"true":"false")+'" title="'+esc(p.channel+" · "+p.status)+'">'+esc(p.title)+'</button>').join("")+'</div>';
  }
  $("calendar").innerHTML=html;
  $("upcoming").innerHTML=f.filter(p=>p.scheduled_date>=today).slice(0,6).map(p=>'<div class="upcomingItem"><button data-post="'+esc(p.id)+'">'+esc(p.title)+'</button><div class="hint">'+esc(p.scheduled_date+" · "+p.status)+'</div></div>').join("")||'<p>No upcoming posts.</p>';
@@ -80,7 +80,7 @@ $("postForm").onsubmit=async e=>{
  if(!id)payload.created_by=user.id;
  const q=id?db.from("studio_posts").update(payload).eq("id",id):db.from("studio_posts").insert(payload);
  const {error}=await q;if(error)return alertError(error);
- $("editor").close();await load();await window.VubaStudioPlus?.refresh?.();
+ $("editor").close();window.dispatchEvent(new Event("foxon:post-saved"));await load();await window.VubaStudioPlus?.refresh?.();
 };
 $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))return;const {error}=await db.from("studio_posts").delete().eq("id",$("postId").value);if(error)return alertError(error);$("editor").close();await load();};
 async function generatePost(){
