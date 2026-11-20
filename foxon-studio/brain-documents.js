@@ -202,7 +202,7 @@ async function init(u){
  user=u;if(!u){$("brainDocumentDialog")?.remove();$("brainDocumentZone")?.remove();documents=[];return;}
  const {data}=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
  if(!data)return;role=data.role;
- for(let i=0;i<25&&!$("vubaBrain");i++)await new Promise(r=>setTimeout(r,100));
+ for(let i=0;i<150&&!$("vubaBrain");i++)await new Promise(r=>setTimeout(r,100));
  if(!$("vubaBrain"))return;
  build();await load();
 }
