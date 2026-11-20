@@ -82,6 +82,7 @@ function launchUI(){
   const b=e.target.closest("[data-idea-channel]");if(!b)return;
   document.querySelectorAll("[data-idea-channel]").forEach(x=>x.classList.toggle("active",x===b));
   document.getElementById("ideaMockPlatform").textContent=b.dataset.ideaChannel+" · Preview";
+  document.querySelector("#ideaPreview .social-mock").className="social-mock platform-"+b.dataset.ideaChannel.toLowerCase();
   updateIdeaMock();
  };
  document.getElementById("previewAdd").onclick=()=>addPreviewToCalendar();
@@ -165,6 +166,7 @@ function openPreview(index){
  document.getElementById("previewVisual").textContent=format==="Carousel"?"A small sequence of clear, genuine photos or approved educational graphics.":format==="Text-led"?"Text-focused content with a clear practical takeaway.":"Use genuine, relevant Vuba photography or an approved branded graphic — no fabricated products or packaging.";
  document.getElementById("previewChecks").textContent=notes;
  document.getElementById("previewCaption").value="";
+ document.querySelector("#ideaPreview .social-mock").className="social-mock platform-instagram";
  updateIdeaMock();
  document.getElementById("previewError").textContent="";
  document.getElementById("previewAI").disabled=false;
