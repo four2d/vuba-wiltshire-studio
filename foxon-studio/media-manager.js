@@ -21,7 +21,7 @@ function build(){
  manager.innerHTML=`<div class="mm-header"><div><span class="studio-kicker">VISUAL ASSET WORKSPACE</span><h2>Everything worth sharing.</h2><p>A home for your best photography, video and branded content.</p></div><div class="mm-actions"><button type="button" id="mmNewFolder">＋ New folder</button><button type="button" id="mmSelectFolder">⇧ Import folder</button><button type="button" id="mmSelectFiles" class="mm-main">＋ Upload media</button></div></div>
  <div class="mm-import">
   <div id="mmDrop" class="mm-drop" tabindex="0" role="button"><span class="mm-drop-icon">⇧</span><strong>Drop photos, videos or folders</strong><span>Keep folder structure intact, even with nested folders</span><small>JPG · PNG · WebP · MP4 · MOV · WebM · maximum 45 MB per file</small></div>
-  <label>Confirm permission to use this media before uploading<input id="mmRights" maxlength="300" placeholder="e.g. FOXON-owned artwork or photographer permission granted"></label><p class="mm-permission-note">Images and videos are saved privately as <strong>Needs review</strong>. Enter who owns them or how FOXON has permission to use them before dropping or selecting files.</p>
+  
   <input id="mmFileInput" type="file" multiple hidden accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.webm">
   <input id="mmFolderInput" type="file" webkitdirectory directory multiple hidden>
   <p id="mmStatus" role="status"></p><button id="mmContinue" type="button" hidden>Import next batch →</button>
