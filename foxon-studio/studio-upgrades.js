@@ -9,7 +9,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  const dateToday=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");};
  const plusDays=(days)=>{const d=new Date();d.setDate(d.getDate()+days);return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");};
  const fmt=d=>{if(!d)return "Unscheduled";const v=new Date(d+"T12:00:00");return Number.isNaN(v.getTime())?d:v.toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"short"});};
- const state={user:null,role:"",posts:[],approvedMedia:new Set(),brain:[],mode:"month",dragId:null,busy:false,importedMetrics:[]};
+ const state={user:null,role:"",posts:[],approvedMedia:new Set(),brain:[],mode:"month",product:"all",dragId:null,busy:false,importedMetrics:[]};
  const allowedRoles=new Set(["admin","approver","editor"]);
  const editorFields=["title","topic","date","postChannel","pillar","format","series","caption","source","postStatus"];
  function sourceName(p){const s=[p.title||"",p.topic||"",p.pillar||""].join(" ").toLowerCase();for(const n of ["invoice","cis","miles","gas"])if(new RegExp("(^|[^a-z])"+n+"([^a-z]|$)").test(s))return "FOXON "+(n==="cis"?"CIS":n[0].toUpperCase()+n.slice(1));return "General";}
@@ -162,7 +162,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const calendar=byId("calendar"),weekdays=document.querySelector("#app .weekdays");
   if(!calendar||!weekdays)return;
   const tools=document.createElement("div");tools.id="foxonCalendarTools";tools.className="foxon-upgrade foxon-calendar-tools";
-  tools.innerHTML='<div class="foxon-calendar-toggle"><button type="button" data-view="month" aria-pressed="true">Month</button><button type="button" data-view="agenda" aria-pressed="false">Agenda</button></div><span class="foxon-calendar-instruction">Drag an idea or draft onto another date to reschedule it.</span><span id="foxonCalendarStatus" role="status"></span>';
+  tools.innerHTML='<div class="foxon-calendar-toggle"><button type="button" data-view="month" aria-pressed="true">Month</button><button type="button" data-view="agenda" aria-pressed="false">Agenda</button></div><label class="foxon-product-filter">FOXON app <select id="foxonProductFilter"><option value="all">All products</option><option value="FOXON Invoice">Invoice</option><option value="FOXON CIS">CIS</option><option value="FOXON Miles">Miles</option><option value="FOXON Gas">Gas</option><option value="General">General</option></select></label><span class="foxon-calendar-instruction">Drag an idea or draft onto another date to reschedule it.</span><span id="foxonCalendarStatus" role="status"></span>';
   weekdays.insertAdjacentElement("beforebegin",tools);
   const agenda=document.createElement("div");agenda.id="foxonAgenda";agenda.className="foxon-upgrade foxon-agenda";agenda.hidden=true;calendar.insertAdjacentElement("afterend",agenda);
   tools.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{
@@ -199,6 +199,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const observer=new MutationObserver(()=>annotateCalendar());
   observer.observe(calendar,{childList:true});
   annotateCalendar();
+  byId("foxonProductFilter")?.addEventListener("change",event=>{state.product=event.target.value;annotateCalendar();renderAgenda();});
   byId("channel")?.addEventListener("change",renderAgenda);
   byId("status")?.addEventListener("change",renderAgenda);
  }
@@ -209,6 +210,8 @@ if(config.supabaseUrl && config.supabaseAnonKey){
    const p=state.posts.find(x=>x.id===button.dataset.post);
    const movable=!!p&&["idea","draft"].includes(p.status)&&allowedRoles.has(state.role);
    button.draggable=movable;
+   button.dataset.product=sourceName(p||{}).toLowerCase().replace("foxon ","");
+   button.hidden=state.product!=="all"&&sourceName(p||{})!==state.product;
    if(movable&&!button.dataset.foxonDragTip){
     button.dataset.foxonDragTip="1";
     button.title=(button.title||"")+" · Drag to reschedule";
@@ -218,7 +221,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  function renderAgenda(){
   const node=byId("foxonAgenda");if(!node)return;
   const channel=byId("channel")?.value||"",status=byId("status")?.value||"";
-  const filtered=state.posts.filter(p=>(!channel||p.channel===channel)&&(!status||p.status===status)).sort((a,b)=>(a.scheduled_date||"").localeCompare(b.scheduled_date||"")).slice(0,80);
+  const filtered=state.posts.filter(p=>(!channel||p.channel===channel)&&(!status||p.status===status)&&(state.product==="all"||sourceName(p)===state.product)).sort((a,b)=>(a.scheduled_date||"").localeCompare(b.scheduled_date||"")).slice(0,80);
   node.innerHTML=filtered.length?filtered.map(p=>'<button type="button" data-agenda-id="'+esc(p.id)+'"><span class="foxon-agenda-date">'+esc(fmt(p.scheduled_date))+'</span><span class="foxon-agenda-main"><strong>'+esc(p.title)+'</strong><small>'+esc(sourceName(p))+' · '+esc(p.channel)+' · '+esc(p.status)+'</small></span><span aria-hidden="true">↗</span></button>').join(""):'<p class="foxon-upgrade-fine">No posts match these filters.</p>';
   node.querySelectorAll("[data-agenda-id]").forEach(b=>b.addEventListener("click",()=>window.VubaOpenPost?.(b.dataset.agendaId)));
  }
