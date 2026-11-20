@@ -1,0 +1,233 @@
+/* FOXON Studio contrast layer (all nine themes).
+   Loaded last to neutralise inherited Vuba palette values.
+   Theme UI only: social previews/artwork retain their real colours. */
+body.studio-shell-ready{
+ --read-text:#f6f7f8;--read-muted:#d0d2d5;--read-field:#111;--read-field-text:#fff;
+ --read-panel:#171717;--read-stroke:#515151;--read-accent:#f2c500;--read-accent-text:#0b0b0b;
+ --read-soft:#292929;--read-soft-text:#f7f7f7;
+}
+body.studio-shell-ready[data-foxon-theme="graphite"]{
+ --read-panel:#1c232a;--read-text:#f6f8fa;--read-muted:#cbd4da;--read-field:#10171f;--read-field-text:#fff;
+ --read-stroke:#53636d;--read-accent:#b9d0df;--read-accent-text:#101820;--read-soft:#2b3741;--read-soft-text:#f6f8fa;
+}
+body.studio-shell-ready[data-foxon-theme="midnight"]{
+ --read-panel:#101c35;--read-text:#f8faff;--read-muted:#cbd9f0;--read-field:#0b142b;--read-field-text:#fff;
+ --read-stroke:#4b6592;--read-accent:#66c8ff;--read-accent-text:#071327;--read-soft:#23365b;--read-soft-text:#fff;
+}
+body.studio-shell-ready[data-foxon-theme="forest"]{
+ --read-panel:#152520;--read-text:#f3faf5;--read-muted:#d2e3d9;--read-field:#0c1914;--read-field-text:#fff;
+ --read-stroke:#4f7362;--read-accent:#b6ee71;--read-accent-text:#09150d;--read-soft:#2c4439;--read-soft-text:#f7fff9;
+}
+body.studio-shell-ready[data-foxon-theme="copper"]{
+ --read-panel:#261b17;--read-text:#fff7f1;--read-muted:#e2d0c6;--read-field:#160f0c;--read-field-text:#fff;
+ --read-stroke:#795a4b;--read-accent:#ffae76;--read-accent-text:#26120a;--read-soft:#453027;--read-soft-text:#fff8f4;
+}
+body.studio-shell-ready[data-foxon-theme="slate"]{
+ --read-panel:#222934;--read-text:#f5f7fb;--read-muted:#d1d9e4;--read-field:#161e29;--read-field-text:#fff;
+ --read-stroke:#536273;--read-accent:#a2b8d6;--read-accent-text:#101723;--read-soft:#313e50;--read-soft-text:#f5f7fb;
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]){
+ --read-panel:var(--theme-panel);--read-text:var(--neutral-ink);--read-muted:var(--theme-muted);
+ --read-field:var(--theme-panel);--read-field-text:var(--neutral-ink);
+ --read-stroke:var(--theme-edge);--read-accent:var(--theme-accent);--read-accent-text:var(--theme-accent-ink);
+ --read-soft:var(--neutral-soft);--read-soft-text:var(--neutral-ink);
+}
+/* All page headings and standard copy, including calendar and interior pages. */
+body.studio-shell-ready :is(
+ .studio-page-heading h1,.studio-interior-heading h1,.studio-page-intro h1,
+ .studio-home-main h1,.studio-home-main h2,.studio-home-main h3,
+ .studio-section-heading h2,.studio-automation-panel h2,.studio-tip-card strong,
+ .studio-builder-card h2,.studio-hero h2,.studio-hero h2 em,
+ .studio-stat .stat-number,.studio-stat strong,
+ .top h1,.panel h1,.panel h2,.panel h3,
+ .workspace-card h3,.suggestion-card h3,.brain-card h3,
+ .mm-header h2,.mm-asset-body strong,.mm-folder strong,
+ #vubaBrain .brain-knowledge-header h3,#vubaBrain .brain-doc-heading h3,
+ #vubaBrain .brain-doc-info strong,dialog h2,dialog h3,
+ .studio-upcoming-row strong,.studio-post-copy strong,
+ .editorial-post-details>strong,.studio-empty h3
+){color:var(--read-text)!important}
+body.studio-shell-ready :is(
+ .studio-page-heading p,.studio-interior-heading p,.studio-page-intro p,
+ .studio-home-main p,.studio-section-heading p,.studio-builder-card p,
+ .studio-automation-panel p,.studio-tip-card p,.studio-hero p,
+ .studio-stat small,.studio-stat .stat-foot,.studio-post-copy small,
+ .heading-date,.studio-footnote,.studio-empty p,.automation-disclaimer,
+ .progress-label,.automation-progress small,.builder-note,
+ .top p,.metrics span,.weekdays,.daynum,
+ .panel p,.panel small,.panel .hint,.workspace-card p,.workspace-card small,
+ .suggestion-card p,.suggestion-card small,.brain-card p,.brain-card small,
+ .upcomingItem,.balanceRow,.brain-source,.brain-library-note,
+ .brain-doc-info small,.brain-doc-info>span,.brain-doc-empty,
+ .mm-header p,.mm-asset-body>small,.mm-folder small,.mm-totals,
+ .mm-placeholder,.mm-import p,.mm-drop small,.mm-empty,
+ .mm-breadcrumb>span,.mm-drop>span:not(.mm-drop-icon),
+ .editorial-post-meta,.editorial-status,.studio-builder-card .builder-note,
+ #autoImageStatus,#foxonArtStatus,#assetMessage,#editorError,
+ #brainMessage,#brainFormError,#folderImportStatus,#mmStatus
+){color:var(--read-muted)!important}
+/* Explicit surfaces before their typography: no dark text on dark panels. */
+body.studio-shell-ready :is(
+ .panel,.studio-stat,.studio-builder-card,.studio-automation-panel,
+ .studio-home-main,.studio-tip-card,.workspace-card,.suggestion-card,
+ .brain-card,.day,.metrics>div,.review-history,.folder-import,.media-tools,
+ .mm-import,.mm-drop,.mm-folder,.mm-asset,.mm-asset-body,
+ .brain-document-zone,.brain-document-row,#vubaBrain,#vubaBrain .brain-filter,
+ #vubaBrain .brain-card,#vubaBrain .brain-document-zone,
+ #vubaBrain #brainDocumentZone,#vubaBrain .brain-document-row,
+ .foxon-art-generator,dialog
+){background:var(--read-panel)!important;color:var(--read-text)!important;border-color:var(--read-stroke)!important}
+body.studio-shell-ready .editorial-post-details,
+body.studio-shell-ready .editorial-post-card{
+ background:var(--read-panel)!important;color:var(--read-text)!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready :is(
+ .mm-drop strong,.mm-import label,.mm-asset-body strong,.mm-folder strong,
+ .brain-doc-info strong,.brain-doc-tools label,.brain-filter label,
+ .brain-dropzone strong,.brain-card h3,.brain-knowledge-header h3,
+ .brain-doc-heading h3,.brain-source,.brain-document-row,
+ #vubaBrain .brain-command-copy,.foxon-art-generator h3
+){color:var(--read-text)!important}
+body.studio-shell-ready :is(
+ .mm-drop small,.mm-import p,.mm-header p,.mm-asset-body small,
+ .brain-doc-info small,.brain-doc-info>span,.brain-doc-empty,
+ .brain-dropzone small,.brain-dropzone>span,.brain-knowledge-header p,
+ .brain-doc-heading p,#vubaBrain .brain-source,
+ .brain-summary,.brain-library-note,.post-image-status
+){color:var(--read-muted)!important}
+/* Media library controls and folder tiles used to retain a Vuba light palette. */
+body.studio-shell-ready :is(.mm-folder,.mm-asset,.mm-import,.mm-drop){
+ background:var(--read-panel)!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready :is(
+ .mm-actions button:not(.mm-main),.mm-controls button,
+ .mm-breadcrumb button,.mm-asset-buttons button,.mm-folder,
+ .studio-upcoming-row button,.editor-extras button,.secondary-btn,
+ .review-actions button:not(:last-child)
+){background:var(--read-soft)!important;color:var(--read-soft-text)!important;border:1px solid var(--read-stroke)!important}
+body.studio-shell-ready :is(.mm-actions .mm-main,.mm-asset-buttons button:focus-visible){
+ outline-offset:2px
+}
+body.studio-shell-ready :is(
+ .studio-stat .stat-mark,.studio-builder-icon,
+ .topbar-create,#fillCalendar,.studio-text-btn,
+ .hero-actions button:not(.hero-secondary),
+ .studio-builder-card>button,#generateFOXONArt,
+ #vubaBrain .brain-card button,#vubaBrain .brain-doc-actions button,
+ .brain-doc-filetype
+){background:var(--read-accent)!important;color:var(--read-accent-text)!important;border-color:var(--read-accent)!important}
+body.studio-shell-ready .studio-hero .hero-secondary{
+ background:transparent!important;color:var(--read-text)!important;border:1px solid var(--read-stroke)!important
+}
+body.studio-shell-ready :is(.studio-kicker,.section-eyebrow,.brain-eyebrow,.hero-eyebrow,
+ .mm-state,.mm-breadcrumb button:not(:disabled),.studio-stat .stat-number){
+ color:var(--read-accent)!important
+}
+/* Form controls, placeholders, option lists, tab buttons. */
+body.studio-shell-ready :is(input:not([type="checkbox"]),select,textarea),
+body.studio-shell-ready :is(
+ #vubaBrain .brain-filter input,#vubaBrain .brain-filter select,
+ #vubaBrain .brain-doc-tools input,#vubaBrain .brain-doc-tools select,
+ #brainDialog input,#brainDialog select,#brainDialog textarea,
+ #brainDocumentDialog input,#brainDocumentDialog select,#brainDocumentDialog textarea
+){
+ background:var(--read-field)!important;color:var(--read-field-text)!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready :is(input,textarea)::placeholder{color:var(--read-muted)!important;opacity:1}
+body.studio-shell-ready :is(label,dialog label,#vubaBrain label,.mm-import label){
+ color:var(--read-text)!important
+}
+body.studio-shell-ready :is(.studio-navigation a:not(.is-active),.studio-navigation a:not(.is-active) span){
+ color:var(--read-muted)!important
+}
+body.studio-shell-ready :is(.foxon-theme-picker label,.sidebar-signout,#studioBreadcrumb){
+ color:var(--read-text)!important
+}
+/* Calendar status colours: maintain readability rather than pale type. */
+body.studio-shell-ready .day button{
+ color:#fff!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready .day button.review{background:#79561b!important;color:#fff!important}
+body.studio-shell-ready .day button.approved{background:#216348!important;color:#fff!important}
+body.studio-shell-ready .day button.changes_requested{background:#75411f!important;color:#fff!important}
+body.studio-shell-ready .day button.scheduled{background:#614d19!important;color:#fff!important}
+/* Neutral light mode specifically: previous yellow FOXON rules carry !important,
+   so override with a consistent dark-text-on-light-surface system. */
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .panel,.studio-stat,.studio-builder-card,.studio-home-main,.studio-tip-card,
+ .studio-automation-panel,.workspace-card,.suggestion-card,.brain-card,
+ .brain-document-zone,#vubaBrain,#vubaBrain .brain-card,
+ #vubaBrain .brain-document-zone,#vubaBrain #brainDocumentZone,
+ #vubaBrain .brain-filter,#vubaBrain .brain-document-row,
+ .mm-import,.mm-drop,.mm-folder,.mm-asset,.mm-asset-body,
+ .media-tools,.folder-import,.review-history,.metrics>div,.day,dialog
+){background:var(--read-panel)!important;color:var(--read-text)!important;border-color:var(--read-stroke)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .studio-page-heading h1,.studio-interior-heading h1,.studio-page-intro h1,
+ .studio-hero h2,.studio-hero h2 em,.studio-home-main h2,
+ .studio-section-heading h2,.studio-automation-panel h2,.studio-builder-card h2,
+ .panel h1,.panel h2,.panel h3,.workspace-card h3,.suggestion-card h3,
+ .brain-card h3,.mm-header h2,.mm-asset-body strong,.mm-folder strong,
+ .top h1,.studio-stat strong,.studio-stat .stat-number,
+ #vubaBrain .brain-knowledge-header h3,#vubaBrain .brain-doc-heading h3,
+ #vubaBrain .brain-doc-info strong,dialog h2,dialog h3,
+ .editorial-post-details>strong,.studio-post-copy strong
+){color:var(--read-text)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .studio-page-heading p,.studio-interior-heading p,.studio-hero p,
+ .panel p,.panel small,.panel .hint,.studio-automation-panel p,
+ .studio-section-heading p,.studio-stat small,.studio-stat .stat-foot,
+ .workspace-card p,.workspace-card small,.suggestion-card p,.suggestion-card small,
+ .brain-card p,.brain-card small,.mm-header p,.mm-asset-body small,
+ .mm-drop small,.mm-drop>span:not(.mm-drop-icon),.mm-totals,
+ .brain-doc-info small,.brain-doc-info>span,.brain-doc-empty,
+ #vubaBrain .brain-card p,.brain-source,.hint,.editorial-post-meta,.editorial-status,
+ .studio-footnote,.post-image-status,.foxon-art-generator p
+){color:var(--read-muted)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .studio-stat .stat-number,.studio-stat strong
+){color:var(--read-text)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-navigation{
+ background:var(--theme-nav)!important;color:var(--neutral-ink)!important;border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .studio-navigation a:not(.is-active),.studio-navigation a:not(.is-active) span,
+ .studio-nav-heading,.studio-workspace-label,.sidebar-signout,#studioBreadcrumb,
+ .foxon-theme-picker label
+){color:var(--neutral-ink)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-navigation a.is-active,
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) .studio-navigation a.is-active span{
+ background:var(--neutral-soft)!important;color:var(--neutral-ink)!important
+}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .studio-kicker,.section-eyebrow,.brain-eyebrow,.hero-eyebrow,.mm-state
+){color:var(--theme-accent)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .daynum,.weekdays,.metrics span,.balanceRow,.upcomingItem
+){color:var(--read-muted)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .brain-dropzone,.foxon-art-generator,.brain-doc-filetype
+){background:var(--read-soft)!important;color:var(--read-text)!important;border-color:var(--read-stroke)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .brain-dropzone strong,.mm-drop strong,.mm-asset-body strong,.brain-doc-info strong,
+ .foxon-art-generator h3,.brain-document-row strong
+){color:var(--read-text)!important}
+body.studio-shell-ready:is([data-foxon-theme="paper"],[data-foxon-theme="ocean"],[data-foxon-theme="sand"]) :is(
+ .brain-dropzone small,.brain-dropzone>span,.foxon-art-generator p
+){color:var(--read-muted)!important}
+/* A preview is a simulation of a platform; keep its white feed and dark captions.
+   Do not recolour the actual images, artwork, profile avatars or post captions. */
+body.studio-shell-ready :is(.social-mock,.foxon-feed-card){
+ background:#fff!important;color:#171717!important;color-scheme:light
+}
+body.studio-shell-ready :is(.social-mock,.foxon-feed-card) :is(
+ .mock-head,.mock-copy,.mock-copy p,.mock-head small,
+ .foxon-feed-header,.foxon-feed-caption,.foxon-feed-footer,
+ .foxon-feed-profile strong,.foxon-feed-profile small,
+ .foxon-feed-actions
+){background:#fff!important;color:#171717!important}
+body.studio-shell-ready .foxon-feed-card .foxon-feed-footer{background:#f4f4f4!important}
+body.studio-shell-ready .foxon-feed-card .foxon-feed-missing{
+ background:#0b0b0b!important;color:#f2c500!important
+}
+body.studio-shell-ready .foxon-feed-card .foxon-feed-missing small{color:#fff!important}
