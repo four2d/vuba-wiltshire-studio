@@ -70,14 +70,6 @@ function build(){
  const observer=new MutationObserver(()=>{if($("editor").open){fillEditorExtras();}});
  observer.observe($("editor"),{attributes:true,attributeFilter:["open"]});
 }
-async function assignNewPost(){
- // Newly created item can be found by its exact editor fields and current user.
- const {data}=await db.from("studio_posts").select("id").eq("created_by",state.user.id).eq("title",$("title").value.trim()).order("created_at",{ascending:false}).limit(1);
- const id=data?.[0]?.id;if(!id)return;
- const {error}=await db.from("studio_posts").update({campaign_id:$("postCampaign").value||null,media_id:$("postMedia").value||null,review_note:$("reviewNote").value.trim(),updated_by:state.user.id}).eq("id",id);
- if(error)console.warn("Post added but media/campaign not saved:",error.message);
- await refresh();
-}
 function section(name){
  document.querySelectorAll("[data-section]").forEach(b=>b.classList.toggle("active",b.dataset.section===name));
  for(const n of ["campaigns","assets","reviews"])$(n+"Panel").hidden=n!==name;
@@ -87,7 +79,7 @@ async function refresh(){
  const [campaigns,media,posts]=await Promise.all([
   db.from("studio_campaigns").select("*").order("created_at",{ascending:false}),
   db.from("studio_media").select("*").order("created_at",{ascending:false}),
-  db.from("studio_posts").select("id,title,topic,channel,caption,pillar,status,media_id,campaign_id,review_note,scheduled_date,created_at").order("created_at",{ascending:false}).limit(250)
+  db.from("studio_posts").select("id,title,topic,channel,caption,pillar,status,media_id,campaign_id,review_note,scheduled_date,created_at,series,format,source_notes").order("created_at",{ascending:false}).limit(250)
  ]);
  for(const [name,result] of [["campaigns",campaigns],["media",media],["posts",posts]])if(result.error){$(name==="media"?"assetMessage":"campaignError")?.replaceChildren(document.createTextNode(result.error.message));return;}
  state.campaigns=campaigns.data||[];state.media=media.data||[];state.posts=posts.data||[];
@@ -166,7 +158,7 @@ function reviewPost(id){
  if(day){day.click();fillEditorExtras();return;}
  // When the post is outside the current visible month, populate the original editor directly.
  $("new").click();
- for(const [key,val] of [["postId",p.id],["topic",p.topic],["title",p.title],["date",p.scheduled_date],["caption",p.caption],["postChannel",p.channel],["pillar",p.pillar],["postStatus",p.status]])$(key).value=val||"";
+ for(const [key,val] of [["postId",p.id],["topic",p.topic],["title",p.title],["date",p.scheduled_date],["caption",p.caption],["postChannel",p.channel],["pillar",p.pillar],["postStatus",p.status],["series",p.series],["format",p.format],["source",p.source_notes]])$(key).value=val||"";
  fillEditorExtras();
 }
 async function showHistory(){
@@ -204,16 +196,11 @@ async function changeReviewStatus(status,action){
  if(status==="approved"&&!post.caption.trim()){ $("editorError").textContent="The post needs a saved caption before approval.";return;}
  const {error}=await db.from("studio_posts").update({status,review_note:note,updated_by:state.user.id}).eq("id",id);
  if(error){$("editorError").textContent=error.message;return;}
- await recordReview(id,action,note);
  $("editor").close();await refresh();
  // The calendar is owned by the main app and needs a reload to reflect review action.
  $("reviewGrid").scrollIntoView({block:"nearest"});
 }
-async function recordReview(postId,action,note){
- const {error}=await db.from("studio_review_events").insert({post_id:postId,action,note,actor_id:state.user.id});
- if(error)console.warn("Review audit unavailable",error.message);
-}
-window.VubaStudioPlus={recordReview,refresh};
+window.VubaStudioPlus={refresh};
 const {data:{session}}=await db.auth.getSession();
 await auth(session?.user||null);
 db.auth.onAuthStateChange((_,session)=>setTimeout(()=>auth(session?.user||null),0));
