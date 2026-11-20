@@ -147,3 +147,8 @@ dialog::backdrop{background:#000b}
  .brand-lockup:before{width:195px}
 }
 @media(prefers-reduced-motion:reduce){button,.studio-page{transition:none!important;animation:none!important}}
+
+/* Accessible actual-logo element, rather than a recreated brand mark. */
+.brand-lockup:before{display:none!important}
+.brand-lockup img{display:block;width:216px;max-width:100%;height:auto}
+.brand-lockup .foxon-product-label{display:block;color:#f2c500;font-size:10px;font-weight:900;letter-spacing:.24em;margin-top:11px}
