@@ -40,18 +40,21 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation .nav-glyp
  display:grid;place-items:center;
  width:26px;height:26px;min-width:26px;
  border-radius:6px;
- background:#f2c500!important;
- color:#080808!important;
- -webkit-text-fill-color:#080808!important;
+ background:#171717!important;
+ color:var(--foxon-yellow)!important;
+ -webkit-text-fill-color:var(--foxon-yellow)!important;
+ border:1px solid #171717!important;
+ border-color:#171717!important;
 }
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-navigation .nav-glyph svg {
  stroke:currentColor!important;
  width:17px;height:17px;
 }
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a.is-active .nav-glyph {
- background:#101010!important;
- color:#f2c500!important;
- -webkit-text-fill-color:#f2c500!important;
+ background:#171717!important;
+ color:var(--foxon-yellow)!important;
+ -webkit-text-fill-color:var(--foxon-yellow)!important;
+ border-color:#171717!important;
 }
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-tip-card .tip-spark {
  color:#080808!important;
