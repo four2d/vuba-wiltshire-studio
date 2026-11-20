@@ -6,7 +6,7 @@ const pillars = {"Product Education":"Useful trade","FOXON Invoice":"Products / 
 const targets = {"Useful trade":0.6,"Products / stock":0.2,"Local / software team":0.1,"Commercial":0.1};
 const seasonSets = [{"months":[11,0,1],"label":"Winter","items":[["Keeping admin organised at year-end","Trade Productivity","Trade Workflow","Discuss practical recordkeeping; avoid invented tax deadlines or legal requirements.","Carousel"],["FOXON Invoice: show a genuine screen","FOXON Invoice","Feature Explained","Use a current authorised screenshot and verified functionality.","Single image"],["What should a CIS checklist cover?","FOXON CIS","Frequently Asked","Collect audience questions; verify any compliance information against current HMRC guidance.","Text-led"],["What matters in mileage recordkeeping?","FOXON Miles","Trade Workflow","Prompt tradespeople for experiences; do not invent tax or GPS tracking claims.","Carousel"]]},{"months":[2,3,4],"label":"Spring","items":[["A simpler weekly admin routine","Trade Productivity","App Tip","Offer general organisational questions; no unsupported productivity percentages.","Carousel"],["How FOXON Software is built for UK trades","Company News","Behind the Build","Use verified development notes, product screenshots and release status.","Single image"],["Questions about gas safety paperwork","FOXON Gas","Frequently Asked","Require qualified verification of any safety/legal information.","Text-led"],["Show a useful FOXON CIS workflow","FOXON CIS","Feature Explained","Use verified, current app screens; do not imply submitted filings are supported.","Carousel"]]},{"months":[5,6,7],"label":"Summer","items":[["Trade admin while you're on the move","Trade Productivity","Trade Workflow","Discuss on-site recordkeeping without assuming an app feature exists.","Text-led"],["FOXON Miles: a real screen tour","FOXON Miles","Feature Explained","Use current app screenshot and confirm how the feature works.","Carousel"],["What makes a useful invoice?","FOXON Invoice","Frequently Asked","General practitioner questions only; verify any payment or tax rules.","Single image"],["A behind-the-build FOXON update","Behind the Software","Behind the Build","Require a genuine release note, developer update or authorised screenshot.","Single image"]]},{"months":[8,9,10],"label":"Autumn","items":[["Planning a calmer paperwork routine","Trade Productivity","Trade Workflow","Discuss organisational approaches, no invented time-saving claims.","Carousel"],["Four FOXON products: which topic helps?","Product Education","Product Spotlight","Discuss Invoice, CIS, Miles and Gas; verify current release status.","Carousel"],["How to assess a real app screenshot","Product Education","Feature Explained","Show only current approved screens and confirmed capabilities.","Single image"],["A trade question for FOXON's next content","Frequently Asked Questions","Frequently Asked","Invite questions without promising product features or launch dates.","Text-led"]]}];
 const evergreen = [["FOXON Invoice: practical questions","FOXON Invoice","Product Spotlight","Get verified functionality, approved screenshot and current availability.","Single image"],["FOXON CIS: useful recordkeeping questions","FOXON CIS","Trade Workflow","Verify claims about Construction Industry Scheme compliance against official sources.","Carousel"],["FOXON Miles: what does a good log include?","FOXON Miles","Frequently Asked","No unsupported automatic tracking or deduction claims.","Text-led"],["FOXON Gas: safety records matter","FOXON Gas","Product Spotlight","Do not provide technical gas-safety guidance without qualified verification.","Carousel"],["Tools That Graft","Company News","Behind the Build","Use official FOXON brand language, approved visuals and real company facts.","Branded graphic"],["One admin task you'd automate","Trade Productivity","Frequently Asked","Audience engagement question; do not imply features already exist.","Text-led"],["Inside the build: a verified update","Behind the Software","Behind the Build","Use approved genuine development evidence and permission.","Single image"]];
-let user=null,role=null,plan=null,posts=[],campaignPlans=[],approvedKnowledge=[],suggestions=[],previewIndex=-1,previewDraft=null,previewMedia=null,previewImageTicket=0;
+let user=null,role=null,plan=null,posts=[],campaignPlans=[],approvedKnowledge=[],suggestions=[],previewIndex=-1,previewDraft=null,previewMedia=null,previewImageTicket=0,previewChannel="Instagram";
 function launchUI(){
  const app=document.getElementById("app"); if(!app||document.getElementById("strategyArea"))return;
  const el=document.createElement("section");el.id="strategyArea";el.className="strategy-area";
@@ -22,22 +22,26 @@ function launchUI(){
  <div class="preview-section"><h3>Suggested angle</h3><p id="previewAngle"></p></div>
  <div class="preview-section"><h3>Working headline</h3><p id="previewTitle"></p></div>
  <div class="preview-section"><h3>Image / format brief</h3><p id="previewVisual"></p></div>
- <div class="preview-section"><h3>Draft caption</h3><p class="hint">Generate a draft with AI, or add the idea without a caption.</p><textarea id="previewCaption" class="preview-caption" rows="5" placeholder="Add your own caption, paste one from ChatGPT, or generate when API credits are available."></textarea><p class="hint">Edits remain in this preview until you choose Add to calendar.</p></div>
+ <div class="preview-section"><h3>Draft caption</h3><p class="hint" id="foxonChannelGuide">Select the platform below, then write its own caption.</p><textarea id="previewCaption" class="preview-caption" rows="5" placeholder="Add your own caption, paste one from ChatGPT, or generate when API credits are available."></textarea><p class="hint">Edits remain in this preview until you choose Add to calendar.</p></div>
  <div class="preview-section"><h3>How this will look</h3><div class="workspace-tabs" id="ideaPreviewChannels"><button type="button" data-idea-channel="Instagram" class="active">Instagram</button><button type="button" data-idea-channel="Facebook">Facebook</button><button type="button" data-idea-channel="LinkedIn">LinkedIn</button></div>
- <div class="social-mock"><div class="mock-head"><div class="mock-avatar">VW</div><div><strong>FOXON Software</strong><small id="ideaMockPlatform">Instagram · Preview</small></div></div><div class="mock-image" id="ideaMockImage"><div class="mock-placeholder">Looking for a suitable approved photo…</div></div><div class="mock-copy"><h3 id="ideaMockTitle"></h3><p id="ideaMockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div></div>
+ <div class="social-mock"><div class="mock-head"><div class="mock-avatar"><img src="foxon-logo-horizontal-dark.svg" alt="FOXON logo"></div><div><strong>FOXON Software</strong><small id="ideaMockPlatform">Instagram · Preview</small></div></div><div class="mock-image" id="ideaMockImage"><div class="mock-placeholder">Looking for a suitable approved photo…</div></div><div class="mock-copy"><h3 id="ideaMockTitle"></h3><p id="ideaMockCaption"></p></div><div class="mock-actions">♡ &nbsp; ◌ &nbsp; ↗</div></div></div>
  <p id="ideaImageStatus" class="hint">Finding an approved FOXON photo…</p><div class="preview-section"><h3>Checks before publishing</h3><p id="previewChecks"></p></div>
  <p id="previewError" role="status"></p>
  <div class="preview-actions"><button type="button" id="previewAI" class="secondary-btn">Generate AI draft</button><button type="button" id="previewAdd">Add to calendar</button></div>`;
  document.body.appendChild(dialog);
  document.getElementById("closePreview").onclick=()=>dialog.close();
  document.getElementById("previewAI").onclick=generatePreviewDraft;
- document.getElementById("previewCaption").oninput=updateIdeaMock;
+ document.getElementById("previewCaption").oninput=()=>{updateIdeaMock();updateChannelGuide();};
  document.getElementById("ideaPreviewChannels").onclick=e=>{
   const b=e.target.closest("[data-idea-channel]");if(!b)return;
   document.querySelectorAll("[data-idea-channel]").forEach(x=>x.classList.toggle("active",x===b));
-  document.getElementById("ideaMockPlatform").textContent=b.dataset.ideaChannel+" · Preview";
+  previewChannel=b.dataset.ideaChannel;
+  document.getElementById("ideaMockPlatform").textContent=previewChannel+" · Preview";
+  previewDraft=null;
+  document.getElementById("previewCaption").value="";
+  document.getElementById("previewError").textContent="Platform changed. Write or generate a unique "+previewChannel+" caption — not a recycled cross-post.";
   document.querySelector("#ideaPreview .social-mock").className="social-mock platform-"+b.dataset.ideaChannel.toLowerCase();
-  updateIdeaMock();
+  updateIdeaMock();updateChannelGuide();
  };
  document.getElementById("previewAdd").onclick=()=>addPreviewToCalendar();
 
@@ -131,9 +135,28 @@ async function savePlan(e){
  if(!error)await loadAll();
 }
 
+const channelGuide={
+ Facebook:{audience:"UK sole traders, established trade business owners and local trade communities",target:"Most posts 50–120 words; vary between 25–45 and 120–180",format:"Original workday photo, practical graphic or short original Reel",cta:"Practical everyday question or simple website URL"},
+ LinkedIn:{audience:"Trade business owners, construction professionals, accountants and partners",target:"Most posts 100–220 words; occasionally 50 or 250–350",format:"Proof-led app screenshot, carousel/document or original short video",cta:"Useful professional insight; thoughtful discussion, not engagement bait"},
+ Instagram:{audience:"Visually engaged tradespeople discovering FOXON",target:"Most posts 20–70 words; occasionally longer when genuinely useful",format:"4:5 visual carousel or 9:16 Reel, authentic FOXON assets",cta:"Swipe/save or link in bio; no raw caption URL"}
+};
+function updateChannelGuide(){
+ const el=document.getElementById("foxonChannelGuide");
+ if(!el)return;
+ const g=channelGuide[previewChannel]||channelGuide.Instagram;
+ const text=document.getElementById("previewCaption")?.value.trim()||"";
+ const words=text?text.split(/\\s+/).length:0;
+ const length=text.length;
+ el.textContent=previewChannel+" · "+g.audience+" · "+g.target+" · "+g.format+" · "+g.cta+". "+(words?words+" words / "+length+" characters.":"Write a unique caption for this platform.");
+}
+
 function openPreview(index){
  const item=suggestions[index]?.v;if(!item)return;
  previewIndex=index;previewDraft=null;previewMedia=null;
+ previewChannel=item[4]==="Text-led"?"LinkedIn":"Instagram";
+ document.querySelectorAll("[data-idea-channel]").forEach(b=>b.classList.toggle("active",b.dataset.ideaChannel===previewChannel));
+ document.getElementById("ideaMockPlatform").textContent=previewChannel+" · Preview";
+ updateChannelGuide();
  const ticket=++previewImageTicket;
  const [title,pillar,series,notes,format]=item;
  document.getElementById("previewHeading").textContent=title;
@@ -152,7 +175,7 @@ function openPreview(index){
   image.innerHTML=match?.url?'<img src="'+safe(match.url)+'" alt="'+safe(match.description||match.filename)+'">':'<div class="mock-placeholder">No suitable approved FOXON photo</div>';
   document.getElementById("ideaImageStatus").textContent=match?"Suggested image: "+(match.description||match.filename)+" (check before approval).":"Image needed. Import FOXON photography or prepare a new image brief in the post editor.";
  }).catch(()=>{if(ticket===previewImageTicket)document.getElementById("ideaImageStatus").textContent="Image lookup unavailable; choose one in the post editor.";});
- document.querySelector("#ideaPreview .social-mock").className="social-mock platform-instagram";
+ document.querySelector("#ideaPreview .social-mock").className="social-mock platform-"+previewChannel.toLowerCase();
  updateIdeaMock();
  document.getElementById("previewError").textContent="";
  document.getElementById("previewAI").disabled=false;
@@ -164,7 +187,7 @@ function openPreview(index){
 async function generatePreviewDraft(){
  const item=suggestions[previewIndex]?.v;if(!item)return;
  if(cfg.aiEnabled===false){
-  const starter=window.FOXONOfflineDraft?.({topic:item[0],pillar:item[1]});
+  const starter=window.FOXONOfflineDraft?.({topic:item[0],pillar:item[1],channel:previewChannel});
   if(!starter)return;
   previewDraft={topic:item[0],title:item[0].slice(0,140),caption:starter.caption,pillar:item[1],source_notes:item[3]+"\\n"+starter.source_notes};
   document.getElementById("previewCaption").value=starter.caption;
@@ -180,7 +203,7 @@ async function generatePreviewDraft(){
  try{
   const {data,error}=await db.functions.invoke(cfg.aiFunction||"draft-post",{body:{
    topic:title, title:"",pillar,source:"Editorial brief only (not verified facts): "+notes,
-   channel:format==="Text-led"?"LinkedIn":"Instagram",format
+   channel:previewChannel,format,editorial_guidance:channelGuide[previewChannel],audience:channelGuide[previewChannel].audience
   }});
   if(error){
    let message=error.message||"AI generation failed";
@@ -218,7 +241,7 @@ async function addPreviewToCalendar(){
   topic:previewDraft?.topic||v[0],title:(previewDraft?.title||v[0]).slice(0,140),
   pillar:previewDraft?.pillar||v[1],series:v[2]||null,campaign_id:v[5]||null,media_id:previewMedia?.id||null,
   format:["Carousel","Text-led","Reel","Story","Branded graphic"].includes(v[4])?v[4]:"Single image",
-  channel:v[4]==="Text-led"?"LinkedIn":"Instagram",
+  channel:previewChannel,
   status:editedCaption?"draft":"idea",scheduled_date:date,
   caption:editedCaption,
   source_notes:previewDraft?.source_notes||("IDEA ONLY — "+v[3]+"\nMarketing aim: "+(plan?.goal||"").slice(0,220)),
