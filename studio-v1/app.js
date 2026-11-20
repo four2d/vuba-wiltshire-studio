@@ -84,6 +84,20 @@ $("postForm").onsubmit=async e=>{
 $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))return;const {error}=await db.from("studio_posts").delete().eq("id",$("postId").value);if(error)return alertError(error);$("editor").close();await load();};
 async function generatePost(){
  $("editorError").textContent="";
+ if(C.aiEnabled===false){
+  const starter=window.VubaOfflineDraft?.({topic:$("topic").value.trim(),pillar:$("pillar").value,existingTitles:posts.map(p=>p.title)});
+  if(!starter)return alertError("Offline suggestions are not loaded. Please refresh.");
+  $("topic").value=starter.topic;
+  $("title").value=starter.title;
+  $("caption").value=starter.caption;
+  if(pillars.includes(starter.pillar))$("pillar").value=starter.pillar;
+  if(starter.format)$("format").value=starter.format;
+  $("series").value=starter.series||"";
+  $("source").value=starter.source_notes;
+  $("postStatus").value="draft";
+  $("editorError").textContent="Offline editorial starter: review and improve this draft before submitting. It was not written by live AI.";
+  return;
+ }
  const button=$("generate"),bigButton=$("autoSuggest");
  button.disabled=true; bigButton.disabled=true;
  button.textContent="Creating draft…";bigButton.textContent="Drafting…";
