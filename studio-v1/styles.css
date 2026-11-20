@@ -118,3 +118,87 @@
 #imageBriefDialog{width:min(770px,96vw)}
 #imageBriefText{font-size:.84rem;line-height:1.65;resize:vertical}
 @media(max-width:600px){.image-picker-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.folder-import{padding:12px}}
+
+/* Vuba Social Studio - clean, navigable application shell */
+[hidden]{display:none!important}
+body{background:#f5f7f9;color:#192f3a}
+body.studio-shell-ready main{max-width:1440px;padding-top:16px}
+body.studio-shell-ready #app{display:block}
+#studioShell{display:block}
+.studio-navigation{display:flex;gap:18px;align-items:center;padding:13px 16px;margin-bottom:24px;border:1px solid #e2e9eb;border-radius:15px;background:#fff;box-shadow:0 3px 20px #1232}
+.studio-brand{display:flex;align-items:center;gap:10px;min-width:210px}
+.studio-brand strong{font-size:.9rem;letter-spacing:-.02em;white-space:nowrap}
+.studio-brand small{font-size:.72rem;color:#66767c;white-space:nowrap}
+.studio-brand-mark{width:33px;height:33px;border-radius:9px;display:grid;place-items:center;background:#821732;color:#fff;font-weight:800}
+.studio-nav-links{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:thin;white-space:nowrap}
+.studio-nav-links a{font-size:.81rem;font-weight:650;text-decoration:none;padding:10px 13px;border-radius:9px;color:#4a5d66}
+.studio-nav-links a:hover{background:#f2f6f8;color:#035b80}
+.studio-nav-links a.is-active{background:#eaf2f6;color:#035b80}
+.studio-page{animation:studioEnter .16s ease-out}
+@keyframes studioEnter{from{opacity:.8;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.studio-kicker{display:block;font-weight:800;color:#821732;font-size:.68rem;letter-spacing:.15em;margin-bottom:10px}
+.studio-hero{display:flex;justify-content:space-between;align-items:center;gap:22px;padding:18px 4px 28px}
+.studio-hero h1{font-size:clamp(1.5rem,2.7vw,2.05rem);letter-spacing:-.04em;line-height:1.2}
+.studio-hero p{margin:0;font-size:.95rem}
+.studio-hero button{background:#821732;white-space:nowrap}
+.studio-stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:20px}
+.studio-stat{background:#fff;box-shadow:none;border:1px solid #dfe7eb;border-radius:13px;padding:21px 20px;text-align:left;display:flex;flex-direction:column;gap:7px;color:#192f3a}
+.studio-stat:hover{background:#fafdff}
+.studio-stat span{font-size:2.1rem;font-weight:800;letter-spacing:-.05em;line-height:1}
+.studio-stat small{color:#60717a;font-size:.78rem;font-weight:600}
+.studio-home-grid{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(300px,1fr);gap:18px;align-items:stretch}
+.studio-home-grid .panel{box-shadow:none;border-color:#e1e8eb}
+.studio-section-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;border-bottom:1px solid #e7edef;padding-bottom:12px;margin-bottom:4px}
+.studio-section-heading h2{font-size:1.05rem;margin:0}
+.studio-section-heading p{font-size:.8rem;margin:3px 0}
+.studio-text-btn{background:none;color:#035b80;padding:6px 8px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.studio-upcoming-row{display:flex;align-items:center;gap:15px;border-bottom:1px solid #edf1f3;padding:15px 2px}
+.studio-upcoming-row:last-child{border-bottom:0}
+.studio-post-date{font-size:.73rem;font-weight:800;color:#566e79;background:#eff4f6;border-radius:8px;padding:9px 8px;min-width:56px;text-align:center}
+.studio-post-copy{min-width:0;display:grid;gap:5px;flex:1}
+.studio-post-copy strong{font-size:.86rem;line-height:1.35}
+.studio-post-copy small{color:#667982;font-size:.72rem}
+.studio-upcoming-row button{font-size:.75rem;background:#f1f6f8;color:#035b80;padding:8px 11px}
+.studio-automation-panel{background:#fefdfd}
+.studio-automation-panel h2{font-size:1.18rem;letter-spacing:-.02em;margin-bottom:10px}
+.studio-automation-panel p{font-size:.86rem;line-height:1.6}
+.studio-automation-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:19px 0}
+.studio-automation-stats>div{border:1px solid #e8ecee;border-radius:10px;padding:13px;display:grid;gap:4px}
+.studio-automation-stats strong{font-size:1rem}
+.studio-automation-stats span{color:#667982;font-size:.73rem}
+#fillCalendar{background:#821732;width:100%}
+#fillCalendarMessage{color:#035b80;min-height:20px}
+.studio-safe-note{color:#6c7a80!important;font-size:.74rem!important}
+.studio-footnote{font-size:.76rem;color:#697d85;display:flex;align-items:center;gap:8px;margin:18px 3px}
+.studio-footnote-dot{width:7px;height:7px;background:#035b80;border-radius:50%;display:inline-block}
+.studio-page-intro{margin:12px 4px 30px}
+.studio-page-intro h1{font-size:2rem;letter-spacing:-.035em}
+.studio-builder-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1040px}
+.studio-builder-card{padding:28px;box-shadow:none}
+.studio-builder-card h2{font-size:1.1rem;margin:14px 0 8px}
+.studio-builder-card p{min-height:60px;font-size:.86rem;line-height:1.6}
+.studio-builder-card button{margin-top:10px}
+.studio-builder-icon{font-size:1.4rem;font-weight:700;color:#821732;background:#f8eef1;width:47px;height:47px;display:grid;place-items:center;border-radius:11px}
+body.studio-shell-ready #workspacePlus{margin:0;display:block}
+body.studio-shell-ready #workspacePlus>.workspace-tabs{display:none}
+body.studio-shell-ready #workspacePlus .panel{box-shadow:none}
+body.studio-shell-ready #strategyArea{margin:0}
+body.studio-shell-ready #vubaBrain{margin:0}
+body.studio-shell-ready #calendarPage .top{padding-bottom:14px}
+body.studio-shell-ready #calendarPage>.metrics{margin-bottom:18px}
+body.studio-shell-ready .layout{margin-bottom:12px}
+@media(max-width:1150px){
+ .studio-navigation{flex-direction:column;align-items:stretch;gap:12px}
+ .studio-nav-links{padding-bottom:3px}
+}
+@media(max-width:760px){
+ .studio-hero{align-items:flex-start;flex-direction:column;gap:15px}
+ .studio-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .studio-home-grid{grid-template-columns:1fr}
+ .studio-builder-actions{grid-template-columns:1fr}
+ .studio-stat{padding:15px}
+ .studio-stat span{font-size:1.7rem}
+ .studio-navigation{padding:11px}
+ .studio-brand{min-width:0}
+ .studio-page-intro h1{font-size:1.65rem}
+}
