@@ -60,6 +60,7 @@ function build(){
  $("mmForm").onsubmit=save;
  $("mmArchive").onclick=archive;
  const zone=$("mmDrop");let depth=0;
+ $("mmStatus").textContent="Ready. Confirm usage rights above, then drop or select your images. Files will be stored privately for review.";
  zone.ondragenter=e=>{e.preventDefault();depth++;zone.classList.add("dragging");};
  zone.ondragover=e=>e.preventDefault();
  zone.ondragleave=e=>{e.preventDefault();depth=Math.max(0,depth-1);if(!depth)zone.classList.remove("dragging");};
@@ -100,7 +101,7 @@ async function ensureFolder(path){
 async function begin(input,withFolders){
  if(busy)return;
  const rights=$("mmRights").value.trim();
- if(!rights){$("mmStatus").textContent="Confirm usage rights before importing.";return;}
+ if(!rights){$("mmStatus").textContent="UPLOAD NOT STARTED: Please enter image usage rights above the drop area first, then select or drop your files again."; $("mmRights").focus();return;}
  const records=input.map(x=>{
   const file=x.file||x,relative=clean(x.relative||file.webkitRelativePath||file.name),parts=relative.split("/");
   parts.pop();
@@ -109,7 +110,7 @@ async function begin(input,withFolders){
  if(!records.length){$("mmStatus").textContent="No supported files were found.";return;}
  queue={records:records.filter(x=>x.file.size<=limit),skipped:records.filter(x=>x.file.size>limit).length,offset:0,success:0,errors:[],rights};
  if(!queue.records.length){$("mmStatus").textContent="Files exceed the current 45 MB upload limit.";return;}
- await processBatch();
+ try{await processBatch();}catch(error){$("mmStatus").textContent="UPLOAD FAILED: "+(error?.message||String(error));console.error("FOXON media upload",error);}
 }
 async function processBatch(){
  if(!queue||busy)return;
@@ -139,7 +140,7 @@ async function processBatch(){
   $("mmContinue").hidden=!more;
   if(!more)queue=null;
   await load();
- }finally{busy=false;}
+ }catch(error){$("mmStatus").textContent="UPLOAD FAILED: "+(error?.message||String(error));console.error("FOXON media processing",error);}finally{busy=false;}
 }
 async function createFolder(){
  if(!user)return;
@@ -225,7 +226,8 @@ async function init(u){
  if(!u){$("mediaManager")?.remove();$("mmDialog")?.remove();return;}
  const {data}=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
  if(!data)return;role=data.role;
- for(let i=0;i<30&&!$("assetsPanel");i++)await new Promise(resolve=>setTimeout(resolve,100));
+ for(let i=0;i<150&&!$("assetsPanel");i++)await new Promise(resolve=>setTimeout(resolve,100));
+ if(!$("assetsPanel")){console.error("FOXON media library could not initialise");return;}
  build();await load();
 }
 const {data:{session}}=await db.auth.getSession();await init(session?.user||null);
