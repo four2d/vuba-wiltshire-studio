@@ -21,7 +21,7 @@ function buildShell(){
   <div class="studio-nav-links">${pages.map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'">'+esc(name)+'</a>').join("")}</div>
  </nav>
  <section id="studioHome" class="studio-page" aria-label="Overview">
-  <div class="studio-hero"><div><span class="studio-kicker">WORKSPACE OVERVIEW</span><h1>Good afternoon, Vuba team.</h1><p>Your marketing at a glance. Create, review and approve from one place.</p></div><button type="button" id="homeCreatePost">+ New post</button></div>
+  <div class="studio-hero"><div><span class="studio-kicker">WORKSPACE OVERVIEW</span><h1>Welcome to Vuba Social Studio.</h1><p>Your marketing at a glance. Create, review and approve from one place.</p></div><button type="button" id="homeCreatePost">+ New post</button></div>
   <div class="studio-stat-grid">
    <button type="button" data-dash-route="calendar" class="studio-stat"><span id="dashUpcoming">–</span><small>Next 28 days</small></button>
    <button type="button" data-dash-route="reviews" class="studio-stat"><span id="dashReview">–</span><small>Awaiting approval</small></button>
