@@ -61,6 +61,9 @@ function edit(p){
  $("postChannel").value=p?.channel||"Instagram";$("pillar").value=p?.pillar||pillars[0];
  $("format").value=p?.format||"Single image";$("series").value=p?.series||"";$("caption").value=p?.caption||"";$("source").value=p?.source_notes||"";
  $("postStatus").value=p?.status||"idea";
+ if($("postCampaign"))$("postCampaign").value=p?.campaign_id||"";
+ if($("postMedia"))$("postMedia").value=p?.media_id||"";
+ if($("reviewNote"))$("reviewNote").value=p?.review_note||"";
  for(const o of $("postStatus").options)o.disabled=(["approved","scheduled"].includes(o.value)&&!["admin","approver"].includes(role))||(p?.status==="approved"&&o.value==="review"&&role==="editor");
  $("delete").hidden=!p||role!=="admin";
  $("editor").showModal();
@@ -72,11 +75,11 @@ $("postForm").onsubmit=async e=>{
  if(!$("title").value.trim())return alertError("Add a title or use Suggest AI post to write one.");
  if(["approved","scheduled"].includes(status)&&!["admin","approver"].includes(role))return alertError("Only an approver can approve posts.");
  if(status==="scheduled"&&!($("caption").value.trim()))return alertError("A scheduled post needs a caption.");
- const payload={topic:$("topic").value.trim()||$("title").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
+ const payload={campaign_id:$("postCampaign")?.value||null,media_id:$("postMedia")?.value||null,review_note:$("reviewNote")?.value.trim()||"",topic:$("topic").value.trim()||$("title").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
  if(!id)payload.created_by=user.id;
  const q=id?db.from("studio_posts").update(payload).eq("id",id):db.from("studio_posts").insert(payload);
  const {error}=await q;if(error)return alertError(error);
- $("editor").close();await load();
+ $("editor").close();await load();await window.VubaStudioPlus?.refresh?.();
 };
 $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))return;const {error}=await db.from("studio_posts").delete().eq("id",$("postId").value);if(error)return alertError(error);$("editor").close();await load();};
 async function generatePost(){
@@ -106,3 +109,4 @@ async function generatePost(){
  }
 }
 $("generate").onclick=generatePost;
+window.VubaCalendarReload=load;
