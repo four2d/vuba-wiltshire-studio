@@ -17,34 +17,62 @@ function buildShell(){
  const root=$("app");
  const shell=document.createElement("div");shell.id="studioShell";
  shell.innerHTML=`
- <nav class="studio-navigation" aria-label="Studio pages"><div class="studio-brand"><span class="studio-brand-mark">V</span><strong>Social Studio</strong><small>Vuba Wiltshire</small></div>
-  <div class="studio-nav-links">${pages.filter(x=>["home","calendar","builder","ideas","reviews"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'">'+esc(name)+'</a>').join("")}<details id="studioMore" class="studio-more"><summary>More</summary><div class="studio-more-menu">${pages.filter(x=>["plan","campaigns","media","brain"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'">'+esc(name)+'</a>').join("")}</div></details></div>
- </nav>
- <section id="studioHome" class="studio-page" aria-label="Overview">
-  <div class="studio-hero"><div><span class="studio-kicker">WORKSPACE OVERVIEW</span><h1>Welcome to Vuba Social Studio.</h1><p>Your marketing at a glance. Create, review and approve from one place.</p></div><button type="button" id="homeCreatePost">+ New post</button></div>
-  <div class="studio-stat-grid">
-   <button type="button" data-dash-route="calendar" class="studio-stat"><span id="dashUpcoming">–</span><small>Next 28 days</small></button>
-   <button type="button" data-dash-route="reviews" class="studio-stat"><span id="dashReview">–</span><small>Awaiting approval</small></button>
-   <button type="button" data-dash-route="media" class="studio-stat"><span id="dashImages">–</span><small>Posts needing an image</small></button>
-   <button type="button" data-dash-route="calendar" class="studio-stat"><span id="dashGaps">–</span><small>Open publishing slots</small></button>
+ <aside class="studio-navigation" aria-label="Studio navigation">
+  <div class="brand-lockup">
+   <div class="brand-monogram" aria-hidden="true"><svg viewBox="0 0 42 42" fill="none"><path d="M8 11L21 32 34 11" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><path d="M14 11H28" stroke="currentColor" stroke-width="2"/></svg></div>
+   <div><strong>VUBA <span>WILTSHIRE</span></strong><small>SOCIAL STUDIO</small></div>
   </div>
-  <div class="studio-home-grid"><section class="panel studio-home-main"><div class="studio-section-heading"><div><h2>Coming up</h2><p>Drafts and posts awaiting attention</p></div><button type="button" class="studio-text-btn" data-dash-route="calendar">Open calendar</button></div><div id="dashList"><p class="hint">Loading posts…</p></div></section>
-  <section class="panel studio-automation-panel"><span class="studio-kicker">NO-CREDIT AUTOMATION</span><h2>Keep the calendar moving</h2>
-   <p>Fill the next four weeks with trade-first editorial drafts. Existing posts stay untouched; new images are matched only from approved photographs.</p>
-   <div class="studio-automation-stats"><div><strong>4 weeks</strong><span>Rolling plan</span></div><div><strong>4 slots</strong><span>Per week</span></div></div>
-   <button id="fillCalendar" type="button">Fill calendar gaps</button><p id="fillCalendarMessage" class="hint" role="status"></p>
-   <p class="studio-safe-note">Creates drafts only. No AI credits, automatic publishing or unverified stock claims.</p>
-  </section></div>
-  <div class="studio-footnote"><span class="studio-footnote-dot"></span> Posts require approval before publishing. Automated social-network publishing is not connected yet.</div>
+  <div class="studio-workspace-label"><span class="workspace-live-dot"></span> WORKSPACE <span class="workspace-chevron">⌄</span></div>
+  <div class="studio-nav-scroll">
+   <span class="studio-nav-heading">WORKSPACE</span>
+   <div class="studio-nav-links">
+    ${pages.filter(x=>["home","calendar","builder","ideas","reviews"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
+   </div>
+   <span class="studio-nav-heading secondary-heading">MANAGE</span>
+   <div class="studio-nav-links studio-secondary-links">
+    ${pages.filter(x=>["plan","campaigns","media","brain"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
+   </div>
+  </div>
+  <div class="sidebar-bottom">
+   <div class="sidebar-brand-chip"><span>V</span><div><strong>Vuba Wiltshire</strong><small>Team workspace</small></div></div>
+   <button type="button" id="sidebarSignout" class="sidebar-signout">Sign out <span>↗</span></button>
+  </div>
+ </aside>
+ <div class="studio-topbar"><button type="button" id="studioMobileMenu" class="mobile-menu-btn" aria-label="Open navigation" aria-expanded="false">☰</button><span id="studioBreadcrumb">Overview</span><div class="topbar-right"><span class="studio-live-pill"><i></i> No-credit mode</span><button type="button" id="topbarNewPost" class="topbar-create"><span>＋</span> Create post</button></div></div>
+ <button type="button" id="studioNavShade" class="studio-nav-shade" aria-label="Close navigation" hidden></button>
+ <section id="studioHome" class="studio-page" aria-label="Overview">
+  <div class="studio-page-heading"><div><span class="studio-kicker">YOUR CONTENT COMMAND CENTRE</span><h1>Good to see you.</h1><p>Everything your marketing needs, nothing it doesn't.</p></div><div class="heading-date" id="overviewDate"></div></div>
+  <div class="studio-hero">
+   <div class="hero-grid-overlay" aria-hidden="true"></div>
+   <div class="hero-copy"><span class="hero-eyebrow"><span></span> AUTOMATED CONTENT STUDIO</span><h2>Great content.<br><em>Without the busywork.</em></h2><p>Build a consistent, professional presence for Vuba Wiltshire. Your next four weeks of content are a click away.</p>
+   <div class="hero-actions"><button type="button" id="heroFillCalendar">✦ &nbsp; Plan my next 4 weeks</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
+   <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>VUBA WILTSHIRE</span><span>✦</span></div></div></div>
+  </div>
+  <div class="studio-stat-grid">
+   <button type="button" data-dash-route="calendar" class="studio-stat"><span class="stat-top"><small>PLANNED CONTENT</small><span class="stat-mark">↗</span></span><span class="stat-number" id="dashUpcoming">–</span><span class="stat-foot">Posts in the next 28 days</span></button>
+   <button type="button" data-dash-route="reviews" class="studio-stat"><span class="stat-top"><small>NEEDS APPROVAL</small><span class="stat-mark amber">◷</span></span><span class="stat-number" id="dashReview">–</span><span class="stat-foot">Waiting for your review</span></button>
+   <button type="button" data-dash-route="media" class="studio-stat"><span class="stat-top"><small>IMAGES NEEDED</small><span class="stat-mark rose">▧</span></span><span class="stat-number" id="dashImages">–</span><span class="stat-foot">Posts awaiting a visual</span></button>
+   <button type="button" data-dash-route="calendar" class="studio-stat"><span class="stat-top"><small>CONTENT OPPORTUNITIES</small><span class="stat-mark blue">＋</span></span><span class="stat-number" id="dashGaps">–</span><span class="stat-foot">Open slots to fill</span></button>
+  </div>
+  <div class="studio-home-grid">
+   <section class="panel studio-home-main"><div class="studio-section-heading"><div><span class="section-eyebrow">EDITORIAL PIPELINE</span><h2>On the horizon</h2><p>Upcoming stories, ready to take shape.</p></div><button type="button" class="studio-text-btn" data-dash-route="calendar">Full calendar <span>↗</span></button></div><div id="dashList"><p class="hint">Loading your editorial queue…</p></div></section>
+   <div class="home-side-stack"><section class="panel studio-automation-panel"><div class="automation-icon">✦</div><span class="studio-kicker">YOUR CONTENT ENGINE</span><h2>Keep the momentum.</h2><p>Fill gaps with seasonal, trade-first draft ideas. Match approved photography automatically where available.</p>
+   <div class="automation-progress"><div class="progress-label"><span>4-week editorial plan</span><strong id="planProgress">0%</strong></div><div class="progress-track"><span id="planProgressBar"></span></div><small>Based on your planned publishing slots</small></div>
+   <button id="fillCalendar" type="button">Fill calendar gaps <span>→</span></button><p id="fillCalendarMessage" class="hint" role="status"></p><div class="automation-disclaimer">✳ &nbsp; Drafts only. Approval always stays with your team.</div>
+   </section>
+   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>A more visual feed starts here.</strong><p>Add your approved Vuba photography to bring every post to life.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
+   </div>
+  </div>
+  <div class="studio-footnote"><span class="studio-footnote-dot"></span> Your team stays in control. Nothing publishes until it has been approved and connected to a publishing channel.</div>
  </section>
  <section id="studioBuilder" class="studio-page" aria-label="Post builder">
-   <div class="studio-page-intro"><span class="studio-kicker">CREATE CONTENT</span><h1>Post builder</h1><p>Start with a topic, let the no-credit editor prepare a draft, and match an approved image automatically.</p></div>
+   <div class="studio-page-heading"><div><span class="studio-kicker">THE CREATIVE WORKSPACE</span><h1>Make something great.</h1><p>From an idea to a polished, image-led post in a few steps.</p></div></div>
    <div class="studio-builder-actions">
-    <article class="panel studio-builder-card"><div class="studio-builder-icon">✦</div><h2>Create a suggested post</h2><p>Get a ready-to-edit caption and look for a relevant approved library image.</p><button id="builderSuggest" type="button">Create suggested draft</button></article>
-    <article class="panel studio-builder-card"><div class="studio-builder-icon">+</div><h2>Start from your own idea</h2><p>Choose the channel, write the caption and select or generate an image brief where required.</p><button id="builderBlank" type="button">Create blank post</button></article>
-   </div>
-   <p class="hint">Image creation within the website still requires a generation service. You can match approved photos without API credits.</p>
+    <article class="panel studio-builder-card featured"><div class="studio-builder-icon">✦</div><div class="builder-card-index">01 / SMART START</div><h2>Let the Studio lead.</h2><p>We'll suggest a relevant topic, prepare your first draft and search approved Vuba imagery automatically.</p><div class="builder-visual"><span class="builder-visual-chip">✦ &nbsp; CONTENT ASSISTANT</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-visual-photo">▧ &nbsp; Library image matched</span></div><button id="builderSuggest" type="button">Create a suggested draft <span>→</span></button></article>
+    <article class="panel studio-builder-card"><div class="studio-builder-icon secondary">＋</div><div class="builder-card-index">02 / YOUR DIRECTION</div><h2>Start with your idea.</h2><p>Got something specific to say? Set the topic, choose your channel and make it your own.</p><div class="builder-visual simple"><span class="builder-blank-label">YOUR NEXT POST</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-corner-accent"></span></div><button id="builderBlank" type="button">Create a blank post <span>→</span></button></article>
+   </div><div class="builder-note"><span>ⓘ</span> Automatic text and image matching work without API credits. New AI-generated images will require a connected generation service.</div>
  </section>`;
+
  root.prepend(shell);
  $("homeCreatePost").onclick=()=>navigate("builder");
  $("builderSuggest").onclick=()=>{$("autoSuggest")?.click();};
