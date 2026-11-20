@@ -12,5 +12,6 @@ if(!valid){
   await import("./brain-documents.js?v=20261120m");
   await import("./media-tools.js?v=20261120m");
   await import("./media-manager.js?v=20261120m");
+  await import("./artwork.js?v=20261120art1");
   await import("./shell.js?v=20261120m");
 }
