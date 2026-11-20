@@ -57,3 +57,14 @@
 
 .day button.changes_requested{background:#995317}
 #previewCaption{width:100%;min-height:120px}
+
+.social-mock{display:flex;flex-direction:column}
+.social-mock .mock-head{order:0}
+.social-mock .mock-image{order:1}
+.social-mock .mock-copy{order:2}
+.social-mock .mock-actions{order:3}
+.social-mock.platform-facebook .mock-copy,.social-mock.platform-linkedin .mock-copy{order:1}
+.social-mock.platform-facebook .mock-image,.social-mock.platform-linkedin .mock-image{order:2;aspect-ratio:1.91/1}
+.social-mock.platform-linkedin .mock-avatar{border-radius:8px;background:#17689d}
+.social-mock.platform-facebook .mock-avatar{background:#1765bd}
+.social-mock.platform-linkedin .mock-actions{font-size:.88rem;color:#356c85}
