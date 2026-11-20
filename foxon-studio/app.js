@@ -26,6 +26,18 @@ async function boot(u){
  }catch(e){$("app").hidden=true;$("auth").hidden=false;alertError(e,"authError");}
 }
 $("login").onsubmit=async e=>{e.preventDefault();$("authError").textContent="";const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});if(error)alertError(error,"authError");};
+$("register").onclick=async ()=>{
+ const email=$("email").value.trim(), password=$("password").value;
+ $("authError").textContent="";
+ if(!email||!password){$("authError").textContent="Enter your email address and a new password, then choose Create FOXON account.";return;}
+ $("register").disabled=true;
+ try{
+  const {error}=await db.auth.signUp({email,password,options:{emailRedirectTo:location.origin+location.pathname}});
+  if(error)throw error;
+  $("authError").textContent="Registration submitted. Check your email for a confirmation link (if required). Your FOXON account will need staff approval before you can enter the Studio.";
+ }catch(e){$("authError").textContent=e?.message||String(e);}
+ finally{$("register").disabled=false;}
+};
 $("logout").onclick=()=>db.auth.signOut();
 async function load(){
  const {data,error}=await db.from("studio_posts").select("*").order("scheduled_date",{ascending:true}).limit(500);
