@@ -191,7 +191,7 @@ function openPreview(index){
  document.getElementById("previewCaption").value="";
  document.getElementById("ideaMockImage").innerHTML='<div class="mock-placeholder">Looking for a suitable approved photo…</div>';
  document.getElementById("ideaImageStatus").textContent="Checking approved Vuba photos…";
- window.VubaMediaAssist?.chooseForBuilder?.([title,pillar].join(" "),{attach:false}).then(match=>{
+ Promise.resolve(window.VubaMediaAssist?.chooseForBuilder?.([title,pillar].join(" "),{attach:false})).then(match=>{
   if(previewIndex!==index||ticket!==previewImageTicket)return;
   previewMedia=match;
   const image=document.getElementById("ideaMockImage");
