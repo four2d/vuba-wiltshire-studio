@@ -145,7 +145,7 @@ function updateChannelGuide(){
  if(!el)return;
  const g=channelGuide[previewChannel]||channelGuide.Instagram;
  const text=document.getElementById("previewCaption")?.value.trim()||"";
- const words=text?text.split(/\\s+/).length:0;
+ const words=text?text.split(/\s+/).length:0;
  const length=text.length;
  el.textContent=previewChannel+" · "+g.audience+" · "+g.target+" · "+g.format+" · "+g.cta+". "+(words?words+" words / "+length+" characters.":"Write a unique caption for this platform.");
 }
