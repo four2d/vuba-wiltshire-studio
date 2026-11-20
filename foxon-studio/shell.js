@@ -106,9 +106,8 @@ function buildShell(){
  shell.querySelectorAll("[data-dash-route]").forEach(b=>b.onclick=()=>navigate(b.dataset.dashRoute));
  $("fillCalendar").onclick=fillCalendar;
  window.addEventListener("hashchange",route);
- const watch=new MutationObserver(()=>{applyVisibility();upgradeUtilityIcons();});
- watch.observe(root,{childList:true,subtree:true});
- upgradeUtilityIcons();
+ const watch=new MutationObserver(()=>applyVisibility());
+ watch.observe(root,{childList:true});
  document.body.classList.add("studio-shell-ready");
  route();
 }
@@ -149,97 +148,22 @@ function toggleMobileMenu(force){
  $("studioMobileMenu")?.setAttribute("aria-expanded",String(open));
  $("studioNavShade").hidden=!open;
 }
-/* Icons are deliberately a single consistent set of drawn SVG shapes:
-   no Unicode placeholders, emoji, font glyph dependencies or broken circles. */
-/* Unified FOXON icon artwork: deliberately defined in one place so
-   Classic and all Special Editions use the same crisp linework. */
-const studioIcons={
- home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/>',
- calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/>',
- builder:'<path d="M12 19l7-7 3 3-7 7h-3zM18 13l3-3-3-3-3 3M3 21h7"/>',
- ideas:'<path d="M9 18h6M10 22h4M9 15.2A7 7 0 1 1 15 15c-.8.6-1 1.4-1 3h-4c0-1.5-.3-2.2-1-2.8Z"/>',
- reviews:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m7.5 12 3 3 6-6"/>',
- plan:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
- campaigns:'<path d="m3 10 11-5v14L3 14zM14 8l5-3v14l-5-3M6 15v5h4v-4"/>',
- media:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 17 5-5 4 4 3-3 6 5"/>',
- brain:'<path d="M12 5c-3-2-6-2-9-1v16c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1zM12 5v16"/>',
- planned:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7.5 15l2.5 2.5 5-5"/>',
- approval:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
- images:'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 17 5-5 4 4 3-3 6 5"/><path d="M17 17v4m-2-2h4"/>',
- opportunities:'<circle cx="12" cy="12" r="9"/><path d="M12 7v10M7 12h10"/>',
- assistant:'<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z"/>',
- spark:'<path d="m12 3 2 7 7 2-7 2-2 7-2-7-7-2 7-2z"/>',
- add:'<path d="M12 5v14M5 12h14"/>',
- arrow:'<path d="M5 12h14m-6-6 6 6-6 6"/>',
- external:'<path d="M13 5h6v6M19 5l-9 9"/><path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>',
- upload:'<path d="M12 16V3m-5 5 5-5 5 5M4 17v3h16v-3"/>',
- info:'<circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/>',
- document:'<path d="M7 2h7l5 5v15H7zM14 2v6h5M10 13h6M10 17h6"/>'
-};
-function studioIcon(name){
- return '<svg class="foxon-icon" data-foxon-icon="'+name+'" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">'+(studioIcons[name]||studioIcons.spark)+'</svg>';
-}
 function installNavGlyphs(){
- const root=document.getElementById("studioShell");
- if(!root)return;
- root.querySelectorAll("[data-glyph]").forEach(el=>{
-  el.innerHTML=studioIcon(el.dataset.glyph);
+ const icons={
+  home:"M3 11.5 12 4l9 7.5V21H3z M9 21v-7h6v7",
+  calendar:"M3 6h18v15H3z M7 3v6 M17 3v6 M3 11h18",
+  builder:"M4 20h16 M5 15l10-10 4 4-10 10H5z",
+  ideas:"M9 18h6 M10 22h4 M12 2a7 7 0 0 0-4 13c1 1 1 2 1 3h6c0-1 0-2 1-3a7 7 0 0 0-4-13z",
+  reviews:"M4 12l5 5L20 6 M3 3h18v18H3z",
+  plan:"M12 3v18 M3 12h18 M6 6l12 12 M18 6L6 18",
+  campaigns:"M3 11l11-5v12L3 13z M14 8l5-3v14l-5-3 M6 14v6",
+  media:"M3 4h18v16H3z M3 16l6-6 5 5 3-3 4 4 M16 9h.01",
+  brain:"M12 5C9 3 6 4 3 5v15c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-2-9 0z M12 5v16"
+ };
+ document.querySelectorAll("#studioShell [data-glyph]").forEach(el=>{
+  const path=icons[el.dataset.glyph]||icons.home;
+  el.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+path+'"/></svg>';
  });
- const positions=[
-  [".studio-stat-grid .studio-stat:nth-child(1) .stat-mark","planned"],
-  [".studio-stat-grid .studio-stat:nth-child(2) .stat-mark","approval"],
-  [".studio-stat-grid .studio-stat:nth-child(3) .stat-mark","images"],
-  [".studio-stat-grid .studio-stat:nth-child(4) .stat-mark","opportunities"],
-  [".studio-automation-panel .automation-icon","assistant"],
-  [".studio-tip-card .tip-spark","spark"],
-  [".studio-builder-card.featured .studio-builder-icon","assistant"],
-  [".studio-builder-card:not(.featured) .studio-builder-icon","add"],
-  ["#topbarNewPost>span","add"],
-  [".studio-builder-card.featured .builder-visual-chip","assistant"]
- ];
- positions.forEach(([selector,kind])=>{
-  const el=root.querySelector(selector);
-  if(!el)return;
-  // Builder visual chip contains useful label: prepend rather than replace.
-  if(el.classList.contains("builder-visual-chip")){
-   el.innerHTML=studioIcon(kind)+" CONTENT ASSISTANT";
-  }else el.innerHTML=studioIcon(kind);
- });
- const actions=[
-  ["#heroExploreIdeas>span","external"],[".studio-text-btn>span","external"],
-  [".studio-tip-card button>span","external"],
-  [".studio-builder-card.featured button>span","arrow"],
-  [".studio-builder-card:not(.featured) button>span","arrow"],
-  [".studio-automation-panel #fillCalendar>span","arrow"],
-  [".sidebar-signout>span","external"],
-  [".studio-builder-card .builder-note>span","info"]
- ];
- actions.forEach(([selector,kind])=>{
-  const el=root.querySelector(selector);
-  if(el)el.innerHTML=studioIcon(kind);
- });
-}
-/* Upgrade persistent utility icon slots across dynamically rendered pages.
-   Preserve all button labels and click handlers; only change leading symbols. */
-function upgradeUtilityIcons(){
- const slots=[
-  ["#mmNewFolder","add",/^[＋+]/],
-  ["#mmSelectFiles","upload",/^[＋+]/],
-  ["#mmSelectFolder","upload",/^⇧/],
-  ["#mmDrop .mm-drop-icon","upload",/^⇧/],
-  ["#newBrainEntry","add",/^[＋+]/],
-  ['[data-brain-tab="knowledge"]',"assistant",/^✦/],
-  ['[data-brain-tab="documents"]',"document",/^▤/]
- ];
- for(const [selector,kind,test] of slots){
-  const el=document.querySelector(selector);
-  if(!el||el.querySelector(".foxon-icon"))continue;
-  const child=[...el.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&test.test(n.textContent.trimStart()));
-  if(!child)continue;
-  child.textContent=child.textContent.replace(test,"").trimStart();
-  el.insertAdjacentHTML("afterbegin",studioIcon(kind));
-  el.classList.add("foxon-icon-button");
- }
 }
 function navigate(name){location.hash=name;route();}
 function currentRoute(){
