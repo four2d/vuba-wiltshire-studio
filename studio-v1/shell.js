@@ -74,7 +74,14 @@ function buildShell(){
  </section>`;
 
  root.prepend(shell);
- $("homeCreatePost").onclick=()=>navigate("builder");
+ $("heroFillCalendar").onclick=fillCalendar;
+ $("heroExploreIdeas").onclick=()=>navigate("ideas");
+ $("sidebarSignout").onclick=()=>document.getElementById("logout")?.click();
+ $("topbarNewPost").onclick=()=>document.getElementById("new")?.click();
+ $("studioMobileMenu").onclick=()=>toggleMobileMenu();
+ $("studioNavShade").onclick=()=>toggleMobileMenu(false);
+ $("overviewDate").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ installNavGlyphs();
  $("builderSuggest").onclick=()=>{$("autoSuggest")?.click();};
  $("builderBlank").onclick=()=>{$("new")?.click();};
  shell.querySelectorAll("[data-dash-route]").forEach(b=>b.onclick=()=>navigate(b.dataset.dashRoute));
@@ -85,6 +92,29 @@ function buildShell(){
  document.body.classList.add("studio-shell-ready");
  route();
 }
+function toggleMobileMenu(force){
+ const open=typeof force==="boolean"?force:!document.body.classList.contains("studio-nav-open");
+ document.body.classList.toggle("studio-nav-open",open);
+ $("studioMobileMenu")?.setAttribute("aria-expanded",String(open));
+ $("studioNavShade").hidden=!open;
+}
+function installNavGlyphs(){
+ const icons={
+  home:"M3 11.5 12 4l9 7.5V21H3z M9 21v-7h6v7",
+  calendar:"M3 6h18v15H3z M7 3v6 M17 3v6 M3 11h18",
+  builder:"M4 20h16 M5 15l10-10 4 4-10 10H5z",
+  ideas:"M9 18h6 M10 22h4 M12 2a7 7 0 0 0-4 13c1 1 1 2 1 3h6c0-1 0-2 1-3a7 7 0 0 0-4-13z",
+  reviews:"M4 12l5 5L20 6 M3 3h18v18H3z",
+  plan:"M12 3v18 M3 12h18 M6 6l12 12 M18 6L6 18",
+  campaigns:"M3 11l11-5v12L3 13z M14 8l5-3v14l-5-3 M6 14v6",
+  media:"M3 4h18v16H3z M3 16l6-6 5 5 3-3 4 4 M16 9h.01",
+  brain:"M12 5C9 3 6 4 3 5v15c3-1 6-1 9 1 3-2 6-2 9-1V5c-3-1-6-2-9 0z M12 5v16"
+ };
+ document.querySelectorAll("#studioShell [data-glyph]").forEach(el=>{
+  const path=icons[el.dataset.glyph]||icons.home;
+  el.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="'+path+'"/></svg>';
+ });
+}
 function navigate(name){location.hash=name;route();}
 function currentRoute(){
  const token=location.hash.replace(/^#/,"").split("?")[0];
@@ -93,6 +123,10 @@ function currentRoute(){
 function route(){
  if(!$("studioShell"))return;
  const name=currentRoute();activeRoute=name;
+ const label=pages.find(p=>p[0]===name)?.[1]||"Overview";
+ $("studioBreadcrumb").textContent=label;
+ document.title=label+" · Vuba Social Studio";
+ if(document.body.classList.contains("studio-nav-open"))toggleMobileMenu(false);
  $("studioShell").querySelectorAll("[data-route-link]").forEach(a=>{
   const on=a.dataset.routeLink===name;
   a.classList.toggle("is-active",on);
@@ -101,6 +135,7 @@ function route(){
  const more=$("studioMore");if(more){more.classList.toggle("has-active",["plan","campaigns","media","brain"].includes(name));more.open=false;}
  applyVisibility();
  if(name==="home")refreshDashboard();
+ window.scrollTo?.({top:0,behavior:"instant"});
  if(name==="campaigns"||name==="media"||name==="reviews")window.VubaStudioPlus?.refresh?.();
 }
 function show(el,visible){if(el)el.hidden=!visible;}
@@ -159,12 +194,36 @@ async function refreshDashboard(){
  $("dashReview").textContent=pending.length;
  $("dashImages").textContent=noImage;
  $("dashGaps").textContent=gaps;
- const shortlisted=upcoming.slice(0,7);
- $("dashList").innerHTML=shortlisted.map(p=>`<div class="studio-upcoming-row"><div class="studio-post-date">${new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"})}</div><div class="studio-post-copy"><strong>${esc(p.title)}</strong><small>${esc(p.channel)} · ${esc(p.status.replaceAll("_"," "))}${!p.media_id?" · Image needed":""}</small></div><button type="button" data-dash-edit="${esc(p.id)}">Edit</button></div>`).join("")||"<p class='hint'>No upcoming posts yet. Fill calendar gaps to get started.</p>";
- $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{
-  navigate("calendar");
-  window.VubaOpenPost?.(b.dataset.dashEdit);
- });
+ const shortlisted=upcoming.slice(0,6);
+ const assetIds=[...new Set(shortlisted.map(p=>p.media_id).filter(Boolean))];
+ let urls={};
+ if(assetIds.length){
+  const assets=await db.from("studio_media").select("id,file_path").in("id",assetIds).eq("approved",true);
+  if(!assets.error){
+   await Promise.all((assets.data||[]).map(async media=>{
+    const link=await db.storage.from("vuba-approved-media").createSignedUrl(media.file_path,3600);
+    if(link.data?.signedUrl)urls[media.id]=link.data.signedUrl;
+   }));
+  }
+ }
+ const symbols={"Instagram":"◎","Facebook":"f","LinkedIn":"in"};
+ $("dashList").innerHTML=shortlisted.length?'<div class="editorial-post-grid">'+shortlisted.map((p,i)=>{
+  const image=urls[p.media_id];
+  const date=new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+  const status=p.status.replaceAll("_"," ");
+  return '<button type="button" class="editorial-post-card" data-dash-edit="'+esc(p.id)+'">'+
+   '<span class="editorial-post-art art-'+i%4+'">'+
+    (image?'<img loading="lazy" src="'+esc(image)+'" alt="Approved Vuba post image">':
+    '<span class="editorial-art-pattern"><span></span><span></span><span></span></span><span class="editorial-image-needed">IMAGE TO ADD</span>')+
+    '<span class="editorial-channel">'+esc(symbols[p.channel]||"✦")+'</span></span>'+
+   '<span class="editorial-post-details"><span class="editorial-post-meta">'+esc(date)+' <span>·</span> '+esc(p.channel)+'</span>'+
+   '<strong>'+esc(p.title)+'</strong><span class="editorial-status status-'+esc(p.status)+'"><i></i>'+esc(status)+'</span></span></button>';
+ }).join("")+'</div>':"<div class='studio-empty'><span>✦</span><h3>Make room for something good.</h3><p>Your next posts will appear here once you've planned them.</p><button type='button' id='emptyPlan'>Plan content →</button></div>";
+ $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{navigate("calendar");window.VubaOpenPost?.(b.dataset.dashEdit)});
+ if($("emptyPlan"))$("emptyPlan").onclick=fillCalendar;
+ const coverage=slots.length?Math.round((slots.length-gaps)/slots.length*100):100;
+ $("planProgress").textContent=coverage+"%";
+ $("planProgressBar").style.width=coverage+"%";
  if(mediaResult.error)$("fillCalendarMessage").textContent="Media library unavailable: "+mediaResult.error.message;
 }
 async function fillCalendar(){
