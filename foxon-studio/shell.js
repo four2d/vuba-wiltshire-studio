@@ -41,11 +41,11 @@ function buildShell(){
  <div class="studio-topbar"><button type="button" id="studioMobileMenu" class="mobile-menu-btn" aria-label="Open navigation" aria-expanded="false">☰</button><span id="studioBreadcrumb">Overview</span><div class="topbar-right"><span class="studio-live-pill"><i></i> No-credit mode</span><button type="button" id="topbarNewPost" class="topbar-create"><span>＋</span> Create post</button></div></div>
  <button type="button" id="studioNavShade" class="studio-nav-shade" aria-label="Close navigation" hidden></button>
  <section id="studioHome" class="studio-page" aria-label="Overview">
-  <div class="studio-page-heading"><div><span class="studio-kicker">YOUR CONTENT COMMAND CENTRE</span><h1>Good to see you.</h1><p>Everything your marketing needs, nothing it doesn't.</p></div><div class="heading-date" id="overviewDate"></div></div>
+  <div class="studio-page-heading"><div><span class="studio-kicker">FOXON SOCIAL CONTROL</span><h1>BUILT FOR THE TRADE.</h1><p>Real products. Strong stories. FOXON through and through.</p></div><div class="heading-date" id="overviewDate"></div></div>
   <div class="studio-hero">
    <div class="hero-grid-overlay" aria-hidden="true"></div>
-   <div class="hero-copy"><span class="hero-eyebrow"><span></span> AUTOMATED CONTENT STUDIO</span><h2>Great content.<br><em>Without the busywork.</em></h2><p>Build a consistent, professional presence for FOXON Software. Your next four weeks of content are a click away.</p>
-   <div class="hero-actions"><button type="button" id="heroFillCalendar">✦ &nbsp; Plan my next 4 weeks</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
+   <div class="hero-copy"><span class="hero-eyebrow"><span></span> TOOLS THAT GRAFT</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan hard-working social posts for FOXON Invoice, CIS, Miles and Gas. Use real app screens, sharp headlines and the proper FOXON look.</p>
+   <div class="hero-actions"><button type="button" id="heroFillCalendar">PLAN THE NEXT 4 WEEKS</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
    <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>FOXON SOFTWARE</span><span>✦</span></div></div></div>
   </div>
   <div class="studio-stat-grid">
@@ -56,17 +56,17 @@ function buildShell(){
   </div>
   <div class="studio-home-grid">
    <section class="panel studio-home-main"><div class="studio-section-heading"><div><span class="section-eyebrow">EDITORIAL PIPELINE</span><h2>On the horizon</h2><p>Upcoming stories, ready to take shape.</p></div><button type="button" class="studio-text-btn" data-dash-route="calendar">Full calendar <span>↗</span></button></div><div id="dashList"><p class="hint">Loading your editorial queue…</p></div></section>
-   <div class="home-side-stack"><section class="panel studio-automation-panel"><div class="automation-icon">✦</div><span class="studio-kicker">YOUR CONTENT ENGINE</span><h2>Keep the momentum.</h2><p>Fill gaps with seasonal, trade-first draft ideas. Match approved photography automatically where available.</p>
+   <div class="home-side-stack"><section class="panel studio-automation-panel"><div class="automation-icon">✦</div><span class="studio-kicker">YOUR EDITORIAL TOOLKIT</span><h2>KEEP IT MOVING.</h2><p>Fill gaps with seasonal, trade-first draft ideas. Match approved photography automatically where available.</p>
    <div class="automation-progress"><div class="progress-label"><span>4-week editorial plan</span><strong id="planProgress">0%</strong></div><div class="progress-track"><span id="planProgressBar"></span></div><small>Based on your planned publishing slots</small></div>
    <button id="fillCalendar" type="button">Fill calendar gaps <span>→</span></button><p id="fillCalendarMessage" class="hint" role="status"></p><div class="automation-disclaimer">✳ &nbsp; Drafts only. Approval always stays with your team.</div>
    </section>
-   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>A more visual feed starts here.</strong><p>Add your approved FOXON product photography to bring every post to life.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
+   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>SHOW THE TOOL.</strong><p>Use official FOXON screens, brand graphics and approved product imagery. Keep the details true to the apps.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
    </div>
   </div>
   <div class="studio-footnote"><span class="studio-footnote-dot"></span> Your team stays in control. Nothing publishes until it has been approved and connected to a publishing channel.</div>
  </section>
  <section id="studioBuilder" class="studio-page" aria-label="Post builder">
-   <div class="studio-page-heading"><div><span class="studio-kicker">THE CREATIVE WORKSPACE</span><h1>Make something great.</h1><p>From an idea to a polished, image-led post in a few steps.</p></div></div>
+   <div class="studio-page-heading"><div><span class="studio-kicker">FOXON POST BUILDER</span><h1>MAKE IT COUNT.</h1><p>Sharp copy. Genuine FOXON screens. No nonsense.</p></div></div>
    <div class="studio-builder-actions">
     <article class="panel studio-builder-card featured"><div class="studio-builder-icon">✦</div><div class="builder-card-index">01 / SMART START</div><h2>Let the Studio lead.</h2><p>We'll suggest a relevant topic, prepare your first draft and search approved FOXON imagery automatically.</p><div class="builder-visual"><span class="builder-visual-chip">✦ &nbsp; CONTENT ASSISTANT</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-visual-photo">▧ &nbsp; Library image matched</span></div><button id="builderSuggest" type="button">Create a suggested draft <span>→</span></button></article>
     <article class="panel studio-builder-card"><div class="studio-builder-icon secondary">＋</div><div class="builder-card-index">02 / YOUR DIRECTION</div><h2>Start with your idea.</h2><p>Got something specific to say? Set the topic, choose your channel and make it your own.</p><div class="builder-visual simple"><span class="builder-blank-label">YOUR NEXT POST</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-corner-accent"></span></div><button id="builderBlank" type="button">Create a blank post <span>→</span></button></article>
