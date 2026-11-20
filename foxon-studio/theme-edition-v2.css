@@ -459,3 +459,54 @@ body.studio-shell-ready:is([data-foxon-theme="futuristic"],[data-foxon-theme="st
  .mock-head,.mock-copy,.mock-copy p,.foxon-feed-header,.foxon-feed-caption,.foxon-feed-footer,
  .foxon-feed-profile strong,.foxon-feed-profile small
 ){background:#fff!important;color:#171717!important}
+
+/* Illustrated edgework makes the entire sidebar feel like the edition,
+   not merely its accent colour. Navigation and theme controls stay above it. */
+body.studio-shell-ready:is(
+ [data-foxon-theme="futuristic"],[data-foxon-theme="steampunk"],
+ [data-foxon-theme="christmas"],[data-foxon-theme="synthwave"],
+ [data-foxon-theme="arcade"]
+) .studio-navigation{position:fixed;isolation:isolate}
+body.studio-shell-ready:is(
+ [data-foxon-theme="futuristic"],[data-foxon-theme="steampunk"],
+ [data-foxon-theme="christmas"],[data-foxon-theme="synthwave"],
+ [data-foxon-theme="arcade"]
+) .studio-navigation::after{
+ content:"";position:absolute;inset:0;z-index:0!important;
+ background:var(--edition-nav-art) center center / 100% 100% no-repeat!important;
+ opacity:.75!important;transform:none!important;pointer-events:none!important
+}
+body.studio-shell-ready:is(
+ [data-foxon-theme="futuristic"],[data-foxon-theme="steampunk"],
+ [data-foxon-theme="christmas"],[data-foxon-theme="synthwave"],
+ [data-foxon-theme="arcade"]
+) .studio-navigation :is(
+ .brand-lockup,.studio-workspace-label,.studio-nav-scroll,
+ .foxon-theme-picker,.sidebar-bottom
+){position:relative;z-index:2}
+body.studio-shell-ready[data-foxon-theme="futuristic"]{--edition-nav-art:url('./theme-art/trim-futuristic.svg')}
+body.studio-shell-ready[data-foxon-theme="steampunk"]{--edition-nav-art:url('./theme-art/trim-steampunk.svg')}
+body.studio-shell-ready[data-foxon-theme="christmas"]{--edition-nav-art:url('./theme-art/trim-christmas.svg')}
+body.studio-shell-ready[data-foxon-theme="synthwave"]{--edition-nav-art:url('./theme-art/trim-synthwave.svg')}
+body.studio-shell-ready[data-foxon-theme="arcade"]{--edition-nav-art:url('./theme-art/trim-arcade.svg')}
+/* The shared top bar stays functional; its trim follows the selected theme. */
+body.studio-shell-ready[data-foxon-theme="steampunk"] .studio-topbar{
+ background:linear-gradient(90deg,#2b1c11,#4e321a)!important;
+ border-bottom:5px ridge #a97842!important
+}
+body.studio-shell-ready[data-foxon-theme="christmas"] .studio-topbar{
+ background:linear-gradient(90deg,#06372a,#164b36)!important;
+ border-bottom:5px solid #e0c378!important
+}
+body.studio-shell-ready[data-foxon-theme="arcade"] .studio-topbar{
+ background:linear-gradient(90deg,#23184b,#1c1435)!important;
+ border-bottom:5px solid #a47cea!important
+}
+body.studio-shell-ready[data-foxon-theme="futuristic"] .studio-topbar{
+ background:linear-gradient(90deg,#071526,#112639)!important;
+ border-bottom:3px solid #69f3f9!important
+}
+body.studio-shell-ready[data-foxon-theme="synthwave"] .studio-topbar{
+ background:linear-gradient(90deg,#201039,#451858)!important;
+ border-bottom:3px solid #f58bdf!important
+}
