@@ -53,6 +53,7 @@ $("channel").onchange=render;$("status").onchange=render;
 $("prev").onclick=()=>{month.setMonth(month.getMonth()-1);render()};
 $("next").onclick=()=>{month.setMonth(month.getMonth()+1);render()};
 $("new").onclick=()=>edit(null);
+$("autoSuggest").onclick=()=>{edit(null);generatePost();};
 $("close").onclick=()=>$("editor").close();
 function edit(p){
  $("postForm").reset();$("editorError").textContent="";$("postId").value=p?.id||"";$("editorTitle").textContent=p?"Edit post":"New post";
@@ -68,23 +69,40 @@ $("postForm").onsubmit=async e=>{
  e.preventDefault();$("editorError").textContent="";
  const id=$("postId").value,old=posts.find(p=>p.id===id);
  const status=$("postStatus").value;
+ if(!$("title").value.trim())return alertError("Add a title or use Suggest AI post to write one.");
  if(["approved","scheduled"].includes(status)&&!["admin","approver"].includes(role))return alertError("Only an approver can approve posts.");
  if(status==="scheduled"&&!($("caption").value.trim()))return alertError("A scheduled post needs a caption.");
- const payload={topic:$("topic").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
+ const payload={topic:$("topic").value.trim()||$("title").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
  if(!id)payload.created_by=user.id;
  const q=id?db.from("studio_posts").update(payload).eq("id",id):db.from("studio_posts").insert(payload);
  const {error}=await q;if(error)return alertError(error);
  $("editor").close();await load();
 };
 $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))return;const {error}=await db.from("studio_posts").delete().eq("id",$("postId").value);if(error)return alertError(error);$("editor").close();await load();};
-$("generate").onclick=async()=>{
+async function generatePost(){
  $("editorError").textContent="";
- const topic=$("topic").value.trim();if(!topic)return alertError("Enter a specific topic in the Topic field first.");
- const confirmed=$("source").value.trim();if(!confirmed)return alertError("Add confirmed facts or a source before requesting AI content.");
- $("generate").disabled=true;
+ const button=$("generate"),bigButton=$("autoSuggest");
+ button.disabled=true; bigButton.disabled=true;
+ button.textContent="Creating draft…";bigButton.textContent="Drafting…";
  try{
- const {data,error}=await db.functions.invoke(C.aiFunction||"draft-post",{body:{topic,channel:$("postChannel").value,pillar:$("pillar").value,source:confirmed,format:$("format").value}});
- if(error)throw error;if(!data?.caption)throw Error("AI returned no caption.");
- $("caption").value=data.caption;$("postStatus").value="draft";
- }catch(e){alertError(e)}finally{$("generate").disabled=false}
-};
+  const {data,error}=await db.functions.invoke(C.aiFunction||"draft-post",{body:{
+    topic:$("topic").value.trim(),title:$("title").value.trim(),
+    channel:$("postChannel").value,pillar:$("pillar").value,
+    source:$("source").value.trim(),format:$("format").value
+  }});
+  if(error){
+    let message=error.message||"AI request failed";
+    try{const details=await error.context?.json();message=details?.error||message;}catch(_){}
+    throw Error(message);
+  }
+  if(!data?.caption||!data?.title||!data?.topic)throw Error("AI did not return a complete post.");
+  $("topic").value=data.topic;$("title").value=data.title;$("caption").value=data.caption;
+  if(pillars.includes(data.pillar))$("pillar").value=data.pillar;
+  if(data.source_notes)$("source").value=data.source_notes;
+  $("postStatus").value="draft";
+ }catch(e){alertError(e)}finally{
+  button.disabled=false;bigButton.disabled=false;
+  button.textContent="Suggest AI post";bigButton.textContent="Suggest AI post";
+ }
+}
+$("generate").onclick=generatePost;
