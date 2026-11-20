@@ -117,8 +117,8 @@ if(config.supabaseUrl && config.supabaseAnonKey){
    if(post.scheduled_date===day.dataset.date)return;
    if(!confirm('Move "'+post.title+'" to '+fmt(day.dataset.date)+'? This changes its planned date only.'))return;
    const status=byId("foxonCalendarStatus");status.textContent="Moving draft…";
-   const {error}=await db.from("studio_posts").update({scheduled_date:day.dataset.date,updated_by:state.user.id}).eq("id",id).in("status",["idea","draft"]);
-   if(error){status.textContent="Could not move: "+error.message;return;}
+   const {data,error}=await db.from("studio_posts").update({scheduled_date:day.dataset.date,updated_by:state.user.id}).eq("id",id).in("status",["idea","draft"]).select("id").maybeSingle();
+   if(error||!data){status.textContent="Could not move: "+(error?.message||"Draft changed or permission denied.");return;}
    status.textContent="Planned date updated. No social post was published.";
    await window.VubaCalendarReload?.();await refresh();
   });
@@ -132,18 +132,15 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  }
  function annotateCalendar(){
   const calendar=byId("calendar");if(!calendar)return;
-  const label=byId("month")?.textContent?.trim();if(!label)return;
-  const base=new Date("1 "+label+" 12:00:00");if(Number.isNaN(base.getTime()))return;
-  const start=new Date(base.getFullYear(),base.getMonth(),1);
-  start.setDate(start.getDate()-(start.getDay()+6)%7);
-  calendar.querySelectorAll(".day").forEach((day,i)=>{
-   const date=new Date(start);date.setDate(start.getDate()+i);
-   day.dataset.date=[date.getFullYear(),String(date.getMonth()+1).padStart(2,"0"),String(date.getDate()).padStart(2,"0")].join("-");
-   day.querySelectorAll("button[data-post]").forEach(button=>{
-    const p=state.posts.find(x=>x.id===button.dataset.post);
-    button.draggable=!!p&&["idea","draft"].includes(p.status)&&allowedRoles.has(state.role);
-    if(button.draggable)button.title=(button.title||"")+" · Drag to reschedule";
-   });
+  // The calendar now owns canonical YYYY-MM-DD attributes. No locale-dependent date parsing.
+  calendar.querySelectorAll(".day[data-date] button[data-post]").forEach(button=>{
+   const p=state.posts.find(x=>x.id===button.dataset.post);
+   const movable=!!p&&["idea","draft"].includes(p.status)&&allowedRoles.has(state.role);
+   button.draggable=movable;
+   if(movable&&!button.dataset.foxonDragTip){
+    button.dataset.foxonDragTip="1";
+    button.title=(button.title||"")+" · Drag to reschedule";
+   }
   });
  }
  function renderAgenda(){
