@@ -4,6 +4,20 @@ const db=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
 const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let signedIn=null,media=[],signedUrls={},selectedMedia="",renderTicket=0,batchOffset=0;
+const imageSynonyms={
+ "driveway":["driveway","drive","resin","surface","finish","paving"],
+ "blend":["blend","sample","aggregate","stone","gravel","colour","color"],
+ "colour":["colour","color","blend","sample","aggregate"],
+ "winter":["winter","weather","rain","cold","site","conditions"],
+ "forecast":["weather","rain","winter","site","conditions"],
+ "planning":["plan","planning","site","installer","team","work"],
+ "handover":["team","meeting","planning","site","contractor"],
+ "depot":["depot","warehouse","trade","pallet","stock"],
+ "installer":["installer","installation","trowel","tool","site","work"],
+ "question":["question","faq","graphic","advice","guide"],
+ "faq":["question","faq","graphic","guide"]
+};
+
 const maxFile=10*1024*1024;
 const permitted=new Set(["image/jpeg","image/png","image/webp"]);
 function imageWords(str){
@@ -15,6 +29,34 @@ function ranking(m,words){
  return words.reduce((score,w)=>score+(text.includes(w)?3:0),0);
 }
 function currentTopic(){return [$("title")?.value,$("topic")?.value,$("caption")?.value,$("pillar")?.value].filter(Boolean).join(" ");}
+function bestForText(input){
+ const words=[...new Set(imageWords(input))];
+ const expanded=[...new Set(words.flatMap(w=>[w,...(imageSynonyms[w]||[])]))];
+ const ranked=media.filter(x=>x.approved&&signedUrls[x.id]).map(m=>({m,score:ranking(m,expanded)})).sort((a,b)=>b.score-a.score);
+ // A real, descriptive keyword match is required; never silently pick the first photo.
+ return ranked[0]?.score>=3?{...ranked[0].m,score:ranked[0].score,url:signedUrls[ranked[0].m.id]}:null;
+}
+async function chooseForBuilder(input,{attach=true,force=false}={}){
+ await loadMedia();
+ const match=bestForText(input||currentTopic());
+ if(!attach)return match;
+ if(!$("postMedia"))return match;
+ if($("postMedia").value&&!force){showAutoMessage("A photo is already selected. Keeping your choice.");return match;}
+ if(!match){
+  showAutoMessage("Image needed — no relevant approved photo found. Import Vuba photos or use Prepare image brief.");
+  return null;
+ }
+ const select=$("postMedia");
+ if(![...select.options].some(o=>o.value===match.id))select.add(new Option(match.description||match.filename,match.id));
+ select.value=match.id;
+ updateSelected();
+ showAutoMessage("Suggested approved photo: "+(match.description||match.filename)+". Check it suits the post before publishing.");
+ return match;
+}
+function showAutoMessage(message){
+ const e=$("autoImageStatus");if(e)e.textContent=message;
+}
+
 function currentPost(){return {title:$("title")?.value?.trim()||"Vuba Wiltshire editorial post",topic:$("topic")?.value?.trim()||"",caption:$("caption")?.value?.trim()||"",pillar:$("pillar")?.value||"",channel:$("postChannel")?.value||"Instagram",format:$("format")?.value||"Single image"};}
 function promptForPost(){
  const p=currentPost();
@@ -31,7 +73,7 @@ function install(){
  const mediaLabel=$("postMedia").closest("label");
  mediaLabel.insertAdjacentHTML("afterend",`<div id="mediaStudioTools" class="media-tools">
  <div class="editor-extras"><button type="button" id="choosePostImage">Choose photo from library</button><button type="button" id="imageBrief">Prepare image brief</button></div>
- <div id="selectedPostPhoto" class="post-image-status">No approved image selected yet.</div></div>`);
+ <div id="selectedPostPhoto" class="post-image-status">No approved image selected yet.</div><p id="autoImageStatus" class="hint" role="status">The builder will suggest an approved photo when preparing a draft.</p></div>`);
  const assetForm=$("assetUploadForm");
  assetForm.insertAdjacentHTML("afterend",`<div class="folder-import">
  <h3>Import a photo folder from your Mac</h3>
@@ -71,7 +113,7 @@ function install(){
   mediaSelect.value=id;selectedMedia=id;updateSelected();chooser.close();
  };
  $("clearPostImage").onclick=()=>{$("postMedia").value="";selectedMedia="";updateSelected();chooser.close();};
- $("postMedia").onchange=updateSelected;
+ $("postMedia").onchange=()=>{updateSelected();showAutoMessage($("postMedia").value?"Photo selected manually. It will not be replaced automatically.":"No photo selected.");};
  $("folderPicker").onchange=()=>{batchOffset=0;$("folderFileCount").textContent=$("folderPicker").files.length+" selected files";$("importFolder").textContent="Import selected photos";};
  $("importFolder").onclick=importFolder;
  document.addEventListener("vuba-media-updated",loadMedia);
@@ -153,5 +195,6 @@ async function start(u){
  install();
  await loadMedia();
 }
+window.VubaMediaAssist={chooseForBuilder,bestForText,refresh:loadMedia};
 const {data:{session}}=await db.auth.getSession();await start(session?.user||null);
 db.auth.onAuthStateChange((_,session)=>{setTimeout(()=>start(session?.user||null),0)});
