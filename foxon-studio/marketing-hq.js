@@ -7,7 +7,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  const $=id=>document.getElementById(id);
  const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const products=["FOXON Invoice","FOXON CIS","FOXON Miles","FOXON Gas"],channels=["LinkedIn","Facebook","Instagram"];
- const state={user:null,role:"",posts:[],brain:[],campaigns:[],media:[],suggestions:[],image:null,busy:false,active:"director"};
+ const state={user:null,role:"",posts:[],brain:[],documents:[],campaigns:[],media:[],suggestions:[],image:null,busy:false,active:"director"};
  const note=s=>{if($("hqMessage"))$("hqMessage").textContent=s;};
  const dayString=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
  const nextMonday=()=>{const d=new Date();d.setHours(12,0,0,0);d.setDate(d.getDate()+((8-d.getDay())%7||7));return d;};
@@ -54,20 +54,21 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  }
  async function refresh(){
   if(!state.user||!$("foxonHQ"))return;
-  const [posts,brain,campaigns,media]=await Promise.all([
+  const [posts,brain,documents,campaigns,media]=await Promise.all([
    db.from("studio_posts").select("id,title,topic,channel,status,caption,source_notes,media_id,format,pillar,scheduled_date,campaign_id").order("scheduled_date",{ascending:true}).limit(500),
    db.from("studio_brain_entries").select("title,category,body,source_path,source_date,source_label").eq("verification","approved").is("archived_at",null).limit(100),
+   db.from("studio_brain_documents").select("title,filename,description,extraction_status").eq("verification","approved").is("archived_at",null).limit(80),
    db.from("studio_campaigns").select("id,name,objective,key_messages,status").in("status",["planning","active"]).limit(100),
    db.from("studio_media").select("id,filename,description,file_path,mime_type,approved,archived_at").is("archived_at",null).limit(250)
   ]);
   if(posts.error){note("Cannot load posts: "+posts.error.message);return;}
-  state.posts=posts.data||[];state.brain=brain.data||[];state.campaigns=campaigns.data||[];state.media=media.data||[];
+  state.posts=posts.data||[];state.brain=brain.data||[];state.documents=documents.data||[];state.campaigns=campaigns.data||[];state.media=media.data||[];
   const campaign=$("hqCampaign").value;
   $("hqCampaign").innerHTML='<option value="">Organic / no campaign</option>'+state.campaigns.map(c=>'<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>').join("");
   $("hqCampaign").value=state.campaigns.some(c=>c.id===campaign)?campaign:"";
   $("hqLibraryImage").innerHTML='<option value="">Choose an approved image</option>'+state.media.filter(m=>m.approved&&m.mime_type?.startsWith("image/")).map(m=>'<option value="'+esc(m.id)+'">'+esc(m.description||m.filename)+'</option>').join("");
   renderPublishing();renderInsights();
-  note([brain.error?"Brain unavailable":"",campaigns.error?"Campaigns unavailable":"",media.error?"Media unavailable":""].filter(Boolean).join("; ")||"FOXON source data refreshed.");
+  note([brain.error?"Brain entries unavailable":"",documents.error?"Brain documents unavailable":"",campaigns.error?"Campaigns unavailable":"",media.error?"Media unavailable":""].filter(Boolean).join("; ")||"FOXON source data refreshed.");
  }
  function nextWeek(){
   const monday=new Date();monday.setHours(12,0,0,0);monday.setDate(monday.getDate()+((8-monday.getDay())%7||7));return monday;
@@ -75,6 +76,8 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  function angleFor(app,seed){
   const entries=state.brain.filter(x=>[x.title,x.body].join(" ").toLowerCase().includes(app.toLowerCase()));
   if(entries.length){const e=entries[seed%entries.length];return {text:e.title,source:"Approved FOXON Brain: "+e.title+(e.source_path?" · "+e.source_path:"")+(e.source_date?" · "+e.source_date:"")};}
+  const documents=state.documents.filter(d=>[d.title,d.filename,d.description].join(" ").toLowerCase().includes(app.toLowerCase()));
+  if(documents.length){const d=documents[seed%documents.length];return {text:"What should trades know about "+d.title+"?",source:"Approved FOXON Brain document: "+(d.title||d.filename)+". Staff must check the original document before stating product capabilities."};}
   const topics={
    "FOXON Invoice":["How trade teams approach invoice records","What makes an invoice workflow feel organised?","A trade perspective on everyday payment admin","Questions about keeping records clear"],
    "FOXON CIS":["The questions trades ask about CIS admin","How teams approach contractor paperwork","What information gets checked twice?","A practical conversation about CIS routines"],
