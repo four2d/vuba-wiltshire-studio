@@ -6,6 +6,7 @@ const shell=read("shell.js"),calendar=read("app.js");
 const upgrade=read("studio-upgrades.js"),css=read("studio-upgrades.css");
 const index=read("index.html"),boot=read("bootstrap.js");
 const hq=read("marketing-hq.js"),hqCss=read("marketing-hq.css");
+const mediaManager=read("media-manager.js");
 const themeKeys=["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"];
 for(const theme of themeKeys)assert(shell.includes('<option value="'+theme+'">'),"Missing selectable theme: "+theme);
 assert.equal((shell.match(/class="stat-mark-symbol"/g)||[]).length,4,"Four stat icons must be explicit SVGs");
@@ -44,4 +45,9 @@ assert(hq.includes('state.image=null'),"Changing the FOXON product must not reta
 assert(hq.includes('No actual platform metrics imported yet'),"Performance must not be invented");
 assert(!hq.includes("service_role"),"No service-role secrets in browser sources");
 assert(hqCss.includes("prefers-reduced-motion"),"New design respects reduced motion");
+assert(mediaManager.includes('id="mmRights"'),"Media upload rights field must exist in the interface");
+assert(mediaManager.includes('rightsField.value.trim()'),"Media upload must read rights from the actual field");
+assert(mediaManager.includes('db.storage.from("foxon-approved-media").upload'),"Media files must use the private bucket");
+assert(mediaManager.includes('db.from("studio_media").insert'),"Every uploaded file must be recorded in the media library");
+assert(mediaManager.includes("approved:false"),"New files must remain unapproved");
 console.log("FOXON Studio static upgrade smoke checks passed.");
