@@ -145,3 +145,20 @@ body.studio-shell-ready .foxon-hq .hq-insight-grid p{font-size:12px;color:var(--
  animation:none!important;transition:none!important;scroll-behavior:auto!important
 }
 }
+/* Always-visible shortcut in the existing Overview heading. */
+body.studio-shell-ready #hqQuickJump{
+ align-self:center;min-height:39px;padding:10px 15px;
+ background:var(--read-accent,var(--theme-accent,#f2c500));
+ color:var(--read-accent-text,#101010);
+ border:1px solid var(--read-accent,var(--theme-accent,#f2c500));
+ border-radius:8px;font-size:11px;font-weight:850;cursor:pointer;
+}
+body.studio-shell-ready #hqQuickJump:focus-visible{
+ outline:3px solid var(--read-accent,var(--theme-accent,#f2c500));outline-offset:3px
+}
+body.studio-shell-ready .foxon-hq a{
+ color:var(--hq-accent);text-decoration:underline;text-underline-offset:3px
+}
+body.studio-shell-ready .foxon-hq a:focus-visible{
+ outline:3px solid var(--hq-accent);outline-offset:3px
+}
