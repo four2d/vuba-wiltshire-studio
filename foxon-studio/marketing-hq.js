@@ -35,7 +35,8 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   $("studioHome").appendChild(root);
   root.querySelectorAll("[data-hq-tab]").forEach(button=>button.addEventListener("click",()=>show(button.dataset.hqTab)));
   $("hqRefresh").onclick=refresh;$("hqGeneratePlan").onclick=generate;$("hqSaveDrafts").onclick=save;
-  ["hqLayout","hqSize","hqProduct","hqHeadline","hqSubline"].forEach(id=>$(id).addEventListener(id==="hqHeadline"||id==="hqSubline"?"input":"change",draw));
+  ["hqLayout","hqSize","hqHeadline","hqSubline"].forEach(id=>$(id).addEventListener(id==="hqHeadline"||id==="hqSubline"?"input":"change",draw));
+  $("hqProduct").onchange=()=>{state.image=null;if(state.objectUrl){URL.revokeObjectURL(state.objectUrl);state.objectUrl=null;}$("hqLibraryImage").value="";$("hqImageFile").value="";$("hqRights").checked=false;draw();note("Product changed — choose a matching real screenshot or approved image.");};
   $("hqDraw").onclick=draw;$("hqImageFile").onchange=loadFile;$("hqLibraryImage").onchange=loadApproved;
   $("hqDownload").onclick=download;$("hqUpload").onclick=upload;
   $("hqPublishFilter").onchange=renderPublishing;$("hqExport").onclick=()=>$("foxonExportQueue")?.click();
@@ -210,11 +211,12 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    ctx.fillStyle="#242424";ctx.fillRect(pad,h*.23,w-pad*2,h*.42);ctx.fillStyle="#f2c500";ctx.fillRect(pad,h*.23,12,h*.42);
    ctx.font="bold "+(w*.13)+"px Arial";ctx.fillText("FOXON",pad+32,h*.48);
   }
-  const y=mode==="phone"?h*.80:mode==="photo"?h*.77:h*.77;
-  ctx.fillStyle="#f2c500";ctx.font="900 "+(w*.06)+"px Arial";
+  const fontSize=Math.min(w*.06,h*.078),lineHeight=fontSize*1.13;
+  ctx.fillStyle="#f2c500";ctx.font="900 "+fontSize+"px Arial";
   const lines=wrap(ctx,$("hqHeadline").value||"MADE FOR THE TRADE",w-pad*2);
-  lines.forEach((line,i)=>ctx.fillText(line,pad,y+i*w*.072));
-  ctx.fillStyle="#f7f7f7";ctx.font="bold "+(w*.022)+"px Arial";ctx.fillText(($("hqSubline").value||"").toUpperCase(),pad,Math.min(h-44,y+lines.length*w*.072+24),w-pad*2);
+  const baseY=Math.min(h*.8,h-66-(lines.length-1)*lineHeight-38);
+  lines.forEach((line,i)=>ctx.fillText(line,pad,baseY+i*lineHeight));
+  ctx.fillStyle="#f7f7f7";ctx.font="bold "+Math.min(w*.022,h*.035)+"px Arial";ctx.fillText(($("hqSubline").value||"").toUpperCase(),pad,Math.min(h-37,baseY+lines.length*lineHeight+14),w-pad*2);
   ctx.fillStyle="#f2c500";ctx.fillRect(pad,h-18,w-pad*2,5);
  }
  function validArt(){
