@@ -100,7 +100,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
     }
     if(!data.length)throw Error("No valid metric rows found.");
     if(rows.length>5002)throw Error("File exceeds 5,000 metric rows.");
-    state.importedMetrics=data;renderImportedMetrics();
+    state.importedMetrics=data;renderImportedMetrics();document.dispatchEvent(new Event("foxon:studio-refresh"));
     byId("foxonMetricStatus").textContent=data.length+" user-supplied metric row(s) imported from "+file.name+". Figures are not independently verified or synced to FOXON Studio.";
    }catch(error){byId("foxonMetricStatus").textContent="Import not completed: "+(error.message||String(error));}
    finally{event.target.value="";}
@@ -307,5 +307,5 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  window.addEventListener("hashchange",()=>{if(location.hash==="#home"||location.hash==="#calendar")refresh();});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&state.user)refresh();});
  window.addEventListener("foxon:post-saved",()=>{setTimeout(refresh,100);});
- window.FOXONStudioUpgrade={refresh};
+ window.FOXONStudioUpgrade={refresh,snapshot:()=>({importedMetrics:state.importedMetrics.map(x=>({...x})),postCount:state.posts.length})};
 }
