@@ -69,33 +69,62 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  function nextWeek(){
   const monday=new Date();monday.setHours(12,0,0,0);monday.setDate(monday.getDate()+((8-monday.getDay())%7||7));return monday;
  }
- function angleFor(app){
-  const e=state.brain.find(x=>[x.title,x.body].join(" ").toLowerCase().includes(app.toLowerCase()));
-  return e?{text:e.title,source:"Approved FOXON Brain: "+e.title+(e.source_path?" · "+e.source_path:"")+(e.source_date?" · "+e.source_date:"")}:{
-   text:{"FOXON Invoice":"How trade teams approach invoice records","FOXON CIS":"The questions trades ask about CIS admin","FOXON Miles":"Keeping mileage notes organised","FOXON Gas":"What makes a practical engineer workflow"}[app],
-   source:"Editorial question only. No product feature claims verified; review FOXON Brain before approval."
+ function angleFor(app,seed){
+  const entries=state.brain.filter(x=>[x.title,x.body].join(" ").toLowerCase().includes(app.toLowerCase()));
+  if(entries.length){const e=entries[seed%entries.length];return {text:e.title,source:"Approved FOXON Brain: "+e.title+(e.source_path?" · "+e.source_path:"")+(e.source_date?" · "+e.source_date:"")};}
+  const topics={
+   "FOXON Invoice":["How trade teams approach invoice records","What makes an invoice workflow feel organised?","A trade perspective on everyday payment admin","Questions about keeping records clear"],
+   "FOXON CIS":["The questions trades ask about CIS admin","How teams approach contractor paperwork","What information gets checked twice?","A practical conversation about CIS routines"],
+   "FOXON Miles":["Keeping mileage notes organised","What makes a journey log useful?","The moments people forget to record a journey","Your mileage admin questions"],
+   "FOXON Gas":["What makes a practical engineer workflow","What information engineers want to hand over","A conversation about documenting site work","How trades keep work records clear"]
   };
+  return {text:topics[app][seed%4],source:"Editorial question only. No product feature claims verified; review FOXON Brain before approval."};
  }
- function captionFor(app,channel,topic){
+ function captionFor(app,channel,topic,variant){
   const lower=topic.toLowerCase();
-  if(channel==="LinkedIn")return "Good trade software starts with the people doing the work.\n\nThis week we are discussing "+lower+" in the context of "+app+". What would make this part of a working day simpler for your team?\n\n#FOXON #TradeSoftware";
-  if(channel==="Facebook")return "Quick question for people in the trades: how do you currently handle "+lower+"?\n\nWe are sharing ideas around "+app+" and would love to hear the reality of a busy day on site.";
-  return app+" / THE TRADE PERSPECTIVE.\n\n"+topic+".\n\nWhat would you change first? Tell us below.\n\n#FOXON #Trades #SiteLife";
+  const options={
+   LinkedIn:[
+    "Good trade software starts with the people doing the work.\n\nThis week we are discussing "+lower+" through the lens of "+app+". What would make a working day simpler for your team?\n\n#FOXON #TradeSoftware",
+    "One question we keep coming back to: "+topic+"?\n\nWe are exploring this topic while developing the conversation around "+app+". If you manage people or processes in the trades, what is your experience?",
+    "The best product conversations start with real work, not feature lists.\n\nToday's topic is "+lower+". What would you want a software team to understand before offering a solution?\n\n#FOXON"
+   ],
+   Facebook:[
+    "Quick question for people in the trades: how do you currently handle "+lower+"?\n\nWe're talking about "+app+" and would love to hear the reality of a busy day on site.",
+    "Everyone seems to have their own way of dealing with paperwork and admin. What's yours when it comes to "+lower+"?\n\nTell us what's worked for you. — The FOXON team",
+    "Calling tradespeople and small business owners: what's the one thing you'd change about "+lower+"?\n\nWe're listening as we share more about "+app+"."
+   ],
+   Instagram:[
+    app+" / THE TRADE PERSPECTIVE.\n\n"+topic+".\n\nWhat would you change first? Tell us below.\n\n#FOXON #Trades #SiteLife",
+    "REAL WORK. REAL QUESTIONS.\n\n"+topic+".\n\nWhat does your routine look like? Sound off below.\n\n#FOXON #TradeSoftware",
+    "BEHIND THE WORK.\n\nWe're talking about "+lower+".\n\nWhat would you want us to explore next?\n\n#FOXON #Construction"
+   ]
+  };
+  return options[channel][variant%3];
  }
  function generate(){
   const monday=nextWeek(),channel=$("hqChannel").value,campaign=state.campaigns.find(c=>c.id===$("hqCampaign").value);
   const ch=channel==="all"?channels:[channel],proposals=[];
+  const week=Math.floor(monday.getTime()/604800000),headlines={
+   LinkedIn:["The trade perspective","What matters to the team","A question worth asking"],
+   Facebook:["A question for trades","Your experience matters","Tell us how you do it"],
+   Instagram:["Behind the work","Site-life questions","A closer look"]
+  };
   products.forEach((app,index)=>{
-   const d=new Date(monday);d.setDate(monday.getDate()+index);const date=dayString(d),angle=angleFor(app);
-   ch.forEach(platform=>{
-    const title=app+" — "+(platform==="LinkedIn"?"The trade perspective":platform==="Facebook"?"A question for trades":"Behind the work");
-    if(state.posts.some(p=>p.scheduled_date===date&&p.channel===platform&&p.title===title))return;
-    proposals.push({date,channel:platform,app,title,topic:angle.text,caption:captionFor(app,platform,angle.text),
+   const d=new Date(monday);d.setDate(monday.getDate()+index);const date=dayString(d),angle=angleFor(app,week+index);
+   ch.forEach((platform,pi)=>{
+    const variant=(week+index+pi)%3;
+    const title=app+" — "+headlines[platform][variant];
+    const caption=captionFor(app,platform,angle.text,variant);
+    if(state.posts.some(p=>p.scheduled_date===date&&p.channel===platform))return;
+    if(state.posts.some(p=>p.channel===platform&&p.title===title&&p.topic===angle.text))return;
+    if(state.posts.some(p=>p.channel===platform&&p.caption===caption))return;
+    proposals.push({date,channel:platform,app,title,topic:angle.text,caption,
      source_notes:angle.source+(campaign?"\nCampaign objective: "+campaign.name+" — "+String(campaign.objective||"").slice(0,180):"")+"\nDRAFT: verify copy and imagery before approval.",
      campaign_id:campaign?.id||null,format:platform==="LinkedIn"?"Text-led":"Single image",selected:true});
    });
   });
-  state.suggestions=proposals;renderBrief();note(proposals.length+" editable, channel-specific proposals. Nothing has been saved or published.");
+  state.suggestions=proposals;renderBrief();
+  note(proposals.length+" unique platform-specific proposals. Previously planned slots and matching past captions were skipped.");
  }
  function renderBrief(){
   const root=$("hqDraftCards");root.innerHTML=state.suggestions.length?state.suggestions.map((p,i)=>
