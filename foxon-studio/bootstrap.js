@@ -15,4 +15,5 @@ if(!valid){
   await import("./artwork.js?v=20261120art1");
   await import("./shell.js?v=20261120visibleStatSvg1");
   await import("./studio-upgrades.js?v=20261120phasesFinal");
+  await import("./marketing-hq.js?v=20261121hq1");
 }
