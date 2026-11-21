@@ -5,6 +5,7 @@ const read=name=>readFileSync(root+name,"utf8");
 const shell=read("shell.js"),calendar=read("app.js");
 const upgrade=read("studio-upgrades.js"),css=read("studio-upgrades.css");
 const index=read("index.html"),boot=read("bootstrap.js");
+const hq=read("marketing-hq.js"),hqCss=read("marketing-hq.css");
 const themeKeys=["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"];
 for(const theme of themeKeys)assert(shell.includes('<option value="'+theme+'">'),"Missing selectable theme: "+theme);
 assert.equal((shell.match(/class="stat-mark-symbol"/g)||[]).length,4,"Four stat icons must be explicit SVGs");
@@ -27,4 +28,18 @@ assert(index.includes('studio-upgrades.css'),"New responsive upgrade CSS must be
 assert(boot.includes('studio-upgrades.js'),"New upgrade module must be loaded");
 assert(css.includes('@media(max-width:720px)'),"Mobile layout rules must be present");
 assert(css.includes('prefers-reduced-motion'),"Reduced motion must be respected");
+assert(boot.includes("marketing-hq.js"),"Marketing HQ must load after the app shell");
+assert(index.includes("marketing-hq.css"),"Marketing HQ design styles must load");
+for(const area of ["Marketing Director","Creative Studio","Publishing Desk","Insights &amp; QA"])
+ assert(hq.includes(area),"Missing Marketing HQ workspace: "+area);
+assert(hq.includes('.eq("verification","approved")'),"Only approved Brain entries may inform planning");
+assert(hq.includes('status:"draft"'),"Editorial proposals must remain drafts");
+assert(hq.includes('No social accounts will be contacted'),"Save confirmation must explicitly avoid claiming publication");
+assert(hq.includes('approved:false'),"New creative assets must require review");
+assert(hq.includes('createSignedUrl'),"Approved media must use private signed URLs");
+assert(hq.includes('I confirm image rights and accurate copy'),"Artwork upload needs source-rights confirmation");
+assert(hq.includes('state.image=null'),"Changing the FOXON product must not retain a mismatched screenshot");
+assert(hq.includes('No actual platform metrics imported yet'),"Performance must not be invented");
+assert(!hq.includes("service_role"),"No service-role secrets in browser sources");
+assert(hqCss.includes("prefers-reduced-motion"),"New design respects reduced motion");
 console.log("FOXON Studio static upgrade smoke checks passed.");
