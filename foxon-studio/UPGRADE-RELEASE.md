@@ -102,3 +102,9 @@ Rollback checkpoint: `foxon-pre-marketing-hq-20261121` points to the prior worki
 9. Connect the desired FOXON social accounts in Metricool, then plan a separately authorised integration with posting credentials held **server-side**, never in GitHub Pages.
 
 This release provides a useful operator-controlled foundation for all five improvement tracks, not proof of fully automated social publishing or live AI service.
+
+## Final QA note — 21 November 2026
+- Marketing Director now also checks titles of approved `studio_brain_documents` when selecting topics; it does not automatically turn document text into unverified product claims.
+- Static tests passed in the assistant environment: fourteen themes present, new Marketing HQ file references present, source and approval safeguards present, and both new JavaScript modules parse.
+- The media and Brain document upload paths were inspected in source; authenticated storage/database writes could not be tested without working runtime access.
+- On-screen visual QA in Safari and successful GitHub Actions execution are still outstanding.
