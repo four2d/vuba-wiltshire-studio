@@ -20,6 +20,7 @@ function build(){
  const manager=document.createElement("div");manager.id="mediaManager";
  manager.innerHTML=`<div class="mm-header"><div><span class="studio-kicker">VISUAL ASSET WORKSPACE</span><h2>Everything worth sharing.</h2><p>A home for your best photography, video and branded content.</p></div><div class="mm-actions"><button type="button" id="mmNewFolder">＋ New folder</button><button type="button" id="mmSelectFolder">⇧ Import folder</button><button type="button" id="mmSelectFiles" class="mm-main">＋ Upload media</button></div></div>
  <div class="mm-import">
+  <label class="mm-rights-label" for="mmRights"><strong>Image/video usage rights</strong><span>Before uploading, state who owns these files or confirm you have permission to use them.</span><input id="mmRights" name="mmRights" type="text" maxlength="300" autocomplete="off" placeholder="e.g. FOXON-owned screenshots; permission confirmed" required></label>
   <div id="mmDrop" class="mm-drop" tabindex="0" role="button"><span class="mm-drop-icon">⇧</span><strong>Drop photos, videos or folders</strong><span>Keep folder structure intact, even with nested folders</span><small>JPG · PNG · WebP · MP4 · MOV · WebM · maximum 45 MB per file</small></div>
   
   <input id="mmFileInput" type="file" multiple hidden accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.webm">
@@ -60,7 +61,7 @@ function build(){
  $("mmForm").onsubmit=save;
  $("mmArchive").onclick=archive;
  const zone=$("mmDrop");let depth=0;
- $("mmStatus").textContent="Ready. Confirm usage rights above, then drop or select your images. Files will be stored privately for review.";
+ $("mmStatus").textContent="Add usage rights above, then drop files or choose Upload media. Files are saved privately and need approval.";
  zone.ondragenter=e=>{e.preventDefault();depth++;zone.classList.add("dragging");};
  zone.ondragover=e=>e.preventDefault();
  zone.ondragleave=e=>{e.preventDefault();depth=Math.max(0,depth-1);if(!depth)zone.classList.remove("dragging");};
@@ -99,9 +100,12 @@ async function ensureFolder(path){
  }
 }
 async function begin(input,withFolders){
- if(busy)return;
- const rights=$("mmRights").value.trim();
- if(!rights){$("mmStatus").textContent="UPLOAD NOT STARTED: Please enter image usage rights above the drop area first, then select or drop your files again."; $("mmRights").focus();return;}
+ if(busy){$("mmStatus").textContent="An upload is already running; finish the current batch first.";return;}
+ if(!user||!["admin","approver","editor"].includes(role)){$("mmStatus").textContent="Sign in with FOXON Studio upload access first.";return;}
+ const rightsField=$("mmRights");
+ if(!rightsField){$("mmStatus").textContent="Upload form is incomplete. Refresh FOXON Studio and try again.";return;}
+ const rights=rightsField.value.trim();
+ if(!rights){$("mmStatus").textContent="UPLOAD NOT STARTED: Enter the image or video usage rights above, then try again.";rightsField.focus();return;}
  const records=input.map(x=>{
   const file=x.file||x,relative=clean(x.relative||file.webkitRelativePath||file.name),parts=relative.split("/");
   parts.pop();
@@ -135,11 +139,13 @@ async function processBatch(){
   }
   queue.offset+=group.length;
   const more=queue.offset<queue.records.length;
-  $("mmStatus").textContent=queue.success+" uploaded · "+queue.skipped+" oversized skipped · "+queue.errors.length+" errors"+
+  $("mmStatus").textContent=queue.success+" saved privately · "+queue.skipped+" oversized skipped · "+queue.errors.length+" errors"+
    (queue.errors.length?" ("+queue.errors[0].slice(0,100)+")":"")+(more?" · "+(queue.records.length-queue.offset)+" remaining":" · Finished");
   $("mmContinue").hidden=!more;
   if(!more)queue=null;
   await load();
+  if(queue===null&&$("mmStatus"))$("mmStatus").textContent+=" · Check the current folder below. New assets need approval.";
+  await window.FOXONStudioPlus?.refresh?.();
  }catch(error){$("mmStatus").textContent="UPLOAD FAILED: "+(error?.message||String(error));console.error("FOXON media processing",error);}finally{busy=false;}
 }
 async function createFolder(){
