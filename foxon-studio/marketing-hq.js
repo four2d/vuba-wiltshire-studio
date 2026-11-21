@@ -64,7 +64,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   $("hqCampaign").value=state.campaigns.some(c=>c.id===campaign)?campaign:"";
   $("hqLibraryImage").innerHTML='<option value="">Choose an approved image</option>'+state.media.filter(m=>m.approved&&m.mime_type?.startsWith("image/")).map(m=>'<option value="'+esc(m.id)+'">'+esc(m.description||m.filename)+'</option>').join("");
   renderPublishing();renderInsights();
-  note([brain.error?"Brain unavailable",campaigns.error?"Campaigns unavailable",media.error?"Media unavailable"].filter(Boolean).join("; ")||"FOXON source data refreshed.");
+  note([brain.error?"Brain unavailable":"",campaigns.error?"Campaigns unavailable":"",media.error?"Media unavailable":""].filter(Boolean).join("; ")||"FOXON source data refreshed.");
  }
  function nextWeek(){
   const monday=new Date();monday.setHours(12,0,0,0);monday.setDate(monday.getDate()+((8-monday.getDay())%7||7));return monday;
