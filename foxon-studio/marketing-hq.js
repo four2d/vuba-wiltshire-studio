@@ -226,7 +226,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  }
  function renderInsights(){
   const root=$("hqIntelligence");if(!root)return;
-  const importRows=window.FOXONStudioUpgrade?.snapshot?.().importedMetrics||[];
+  const importRows=window.FOXONStudioUpgrade?.snapshot?.()?.importedMetrics||[];
   const rows=channels.map(channel=>{const data=importRows.filter(m=>m.channel===channel);return {channel,count:data.length,impressions:data.reduce((a,b)=>a+b.impressions,0),clicks:data.reduce((a,b)=>a+b.clicks,0)};});
   const observed=rows.filter(r=>r.impressions>=100).sort((a,b)=>b.clicks/b.impressions-a.clicks/a.impressions);
   root.innerHTML='<div class="hq-insight-grid">'+rows.map(r=>'<div><h4>'+r.channel+'</h4><strong>'+r.impressions.toLocaleString("en-GB")+'</strong><small>Imported impressions · '+r.clicks.toLocaleString("en-GB")+' clicks</small><p>CTR: '+(r.impressions?(100*r.clicks/r.impressions).toFixed(2)+"%":"—")+'</p></div>').join("")+'</div><p>'+esc(importRows.length?(observed.length?"Highest observed click rate (100+ impressions): "+observed[0].channel+". Treat this as a test idea, not proof of causation.":"Not enough observations to rank channels reliably."):"No actual platform metrics imported yet. Use the manual CSV import above; no performance figures are invented.")+'</p><p>Prepared posts: '+state.posts.filter(p=>["approved","scheduled"].includes(p.status)).length+'. This is internal planning, not a published post count.</p>';
