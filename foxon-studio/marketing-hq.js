@@ -220,7 +220,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   ctx.fillStyle="#f2c500";ctx.font="900 "+fontSize+"px Arial";
   const lines=wrap(ctx,$("hqHeadline").value||"MADE FOR THE TRADE",w-pad*2);
   const baseY=Math.min(h*.8,h-66-(lines.length-1)*lineHeight-38);
-  lines.forEach((line,i)=>ctx.fillText(line,pad,baseY+i*lineHeight));
+  lines.forEach((line,i)=>ctx.fillText(line,pad,baseY+i*lineHeight,w-pad*2));
   ctx.fillStyle="#f7f7f7";ctx.font="bold "+Math.min(w*.022,h*.035)+"px Arial";ctx.fillText(($("hqSubline").value||"").toUpperCase(),pad,Math.min(h-37,baseY+lines.length*lineHeight+14),w-pad*2);
   ctx.fillStyle="#f2c500";ctx.fillRect(pad,h-18,w-pad*2,5);
  }
