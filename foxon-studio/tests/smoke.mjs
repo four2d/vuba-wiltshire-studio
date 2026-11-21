@@ -33,6 +33,8 @@ assert(index.includes("marketing-hq.css"),"Marketing HQ design styles must load"
 for(const area of ["Marketing Director","Creative Studio","Publishing Desk","Insights &amp; QA"])
  assert(hq.includes(area),"Missing Marketing HQ workspace: "+area);
 assert(hq.includes('.eq("verification","approved")'),"Only approved Brain entries may inform planning");
+assert(hq.includes('db.from("studio_brain_documents")'),"Approved Brain documents must inform planning");
+assert(hq.includes("staff must check")||hq.includes("Staff must check"),"Document titles must not be treated as verified product claims");
 assert(hq.includes('status:"draft"'),"Editorial proposals must remain drafts");
 assert(hq.includes('No social accounts will be contacted'),"Save confirmation must explicitly avoid claiming publication");
 assert(hq.includes('approved:false'),"New creative assets must require review");
