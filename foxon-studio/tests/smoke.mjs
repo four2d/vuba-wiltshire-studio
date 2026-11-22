@@ -60,7 +60,7 @@ assert(social.includes("studio_publish_deliveries"),"Real publishing receipts mu
 assert(social.includes('action:"begin"'),"Official OAuth must be initiated through secure backend");
 assert(social.includes('action:"publish"'),"Publishing must use secure backend");
 assert(social.includes('answer!=="PUBLISH"'),"Manual publishing must require explicit typed confirmation");
-assert(social.includes('post.status==="approved"'),"Only approved posts should be offered for direct publishing");
+assert(social.includes('p.status==="approved"'),"Only approved posts should be offered for direct publishing");
 assert(!social.includes("service_role"),"Browser must not contain a service-role secret");
 assert(!social.includes("client_secret"),"Browser must not contain provider client secrets");
 console.log("FOXON Studio static upgrade smoke checks passed.");
