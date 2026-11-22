@@ -362,3 +362,30 @@ body.studio-shell-ready .foxon-admin-provider-links a{
  border-radius:8px;color:var(--fc-accent);
  font-size:11px;font-weight:800
 }
+
+/* Connection-first layout: advanced publishing and provider configuration stay collapsed. */
+body.studio-shell-ready .foxon-connections-page .foxon-social-cards{margin-bottom:18px}
+body.studio-shell-ready .foxon-connections-page .foxon-simple-card{
+ min-height:190px;gap:12px;justify-content:space-between
+}
+body.studio-shell-ready .foxon-connections-page .foxon-simple-card>.foxon-social-card-header{gap:10px}
+body.studio-shell-ready .foxon-connections-page .foxon-simple-card button{
+ width:100%;margin-top:auto;min-height:43px;
+ background:var(--fc-accent);color:var(--fc-ink);border:1px solid var(--fc-accent);
+ font-weight:850
+}
+body.studio-shell-ready .foxon-connections-page .foxon-simple-card ul{margin:0}
+body.studio-shell-ready .foxon-connections-page .foxon-extra-panel{
+ margin:16px 0;border:1px solid var(--fc-line);
+ border-radius:10px;background:var(--fc-panel);padding:12px 17px
+}
+body.studio-shell-ready .foxon-connections-page .foxon-extra-panel>summary{
+ cursor:pointer;color:var(--fc-ink-soft);font-size:12px;font-weight:800;
+ min-height:36px;display:list-item;align-content:center
+}
+body.studio-shell-ready .foxon-connections-page .foxon-extra-panel[open]{
+ padding-bottom:18px
+}
+body.studio-shell-ready .foxon-connections-page .foxon-social-disclaimer{
+ margin:6px 0 16px;font-size:11px;color:var(--fc-muted)
+}
