@@ -13,8 +13,8 @@ if(!valid){
   await import("./media-tools.js?v=20261120art2");
   await import("./media-manager.js?v=20261121uploadfix1");
   await import("./artwork.js?v=20261120art1");
-  await import("./shell.js?v=20261120visibleStatSvg1");
+  await import("./shell.js?v=20261122connections1");
   await import("./studio-upgrades.js?v=20261121hqMetrics2");
   await import("./marketing-hq.js?v=20261121hq4");
-  await import("./social-accounts.js?v=20261122social2");
+  await import("./social-accounts.js?v=20261122connections1");
 }
