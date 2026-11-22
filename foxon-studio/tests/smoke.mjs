@@ -66,8 +66,12 @@ assert(!social.includes("client_secret"),"Browser must not contain provider clie
 assert(shell.includes('["connections","Connections","plug-zap"]'),"Connections must be a first-class Studio navigation route");
 assert(shell.includes('id="studioConnections"'),"Connections page must exist");
 assert(shell.includes('show($("studioConnections"),p==="connections")'),"Routing must control Connections visibility");
-assert(social.includes('const hq=$("foxonConnectionWorkspace")'),"Direct accounts must appear in Connections page");
-assert(social.includes("foxonFutureConnections"),"Connections catalogue must list additional services");
-assert(social.includes("Not yet integrated"),"Unavailable connectors must be labelled truthfully");
+assert(social.includes('const host=$("foxonConnectionWorkspace")'),"Direct accounts must appear in Connections page");
+assert(social.includes("fc-primary-cards"),"Beginner Connections page must contain just the primary account choices");
+assert(social.includes("fc-optional-details"),"Publishing controls must remain hidden until a connection exists");
 assert(social.includes("FOXONSocialAccounts={refresh:load}"),"Connections must expose refresh");
+assert(social.includes("Add your accounts"),"Simple account onboarding heading must be present");
+assert(social.includes("data-fc-action"),"Each account card must have an obvious action");
+assert(social.includes("providerReady[platform]"),"Connection requests must fail safely when provider configuration is missing");
+assert(!social.includes("Refresh connections"),"Ordinary user interface must not show redundant refresh controls");
 console.log("FOXON Studio static upgrade smoke checks passed.");
