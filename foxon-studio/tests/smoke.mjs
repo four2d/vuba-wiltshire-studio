@@ -63,4 +63,11 @@ assert(social.includes('answer!=="PUBLISH"'),"Manual publishing must require exp
 assert(social.includes('p.status==="approved"'),"Only approved posts should be offered for direct publishing");
 assert(!social.includes("service_role"),"Browser must not contain a service-role secret");
 assert(!social.includes("client_secret"),"Browser must not contain provider client secrets");
+assert(shell.includes('["connections","Connections","plug-zap"]'),"Connections must be a first-class Studio navigation route");
+assert(shell.includes('id="studioConnections"'),"Connections page must exist");
+assert(shell.includes('show($("studioConnections"),p==="connections")'),"Routing must control Connections visibility");
+assert(social.includes('const hq=$("foxonConnectionWorkspace")'),"Direct accounts must appear in Connections page");
+assert(social.includes("foxonFutureConnections"),"Connections catalogue must list additional services");
+assert(social.includes("Not yet integrated"),"Unavailable connectors must be labelled truthfully");
+assert(social.includes("FOXONSocialAccounts={refresh:load}"),"Connections must expose refresh");
 console.log("FOXON Studio static upgrade smoke checks passed.");
