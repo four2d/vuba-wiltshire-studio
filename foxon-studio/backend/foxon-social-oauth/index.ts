@@ -9,7 +9,7 @@ const endpoint=base+"/functions/v1/foxon-social-oauth";
 const config={
  Facebook:{client:env("FOXON_META_APP_ID"),secret:env("FOXON_META_APP_SECRET"),auth:"https://www.facebook.com/v24.0/dialog/oauth",scope:"pages_show_list,pages_read_engagement,pages_manage_posts"},
  Instagram:{client:env("FOXON_META_APP_ID"),secret:env("FOXON_META_APP_SECRET"),auth:"https://www.facebook.com/v24.0/dialog/oauth",scope:"pages_show_list,pages_read_engagement,instagram_basic,instagram_content_publish"},
- LinkedIn:{client:env("FOXON_LINKEDIN_CLIENT_ID"),secret:env("FOXON_LINKEDIN_CLIENT_SECRET"),auth:"https://www.linkedin.com/oauth/v2/authorization",scope:"w_organization_social r_organization_social"}
+ LinkedIn:{client:env("FOXON_LINKEDIN_CLIENT_ID"),secret:env("FOXON_LINKEDIN_CLIENT_SECRET"),auth:"https://www.linkedin.com/oauth/v2/authorization",scope:"w_organization_social r_organization_social r_organization_admin"}
 };
 const cors={ "Access-Control-Allow-Origin":site,"Access-Control-Allow-Headers":"authorization, apikey, content-type","Access-Control-Allow-Methods":"POST, OPTIONS","Vary":"Origin" };
 const respond=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{...cors,"Content-Type":"application/json","Cache-Control":"no-store"}});
@@ -92,7 +92,7 @@ async function exchangeLinkedIn(code:string,db:ReturnType<typeof createClient>,o
  const token=await res.json();if(!token.access_token)throw Error("linkedin_token_missing");
  const headers={Authorization:"Bearer "+token.access_token,"Linkedin-Version":"202606","X-Restli-Protocol-Version":"2.0.0"};
  const acl=await fetchJson("https://api.linkedin.com/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&state=APPROVED",headers);
- const ids=[...new Set((acl.elements||[]).map((v:any)=>String(v.organization||"").match(/urn:li:organization:(\d+)/)?.[1]).filter(Boolean))];
+ const ids=[...new Set((acl.elements||[]).map((v:any)=>String(v.organizationTarget||v.organization||"").match(/urn:li:organization:(\d+)/)?.[1]).filter(Boolean))];
  let count=0;
  for(const id of ids){
   const org=await fetchJson("https://api.linkedin.com/rest/organizations/"+id,headers);
