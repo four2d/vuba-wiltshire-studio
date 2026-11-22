@@ -5,16 +5,16 @@ if(!valid){
   const x=document.getElementById("setup");
   if(x){x.hidden=false;x.innerHTML='<h1>FOXON Social Studio</h1><p>The private FOXON workspace has not been provisioned yet. Create the dedicated FOXON Software Supabase project and configure the <code>config.js</code> publishable settings. No Vuba data or logins are connected.</p>';}
 }else{
-  await import("./app.js?v=20261122metacalendar");
+  await import("./app.js?v=20261122artwork");
   await import("./marketing.js?v=20261120m");
   await import("./workspace.js?v=20261120art1");
   await import("./brain.js?v=20261120m");
   await import("./brain-documents.js?v=20261120m");
-  await import("./media-tools.js?v=20261120art2");
+  await import("./media-tools.js?v=20261122artwork");
   await import("./media-manager.js?v=20261121uploadfix1");
-  await import("./artwork.js?v=20261120art1");
+  await import("./artwork.js?v=20261122artwork");
   await import("./shell.js?v=20261122easy3");
   await import("./studio-upgrades.js?v=20261121hqMetrics2");
-  await import("./marketing-hq.js?v=20261121hq4");
+  await import("./marketing-hq.js?v=20261122artwork");
   await import("./social-accounts.js?v=20261122pages");
 }

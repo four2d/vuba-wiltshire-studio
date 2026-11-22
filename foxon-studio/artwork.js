@@ -4,6 +4,7 @@ const db=createClient(c.supabaseUrl,c.supabaseAnonKey);
 const $=id=>document.getElementById(id);
 let busy=false;
 let lastGenerated=null;
+const stillPost=()=>JSON.stringify([$("postId")?.value,readPost()]);
 function readPost(){
  return {title:$("title")?.value.trim()||"",topic:$("topic")?.value.trim()||"",caption:$("caption")?.value.trim()||"",channel:$("postChannel")?.value||"Instagram"};
 }
@@ -20,34 +21,21 @@ function insertControls(){
  </section>`);
  $("generateFOXONArt").onclick=()=>generate();
  $("postMedia")?.addEventListener("change",()=>{
-  if($("postMedia").value&&$("foxonAutoArt"))$("foxonAutoArt").checked=false;
+  const preview=$("foxonArtPreview");
+  if(preview&&$("postMedia").value!==lastGenerated)preview.hidden=true;
  });
  return true;
 }
 function notify(message){if($("foxonArtStatus"))$("foxonArtStatus").textContent=message;}
-function base64Blob(encoded,mime){
- const raw=atob(encoded), bytes=new Uint8Array(raw.length);
- for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
- return new Blob([bytes],{type:mime});
-}
-async function generate(){
- if(busy)return null;
- if(!insertControls()&&!$("foxonArtStatus"))return null;
- const post=readPost();
- if(!post.title&&!post.topic&&!post.caption){notify("Add a headline, topic or caption before generating artwork.");return null;}
- busy=true;
- const button=$("generateFOXONArt");button.disabled=true;button.textContent="Generating artwork…";
- notify("Creating FOXON artwork. It will be private and require approval.");
- try{
+async function makeArtwork(post,style="photography"){
   const {data:{session},error:sessionError}=await db.auth.getSession();
   if(sessionError||!session?.user)throw Error("Please sign in again.");
   const {data,error}=await db.functions.invoke("foxon-generate-artwork",{
-   body:{...post,style:$("foxonArtStyle")?.value||"photography"}
+   body:{...post,style}
   });
   if(error){
-   let message=error.message;
-   if(error.context?.json){try{message=(await error.context.json())?.error||message;}catch{}}
-   throw Error(message);
+   const details=await error.context?.json?.().catch(()=>null);
+   throw Object.assign(Error(details?.code==="NOT_CONFIGURED"?"AI artwork is not configured for this Studio. You can still choose an image from the Media Library.":details?.error||error.message),{code:details?.code});
   }
   if(data?.error)throw Error(data.error);
   if(!data?.image)throw Error("No artwork returned by the image generator.");
@@ -66,11 +54,38 @@ async function generate(){
    await db.storage.from("foxon-approved-media").remove([path]);
    throw Error("Image record failed: "+record.error.message);
   }
+ return {record:record.data,path};
+}
+window.FoxonGenerateArtworkForPost=async post=>{
+ if(post.format==="Text-led")return false;
+ const {record}=await makeArtwork(post,post.format==="Branded graphic"?"branded":"photography");
+ const result=await db.from("studio_posts").update({media_id:record.id}).eq("id",post.id).eq("status","draft").is("media_id",null).select("id").maybeSingle();
+ if(result.error)throw result.error;
+ return Boolean(result.data);
+};
+function base64Blob(encoded,mime){
+ const raw=atob(encoded), bytes=new Uint8Array(raw.length);
+ for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+ return new Blob([bytes],{type:mime});
+}
+async function generate(){
+ if(busy)return null;
+ if(!insertControls()&&!$("foxonArtStatus"))return null;
+ const post=readPost();
+ if(!post.title&&!post.topic&&!post.caption){notify("Add a headline, topic or caption before generating artwork.");return null;}
+ const postAtStart=stillPost(),imageAtStart=$("postMedia")?.value;
+ busy=true;
+ const button=$("generateFOXONArt");button.disabled=true;button.textContent="Generating artwork…";
+ notify("Creating FOXON artwork. It will be private and require approval.");
+ try{
+  const asset=await makeArtwork(post,$("foxonArtStyle")?.value||"photography");
+  if(!$("editor")?.open||stillPost()!==postAtStart||$("postMedia")?.value!==imageAtStart){notify("Artwork saved to the Media Library. The current post was left as edited.");return null;}
   const select=$("postMedia");
-  const option=new Option(record.data.description,record.data.id);
-  select.add(option);select.value=record.data.id;
-  lastGenerated=record.data.id;
-  const signed=await db.storage.from("foxon-approved-media").createSignedUrl(path,3600);
+  const option=new Option(asset.record.description,asset.record.id);
+  select.add(option);select.value=asset.record.id;
+  lastGenerated=asset.record.id;
+  select.dispatchEvent(new Event("change"));
+  const signed=await db.storage.from("foxon-approved-media").createSignedUrl(asset.path,3600);
   if(signed.data?.signedUrl){
    const frame=$("foxonArtPreview");frame.hidden=false;
    frame.replaceChildren();
@@ -79,7 +94,7 @@ async function generate(){
   }
   notify("Generated artwork saved privately and attached to this draft. Approval is required before publication.");
   document.dispatchEvent(new Event("vuba-media-updated"));
-  return record.data.id;
+  return asset.record.id;
  }catch(e){
   notify("Artwork unavailable: "+(e?.message||String(e)));
   return null;
@@ -89,7 +104,7 @@ async function generate(){
 }
 window.FoxonArtworkGenerate=generate;
 window.FoxonArtworkAutoOnSave=async()=>{
- if(!$("foxonAutoArt")?.checked||$("postMedia")?.value)return;
+ if(!$("foxonAutoArt")?.checked||$("postMedia")?.value||$("format")?.value==="Text-led")return;
  const result=await generate();
  if(!result&&$("editorError"))$("editorError").textContent="Post will be saved without new artwork. "+$("foxonArtStatus")?.textContent;
 };

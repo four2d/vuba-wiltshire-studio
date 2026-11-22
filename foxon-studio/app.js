@@ -116,19 +116,25 @@ function edit(p){
  $("delete").hidden=!p||role!=="admin";
  $("editor").showModal();
 }
+let savingPost=false;
 $("postForm").onsubmit=async e=>{
- e.preventDefault();$("editorError").textContent="";
+ e.preventDefault();if(savingPost)return;$("editorError").textContent="";
  const id=$("postId").value,old=posts.find(p=>p.id===id);
  const status=$("postStatus").value;
  if(!$("title").value.trim())return alertError("Add a title or use Suggest AI post to write one.");
  if(["approved","scheduled"].includes(status)&&!["admin","approver"].includes(role))return alertError("Only an approver can approve posts.");
  if(status==="scheduled"&&!($("caption").value.trim()))return alertError("A scheduled post needs a caption.");
+ savingPost=true;
+ const saveButton=$("postForm").querySelector('button[type="submit"]');
+ saveButton.disabled=true;
+ try{
  if(!id&&window.FoxonArtworkAutoOnSave)await window.FoxonArtworkAutoOnSave();
  const payload={campaign_id:$("postCampaign")?.value||null,media_id:$("postMedia")?.value||null,review_note:$("reviewNote")?.value.trim()||"",topic:$("topic").value.trim()||$("title").value.trim(),title:$("title").value.trim(),scheduled_date:$("date").value,channel:$("postChannel").value,pillar:$("pillar").value,format:$("format").value,series:$("series").value||null,status,caption:$("caption").value,source_notes:$("source").value,updated_by:user.id};
  if(!id)payload.created_by=user.id;
  const q=id?db.from("studio_posts").update(payload).eq("id",id):db.from("studio_posts").insert(payload);
  const {error}=await q;if(error)return alertError(error);
  $("editor").close();window.dispatchEvent(new Event("foxon:post-saved"));await load();await window.VubaStudioPlus?.refresh?.();
+ }finally{savingPost=false;saveButton.disabled=false;}
 };
 $("delete").onclick=async()=>{if(!confirm("Delete this post permanently?"))return;const {error}=await db.from("studio_posts").delete().eq("id",$("postId").value);if(error)return alertError(error);$("editor").close();await load();};
 async function generatePost(){

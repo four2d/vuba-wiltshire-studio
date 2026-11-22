@@ -28,7 +28,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   root.innerHTML='<div class="hq-head"><div><small>FOXON / MARKETING OPERATIONS</small><h2>MARKETING HQ.</h2><p>Plan, design, review and learn — without losing control of publication.</p></div><button type="button" id="hqRefresh">Refresh</button></div>'+
   '<nav class="hq-tabs" aria-label="Marketing HQ sections"><button type="button" data-hq-tab="director" aria-pressed="true">Marketing Director</button><button type="button" data-hq-tab="creative">Creative Studio</button><button type="button" data-hq-tab="publishing">Publishing Desk</button><button type="button" data-hq-tab="insights">Insights &amp; QA</button></nav>'+
   '<p id="hqMessage" role="status"></p>'+
-  '<div id="hqDirector" class="hq-page"><div class="hq-headline"><div><h3>Next week, planned properly</h3><p>Uses approved FOXON Brain entries and saved campaign briefs. Proposals are editable, not automatically approved.</p></div><button type="button" id="hqGeneratePlan">Plan next week</button></div><div class="hq-fields-row"><label>Campaign focus<select id="hqCampaign"><option value="">Organic / no campaign</option></select></label><label>Platform<select id="hqChannel"><option value="all">All three platforms</option><option>LinkedIn</option><option>Facebook</option><option>Instagram</option></select></label></div><div id="hqDraftCards" class="hq-cards"><p>Choose Plan next week to prepare editable drafts.</p></div><button type="button" id="hqSaveDrafts" disabled>Save selected drafts to calendar</button></div>'+
+  '<div id="hqDirector" class="hq-page"><div class="hq-headline"><div><h3>Next week, planned properly</h3><p>Uses approved FOXON Brain entries and saved campaign briefs. Proposals are editable, not automatically approved.</p></div><button type="button" id="hqGeneratePlan">Plan next week</button></div><div class="hq-fields-row"><label>Campaign focus<select id="hqCampaign"><option value="">Organic / no campaign</option></select></label><label>Platform<select id="hqChannel"><option value="all">All three platforms</option><option>LinkedIn</option><option>Facebook</option><option>Instagram</option></select></label></div><div id="hqDraftCards" class="hq-cards"><p>Choose Plan next week to prepare editable drafts.</p></div><button type="button" id="hqSaveDrafts" disabled>Save selected drafts to calendar</button> <button type="button" id="hqFillDraftImages">Generate images for upcoming drafts</button></div>'+
   '<div id="hqCreative" class="hq-page" hidden><div class="hq-headline"><div><h3>Creative Studio</h3><p>Real screenshots, approved imagery and original FOXON layouts. Designs need approval before use.</p></div><button type="button" id="hqDraw">Update design</button></div><div class="hq-creative-grid"><div class="hq-controls"><label>Layout<select id="hqLayout"><option value="phone">Phone mockup</option><option value="photo">Photography and headline</option><option value="bold">Bold graphic</option></select></label><label>Format<select id="hqSize"><option value="portrait">Portrait · 1080 × 1350</option><option value="square">Square · 1080 × 1080</option><option value="landscape">Landscape · 1200 × 675</option></select></label><label>Product<select id="hqProduct"><option>FOXON Invoice</option><option>FOXON CIS</option><option>FOXON Miles</option><option>FOXON Gas</option></select></label><label>Headline<textarea id="hqHeadline" maxlength="110" rows="3">MADE FOR THE TRADE.</textarea></label><label>Supporting line<input id="hqSubline" maxlength="100" value="YOUR WORK. YOUR WAY."></label><label>Approved library image<select id="hqLibraryImage"><option value="">Choose an approved image</option></select></label><label>Or upload a real screenshot/photo<input id="hqImageFile" type="file" accept="image/png,image/jpeg,image/webp"></label><label class="hq-check"><input type="checkbox" id="hqRights"> I confirm image rights and accurate copy.</label><div class="hq-buttons"><button type="button" id="hqDownload">Download PNG</button><button type="button" id="hqUpload">Save for media approval</button></div><small>Phone screens are supplied by you, never invented. New library images remain unapproved until reviewed.</small></div><div class="hq-preview"><canvas id="hqCanvas" width="1080" height="1350" aria-label="FOXON graphic preview"></canvas></div></div></div>'+
   '<div id="hqPublishing" class="hq-page" hidden><div class="hq-headline"><div><h3>Publishing Desk</h3><p>Ready for hand-off is not the same as posted. Nothing here sends content to a social platform.</p><p><a href="https://app.metricool.com/brands/connections?blogId=8253976" target="_blank" rel="noopener noreferrer">Connect FOXON social accounts in Metricool</a> to prepare for a future authenticated publishing integration.</p></div><button type="button" id="hqExport">Export CSV</button></div><label class="hq-filter">Show <select id="hqPublishFilter"><option value="all">All approved/scheduled</option><option value="ready">Ready only</option><option value="issues">Needs attention</option></select></label><div id="hqPublishingItems" class="hq-cards"></div></div>'+
   '<div id="hqInsights" class="hq-page" hidden><div class="hq-headline"><div><h3>Analytics intelligence</h3><p>Verified workflow data is separate from manually imported platform metrics.</p></div><button type="button" id="hqContrast">Check icon contrast</button></div><div id="hqIntelligence"></div><p id="hqContrastResult" class="hq-muted"></p></div>';
@@ -36,7 +36,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const heading=$("studioHome").querySelector(".studio-page-heading");
   if(heading&&!$("hqQuickJump")){const jump=document.createElement("button");jump.type="button";jump.id="hqQuickJump";jump.className="hq-quick-jump";jump.textContent="OPEN MARKETING HQ";jump.onclick=()=>root.scrollIntoView({block:"start",behavior:"smooth"});heading.appendChild(jump);}
   root.querySelectorAll("[data-hq-tab]").forEach(button=>button.addEventListener("click",()=>show(button.dataset.hqTab)));
-  $("hqRefresh").onclick=refresh;$("hqGeneratePlan").onclick=generate;$("hqSaveDrafts").onclick=save;
+  $("hqRefresh").onclick=refresh;$("hqGeneratePlan").onclick=generate;$("hqSaveDrafts").onclick=save;$("hqFillDraftImages").onclick=fillUpcomingDraftImages;
   ["hqLayout","hqSize","hqHeadline","hqSubline"].forEach(id=>$(id).addEventListener(id==="hqHeadline"||id==="hqSubline"?"input":"change",draw));
   $("hqProduct").onchange=()=>{state.image=null;if(state.objectUrl){URL.revokeObjectURL(state.objectUrl);state.objectUrl=null;}$("hqLibraryImage").value="";$("hqImageFile").value="";$("hqRights").checked=false;draw();note("Product changed — choose a matching real screenshot or approved image.");};
   $("hqDraw").onclick=draw;$("hqImageFile").onchange=loadFile;$("hqLibraryImage").onchange=loadApproved;
@@ -143,6 +143,28 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   }));
   $("hqSaveDrafts").disabled=!allowed()||!state.suggestions.some(p=>p.selected);
  }
+ async function addDraftArtwork(drafts){
+  const eligible=drafts.filter(post=>post.format!=="Text-led"&&!post.media_id);
+  let completed=0,problem="";
+  for(const post of eligible){
+   note("Generating artwork "+(completed+1)+" of "+eligible.length+"…");
+   try{if(await window.FoxonGenerateArtworkForPost(post))completed++;}
+   catch(error){problem=error.message;break;}
+  }
+  document.dispatchEvent(new Event("vuba-media-updated"));
+  return completed+" of "+eligible.length+" images attached."+(problem?" "+problem:"");
+ }
+ async function fillUpcomingDraftImages(){
+  if(!allowed()||state.busy)return;
+  const drafts=state.posts.filter(post=>post.status==="draft"&&!post.media_id&&post.format!=="Text-led"&&post.scheduled_date>=dayString(new Date()));
+  if(!drafts.length){note("No upcoming drafts need images.");return;}
+  state.busy=true;$("hqFillDraftImages").disabled=true;
+  try{
+   const result=await addDraftArtwork(drafts);
+   await window.VubaCalendarReload?.();await window.FOXONStudioPlus?.refresh?.();await refresh();
+   note(result);
+  }finally{state.busy=false;$("hqFillDraftImages").disabled=false;}
+ }
  async function save(){
   if(!allowed()||state.busy)return;
   const items=state.suggestions.filter(p=>p.selected);
@@ -154,11 +176,12 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    const payload=items.map(p=>({title:p.title,topic:p.topic,pillar:p.app,series:"Marketing HQ weekly plan",format:p.format,
     channel:p.channel,status:"draft",scheduled_date:p.date,caption:p.caption,source_notes:p.source_notes,
     media_id:null,campaign_id:p.campaign_id,created_by:state.user.id,updated_by:state.user.id}));
-   const {data,error}=await db.from("studio_posts").insert(payload).select("id");
+   const {data,error}=await db.from("studio_posts").insert(payload).select("id,title,topic,caption,channel,format");
    if(error)throw error;
    state.suggestions=[];renderBrief();
+   const artResult=await addDraftArtwork(data||[]);
    await window.VubaCalendarReload?.();await window.FOXONStudioUpgrade?.refresh?.();await refresh();
-   note((data?.length||payload.length)+" draft posts saved, awaiting images and approval. No posts published.");
+   note((data?.length||payload.length)+" draft posts saved. "+artResult);
   }catch(e){note("Could not save drafts: "+e.message);}finally{state.busy=false;$("hqSaveDrafts").disabled=!state.suggestions.some(p=>p.selected);}
  }
  function loadFile(event){

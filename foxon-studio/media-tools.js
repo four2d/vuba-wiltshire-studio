@@ -68,7 +68,7 @@ function install(){
  if($("mediaStudioTools")||!$("postMedia")||!$("assetUploadForm"))return;
  const mediaLabel=$("postMedia").closest("label");
  mediaLabel.insertAdjacentHTML("afterend",`<div id="mediaStudioTools" class="media-tools">
- <div class="editor-extras"><button type="button" id="choosePostImage">Choose photo from library</button><button type="button" id="imageBrief">Prepare image brief</button></div>
+ <div class="editor-extras"><button type="button" id="choosePostImage">Choose or replace image from Media Library</button><button type="button" id="imageBrief">Prepare image brief</button></div>
  <div id="selectedPostPhoto" class="post-image-status">No approved image selected yet.</div><p id="autoImageStatus" class="hint" role="status">The builder will suggest an approved photo when preparing a draft.</p></div>`);
  const assetForm=$("assetUploadForm");
  assetForm.insertAdjacentHTML("afterend",`<div class="folder-import">
@@ -106,9 +106,9 @@ function install(){
   if(![...mediaSelect.options].some(o=>o.value===id)){
     const m=media.find(m=>m.id===id);mediaSelect.add(new Option(m?.description||m?.filename||"Selected photo",id));
   }
-  mediaSelect.value=id;selectedMedia=id;updateSelected();chooser.close();
+  mediaSelect.value=id;selectedMedia=id;mediaSelect.dispatchEvent(new Event("change"));chooser.close();
  };
- $("clearPostImage").onclick=()=>{$("postMedia").value="";selectedMedia="";updateSelected();chooser.close();};
+ $("clearPostImage").onclick=()=>{$("postMedia").value="";selectedMedia="";$("postMedia").dispatchEvent(new Event("change"));chooser.close();};
  $("postMedia").onchange=()=>{updateSelected();showAutoMessage($("postMedia").value?"Photo selected manually. It will not be replaced automatically.":"No photo selected.");};
  $("folderPicker").onchange=()=>{batchOffset=0;$("folderFileCount").textContent=$("folderPicker").files.length+" selected files";$("importFolder").textContent="Import selected photos";};
  $("importFolder").onclick=importFolder;
@@ -120,7 +120,7 @@ function updateSelected(){
  const id=$("postMedia")?.value;
  const m=media.find(x=>x.id===id);
  $("selectedPostPhoto").innerHTML=m&&signedUrls[id]?
-  '<img src="'+safe(signedUrls[id])+'" alt="Selected approved photo"><span>'+safe(m.description||m.filename)+'</span>':
+  '<img src="'+safe(signedUrls[id])+'" alt="Selected artwork"><span>'+safe((m.description||m.filename)+(m.approved?"":" · Awaiting approval"))+'</span>':
   'No image selected yet.';
 }
 async function loadMedia(){
