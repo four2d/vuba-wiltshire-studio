@@ -46,7 +46,7 @@ async function saveVerified(db:ReturnType<typeof createClient>,platform:string,i
  const info={platform,external_account_id:id,display_name:name,connection_status:"connected",connected_at:new Date().toISOString(),last_checked_at:new Date().toISOString(),last_error:null,created_by:owner,updated_at:new Date().toISOString()};
  const result=await db.from("studio_social_accounts").upsert(info,{onConflict:"platform,external_account_id"}).select("id").single();
  if(result.error||!result.data?.id)throw Error("account_save_failed");
- const meta=await db.schema("studio_private").from("social_credentials").upsert({social_account_id:result.data.id,...enc,token_expires_at:expires?new Date(Date.now()+expires*1000).toISOString():null,updated_at:new Date().toISOString()},{onConflict:"social_account_id"});
+ const meta=await db.from("_foxon_social_tokens").upsert({social_account_id:result.data.id,...enc,token_expires_at:expires?new Date(Date.now()+expires*1000).toISOString():null,updated_at:new Date().toISOString()},{onConflict:"social_account_id"});
  if(meta.error){await db.from("studio_social_accounts").update({connection_status:"error",last_error:"Token storage failed"}).eq("id",result.data.id);throw Error("credential_save_failed");}
  return true;
 }
@@ -110,15 +110,15 @@ Deno.serve(async req=>{
    const state=url.searchParams.get("state")||"",code=url.searchParams.get("code")||"";
    if(!state||!code)return redirect("cancelled");
    const hash=await sha256(state);
-   const record=await db.schema("studio_private").from("social_oauth_requests").select("platform,requester,expires_at,consumed_at").eq("state_hash",hash).maybeSingle();
+   const record=await db.from("_foxon_social_oauth_state").select("platform,requester,expires_at,consumed_at").eq("state_hash",hash).maybeSingle();
    const r=record.data;
    if(record.error||!r||r.consumed_at||new Date(r.expires_at).getTime()<Date.now())return redirect("expired");
-   const used=await db.schema("studio_private").from("social_oauth_requests").update({consumed_at:new Date().toISOString()}).eq("state_hash",hash).is("consumed_at",null).select("state_hash").maybeSingle();
+   const used=await db.from("_foxon_social_oauth_state").update({consumed_at:new Date().toISOString()}).eq("state_hash",hash).is("consumed_at",null).select("state_hash").maybeSingle();
    if(used.error||!used.data)return redirect("expired");
-   if(!secretsConfigured(r.platform))return redirect("not_configured");
+   if(!secretsConfigured(r.platform as "Facebook"|"Instagram"|"LinkedIn"))return redirect("not_configured");
    try{
     if(r.platform==="LinkedIn")await exchangeLinkedIn(code,db,r.requester);
-    else await exchangeMeta(code,r.platform,db,r.requester);
+    else await exchangeMeta(code,r.platform as "Facebook"|"Instagram",db,r.requester);
     return redirect("connected");
    }catch(e){return redirect(String(e instanceof Error?e.message:"provider_error").slice(0,70));}
   }
@@ -131,10 +131,10 @@ Deno.serve(async req=>{
   if(input.action!=="begin")return respond({error:"unknown_action"},400);
   const platform=input.platform;
   if(!Object.hasOwn(config,platform))return respond({error:"unknown_platform"},400);
-  if(!secretsConfigured(platform))return respond({error:"developer_app_setup_required"},409);
+  if(!secretsConfigured(platform as "Facebook"|"Instagram"|"LinkedIn"))return respond({error:"developer_app_setup_required"},409);
   const raw=toBase64(crypto.getRandomValues(new Uint8Array(32))).replaceAll("+","-").replaceAll("/","_").replaceAll("=","");
   const hash=await sha256(raw);
-  const stored=await db.schema("studio_private").from("social_oauth_requests").insert({state_hash:hash,requester:userId,platform,expires_at:new Date(Date.now()+600000).toISOString()});
+  const stored=await db.from("_foxon_social_oauth_state").insert({state_hash:hash,requester:userId,platform,expires_at:new Date(Date.now()+600000).toISOString()});
   if(stored.error)return respond({error:"oauth_state_setup_failed"},500);
   const c=config[platform as keyof typeof config];
   const auth=new URL(c.auth);auth.search=new URLSearchParams({response_type:"code",client_id:c.client,redirect_uri:endpoint,state:raw,scope:c.scope}).toString();
