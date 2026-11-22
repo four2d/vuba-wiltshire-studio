@@ -22,7 +22,7 @@ function build(){
  </section>
  <section id="assetsPanel" class="panel" hidden>
   <div class="strategy-head"><div><h2>Creative library</h2><p>Upload genuine photographs and approved branded graphics. All uploads are private until reviewed.</p></div><button id="refreshAssets">Refresh images</button></div>
-  <form id="assetUploadForm" class="asset-upload"><label>Upload photo (JPEG, PNG or WebP; max 10 MB)<input type="file" id="assetFile" accept="image/jpeg,image/png,image/webp" required></label><label>Description / usage context<input id="assetDescription" maxlength="300" placeholder="e.g. Genuine depot photograph, staff permission confirmed"></label><label>Usage rights / permissions<input id="assetRights" maxlength="300" placeholder="Confirm photographer and subject permissions" required></label><button type="submit">Upload for approval</button></form>
+  <form id="assetUploadForm" class="asset-upload"><label>Upload photo (JPEG, PNG or WebP; max 10 MB)<input type="file" id="assetFile" accept="image/jpeg,image/png,image/webp" required></label><label>Description<input id="assetDescription" maxlength="300" placeholder="e.g. Depot photograph"></label><button type="submit">Upload for approval</button></form>
   <p id="assetMessage" role="status"></p><div id="assetGrid" class="workspace-grid"></div>
  </section>
  <section id="reviewsPanel" class="panel" hidden><div class="strategy-head"><div><h2>Review queue</h2><p>Approve content or return it with specific changes. Review actions are recorded against the post.</p></div><button id="refreshReview">Refresh queue</button></div><div id="reviewGrid" class="workspace-grid"></div></section>`;
@@ -119,14 +119,12 @@ async function uploadAsset(e){
  const file=$("assetFile").files?.[0];
  if(!file)return;
  if(!["image/jpeg","image/png","image/webp"].includes(file.type)||file.size>10485760){$("assetMessage").textContent="Choose a JPEG, PNG or WebP under 10MB.";return;}
- const rights=$("assetRights").value.trim();
- if(!rights){$("assetMessage").textContent="Document image permissions before uploading.";return;}
  const filename=file.name.replace(/[^a-zA-Z0-9._-]/g,"_").slice(-100);
  const path=state.user.id+"/"+crypto.randomUUID()+"-"+filename;
  $("assetMessage").textContent="Uploading private image…";
  const {error}=await db.storage.from("foxon-approved-media").upload(path,file,{upsert:false,contentType:file.type});
  if(error){$("assetMessage").textContent=error.message;return;}
- const result=await db.from("studio_media").insert({file_path:path,filename,description:$("assetDescription").value.trim(),usage_rights:rights,mime_type:file.type,uploaded_by:state.user.id});
+ const result=await db.from("studio_media").insert({file_path:path,filename,description:$("assetDescription").value.trim(),usage_rights:"",mime_type:file.type,uploaded_by:state.user.id});
  $("assetMessage").textContent=result.error?result.error.message:"Image uploaded privately for approval.";
  if(!result.error){$("assetUploadForm").reset();await refresh();}
 }

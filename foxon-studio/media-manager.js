@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const types={jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",webp:"image/webp",mp4:"video/mp4",mov:"video/quicktime",webm:"video/webm"};
 const limit=45*1024*1024;
-let user=null,role="",current="",items=[],folders=[],urls={},typeFilter="all",search="",queue=null,waitingForRights=null,busy=false;
+let user=null,role="",current="",items=[],folders=[],urls={},typeFilter="all",search="",queue=null,busy=false;
 const lead=()=>role==="admin"||role==="approver";
 const ext=name=>String(name||"").split(".").pop().toLowerCase();
 function clean(path){
@@ -20,12 +20,11 @@ function build(){
  const manager=document.createElement("div");manager.id="mediaManager";
  manager.innerHTML=`<div class="mm-header"><div><span class="studio-kicker">VISUAL ASSET WORKSPACE</span><h2>Everything worth sharing.</h2><p>A home for your best photography, video and branded content.</p></div><div class="mm-actions"><button type="button" id="mmNewFolder">＋ New folder</button><button type="button" id="mmSelectFolder">⇧ Import folder</button><button type="button" id="mmSelectFiles" class="mm-main">＋ Upload media</button></div></div>
  <div class="mm-import">
-  <label class="mm-rights-label" for="mmRights"><strong>Image/video usage rights</strong><span>Before uploading, state who owns these files or confirm you have permission to use them.</span><input id="mmRights" name="mmRights" type="text" maxlength="300" autocomplete="off" placeholder="e.g. FOXON-owned screenshots; permission confirmed" required></label>
   <div id="mmDrop" class="mm-drop" tabindex="0" role="button"><span class="mm-drop-icon">⇧</span><strong>Drop photos, videos or folders</strong><span>Keep folder structure intact, even with nested folders</span><small>JPG · PNG · WebP · MP4 · MOV · WebM · maximum 45 MB per file</small></div>
   
   <input id="mmFileInput" type="file" multiple hidden accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.webm">
   <input id="mmFolderInput" type="file" webkitdirectory directory multiple hidden>
-  <p id="mmStatus" role="status"></p><button id="mmUploadQueued" type="button" hidden disabled>Upload queued files</button><button id="mmContinue" type="button" hidden>Import next batch →</button>
+  <p id="mmStatus" role="status"></p><button id="mmContinue" type="button" hidden>Import next batch →</button>
  </div>
  <div class="mm-toolbar"><div id="mmBreadcrumb" class="mm-breadcrumb"></div><div class="mm-controls"><input id="mmSearch" type="search" placeholder="Search media, tags or folder"><select id="mmType"><option value="all">All media</option><option value="photo">Photos</option><option value="video">Videos</option><option value="pending">Needs review</option><option value="approved">Approved</option></select><button id="mmRefresh" type="button">↻</button></div></div>
  <div class="mm-totals"><span id="mmTotal"></span><span id="mmPending"></span></div><div id="mmFolders" class="mm-folder-grid"></div><div id="mmGrid" class="mm-asset-grid"></div>`;
@@ -35,7 +34,6 @@ function build(){
  <input name="id" type="hidden"><label>Filename<input name="filename" readonly></label>
  <label>Description<input name="description" maxlength="300"></label><label>Folder<select name="folder_path"></select></label>
  <label>Tags<input name="tags" placeholder="invoice, cis, miles, gas"></label>
- <label>Usage rights<input name="usage_rights" maxlength="300"></label>
  <p class="hint">Organising an asset never changes the original private file.</p><p id="mmError" role="alert"></p>
  <div class="dialogActions"><button id="mmArchive" type="button" class="brain-danger-action">Archive asset</button><button type="submit">Save changes</button></div></form>`;
  document.body.appendChild(dialog);
@@ -45,8 +43,6 @@ function build(){
  $("mmFolderInput").onchange=async()=>{await begin([...$("mmFolderInput").files],true);$("mmFolderInput").value="";};
  $("mmNewFolder").onclick=createFolder;
  $("mmContinue").onclick=processBatch;
- $("mmUploadQueued").onclick=uploadQueued;
- $("mmRights").oninput=()=>{$("mmUploadQueued").disabled=!$("mmRights").value.trim();};
  $("mmRefresh").onclick=load;
  $("mmSearch").oninput=e=>{search=e.target.value.toLowerCase();render();};
  $("mmType").onchange=e=>{typeFilter=e.target.value;render();};
@@ -63,7 +59,7 @@ function build(){
  $("mmForm").onsubmit=save;
  $("mmArchive").onclick=archive;
  const zone=$("mmDrop");let depth=0;
- $("mmStatus").textContent="Add usage rights above, then drop files or choose Upload media. Files are saved privately and need approval.";
+ $("mmStatus").textContent="Drop files here or choose Upload media. Files are saved privately and need approval.";
  const hasFiles=event=>Array.from(event.dataTransfer?.types||[]).includes("Files");
  manager.ondragenter=e=>{if(!hasFiles(e))return;e.preventDefault();depth++;zone.classList.add("dragging");};
  manager.ondragover=e=>{if(hasFiles(e))e.preventDefault();};
@@ -105,8 +101,6 @@ async function ensureFolder(path){
 async function begin(input,withFolders){
  if(busy||queue){$("mmStatus").textContent="Finish the current batch before adding more files.";return;}
  if(!user||!["admin","approver","editor"].includes(role)){$("mmStatus").textContent="Sign in with FOXON Studio upload access first.";return;}
- const rightsField=$("mmRights");
- if(!rightsField){$("mmStatus").textContent="Upload form is incomplete. Refresh FOXON Studio and try again.";return;}
  const records=input.map(x=>{
   const file=x.file||x,relative=clean(x.relative||file.webkitRelativePath||file.name),parts=relative.split("/");
   parts.pop();
@@ -115,27 +109,7 @@ async function begin(input,withFolders){
  if(!records.length){$("mmStatus").textContent="No supported files were found.";return;}
  const ready=records.filter(x=>x.file.size<=limit);
  if(!ready.length){$("mmStatus").textContent="Files exceed the current 45 MB upload limit.";return;}
- const skipped=records.length-ready.length;
- if(waitingForRights){
-  waitingForRights.records.push(...ready);
-  waitingForRights.skipped+=skipped;
- }else{
-  waitingForRights={records:ready,skipped};
- }
- if(rightsField.value.trim()){await uploadQueued();return;}
- $("mmUploadQueued").hidden=false;
- $("mmUploadQueued").disabled=true;
- const count=waitingForRights.records.length;
- $("mmStatus").textContent=count+" "+(count===1?"file":"files")+" ready. Enter usage rights, then choose Upload queued files.";
- rightsField.focus();
-}
-async function uploadQueued(){
- if(!waitingForRights||busy||queue)return;
- const rights=$("mmRights").value.trim();
- if(!rights)return;
- queue={...waitingForRights,offset:0,success:0,errors:[],rights};
- waitingForRights=null;
- $("mmUploadQueued").hidden=true;
+ queue={records:ready,skipped:records.length-ready.length,offset:0,success:0,errors:[]};
  try{await processBatch();}catch(error){$("mmStatus").textContent="UPLOAD FAILED: "+(error?.message||String(error));console.error("FOXON media upload",error);}
 }
 async function processBatch(){
@@ -151,7 +125,7 @@ async function processBatch(){
     const path=user.id+"/"+crypto.randomUUID()+"-"+name;
     const upload=await db.storage.from("foxon-approved-media").upload(path,file,{contentType:types[ext(file.name)],upsert:false});
     if(upload.error)throw Error(upload.error.message);
-    const added=await db.from("studio_media").insert({file_path:path,filename:file.name.slice(0,255),description:file.name,usage_rights:queue.rights,mime_type:types[ext(file.name)],folder_path:folder,tags:[],approved:false,uploaded_by:user.id}).select("id").single();
+    const added=await db.from("studio_media").insert({file_path:path,filename:file.name.slice(0,255),description:file.name,usage_rights:"",mime_type:types[ext(file.name)],folder_path:folder,tags:[],approved:false,uploaded_by:user.id}).select("id").single();
     if(added.error||!added.data?.id){
      await db.storage.from("foxon-approved-media").remove([path]).catch(()=>{});
      throw Error(added.error?.message||"Media database save did not return a record.");
@@ -218,7 +192,7 @@ async function openAsset(m){
  window.open(data.signedUrl,"_blank","noopener,noreferrer");
 }
 async function approve(m){
- if(!lead()||!confirm("Confirm this media is accurate and you have checked usage rights?"))return;
+ if(!lead()||!confirm("Approve this media for use?"))return;
  const {error}=await db.from("studio_media").update({approved:true}).eq("id",m.id);
  if(error){$("mmStatus").textContent=error.message;return;}await load();await window.VubaStudioPlus?.refresh?.();
 }
@@ -227,7 +201,6 @@ function edit(m){
  const f=$("mmForm");f.reset();
  f.elements.id.value=m.id;f.elements.filename.value=m.filename;
  f.elements.description.value=m.description;
- f.elements.usage_rights.value=m.usage_rights;
  f.elements.tags.value=(m.tags||[]).join(", ");
  f.elements.folder_path.innerHTML='<option value="">All media / Unsorted</option>'+[...new Set([...folders.map(x=>x.path),...items.flatMap(x=>parents(x.folder_path))])].sort().map(p=>'<option value="'+safe(p)+'">'+safe(p)+'</option>').join("");
  f.elements.folder_path.value=m.folder_path||"";
@@ -235,7 +208,7 @@ function edit(m){
 }
 async function save(e){
  e.preventDefault();if(!lead())return;
- const f=e.currentTarget,p={description:f.elements.description.value.trim(),usage_rights:f.elements.usage_rights.value.trim(),
+ const f=e.currentTarget,p={description:f.elements.description.value.trim(),
  folder_path:f.elements.folder_path.value,tags:f.elements.tags.value.split(",").map(x=>x.trim()).filter(Boolean).slice(0,20)};
  const {error}=await db.from("studio_media").update(p).eq("id",f.elements.id.value);
  if(error){$("mmError").textContent=error.message;return;}
@@ -251,7 +224,7 @@ async function archive(){
 }
 async function init(u){
  user=u;
- if(!u){waitingForRights=null;queue=null;$("mediaManager")?.remove();$("mmDialog")?.remove();return;}
+ if(!u){queue=null;$("mediaManager")?.remove();$("mmDialog")?.remove();return;}
  const {data}=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
  if(!data)return;role=data.role;
  for(let i=0;i<150&&!$("assetsPanel");i++)await new Promise(resolve=>setTimeout(resolve,100));

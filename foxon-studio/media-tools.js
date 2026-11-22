@@ -74,7 +74,6 @@ function install(){
  assetForm.insertAdjacentHTML("afterend",`<div class="folder-import">
  <h3>Import a photo folder from your Mac</h3>
  <p class="hint">Choose the local <strong>OneDrive_1_19-11-2026</strong> folder, or a subfolder. Images are copied privately into the Studio. The original folder is left untouched. Files require approval before use.</p>
- <label>Confirm usage rights for the selected photos<input id="folderUsageRights" type="text" maxlength="300" placeholder="e.g. FOXON-owned photos, checked for subject permissions"></label>
  <label>Choose folder<input id="folderPicker" type="file" accept="image/jpeg,image/png,image/webp" webkitdirectory directory multiple></label>
  <div class="folder-import-actions"><button type="button" id="importFolder">Import selected photos</button><span class="hint" id="folderFileCount">No folder selected</span></div>
  <p id="folderImportStatus" role="status"></p>
@@ -155,10 +154,8 @@ function drawPicker(){
 }
 async function importFolder(){
  const files=[...($("folderPicker").files||[])];
- const rights=$("folderUsageRights").value.trim();
  const out=$("folderImportStatus"),button=$("importFolder");
  if(!files.length){out.textContent="Choose your OneDrive photo folder first.";return;}
- if(!rights){out.textContent="Please confirm usage rights and any required subject permissions before importing.";return;}
  const images=files.filter(f=>permitted.has(f.type)||/\.(jpe?g|png|webp)$/i.test(f.name)).filter(f=>f.size>0&&f.size<=maxFile);
  if(!images.length){out.textContent="No JPEG, PNG or WebP files under 10MB were selected.";return;}
  // Explicit per-click upper limit prevents browser freeze and uncontrolled writes.
@@ -174,7 +171,7 @@ async function importFolder(){
   const mime=file.type||(/\.png$/i.test(name)?"image/png":/\.webp$/i.test(name)?"image/webp":"image/jpeg");
   const {error:storageError}=await db.storage.from("foxon-approved-media").upload(path,file,{upsert:false,contentType:mime});
   if(storageError){errors.push(name+": "+storageError.message);continue;}
-  const {error:metaError}=await db.from("studio_media").insert({file_path:path,filename:name,description:original,usage_rights:rights+" · Imported from "+original,mime_type:mime,uploaded_by:signedIn.id,approved:false});
+  const {error:metaError}=await db.from("studio_media").insert({file_path:path,filename:name,description:original,usage_rights:"",mime_type:mime,uploaded_by:signedIn.id,approved:false});
   if(metaError){
    errors.push(name+": "+metaError.message);
    // Best-effort clean-up for an orphaned upload in the user's own folder.
