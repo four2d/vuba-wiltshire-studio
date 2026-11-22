@@ -22,7 +22,7 @@ function build(){
  </section>
  <section id="assetsPanel" class="panel" hidden>
   <div class="strategy-head"><div><h2>Creative library</h2><p>Upload genuine photographs and approved branded graphics. All uploads are private until reviewed.</p></div><button id="refreshAssets">Refresh images</button></div>
-  <form id="assetUploadForm" class="asset-upload"><label>Upload photo (JPEG, PNG or WebP; max 10 MB)<input type="file" id="assetFile" accept="image/jpeg,image/png,image/webp" required></label><label>Description<input id="assetDescription" maxlength="300" placeholder="e.g. Depot photograph"></label><button type="submit">Upload for approval</button></form>
+  <form id="assetUploadForm" class="asset-upload"><label>Upload photo (JPEG, PNG or WebP; max 10 MB)<input type="file" id="assetFile" accept="image/jpeg,image/png,image/webp" required></label><label>Description<input id="assetDescription" maxlength="300" placeholder="e.g. Depot photograph"></label><button type="submit">Upload image</button></form>
   <p id="assetMessage" role="status"></p><div id="assetGrid" class="workspace-grid"></div>
  </section>
  <section id="reviewsPanel" class="panel" hidden><div class="strategy-head"><div><h2>Review queue</h2><p>Approve content or return it with specific changes. Review actions are recorded against the post.</p></div><button id="refreshReview">Refresh queue</button></div><div id="reviewGrid" class="workspace-grid"></div></section>`;
@@ -56,7 +56,7 @@ function build(){
  $("previewPlatforms").onclick=e=>{const b=e.target.closest("[data-channel]");if(b)showPlatform(b.dataset.channel);};
  // Attach extra editor controls without altering the original form lifecycle.
  const format=$("format").closest("label");
- format.insertAdjacentHTML("afterend",`<label>Campaign<select id="postCampaign"><option value="">No campaign</option></select></label><label>Approved photo<select id="postMedia"><option value="">No image selected</option></select></label>`);
+ format.insertAdjacentHTML("afterend",`<label>Campaign<select id="postCampaign"><option value="">No campaign</option></select></label><label>Photo<select id="postMedia"><option value="">No image selected</option></select></label>`);
  $("caption").closest("label").insertAdjacentHTML("afterend",`<div class="editor-extras"><button id="showPreview" type="button">Preview Facebook / Instagram / LinkedIn</button><button id="openReviewHistory" type="button">Review history</button></div><label>Reviewer notes<input id="reviewNote" placeholder="Changes requested or reviewer guidance"></label><div class="review-actions"><button id="submitReview" type="button">Submit for review</button><button id="requestChanges" type="button">Request changes</button><button id="approvePost" type="button">Approve post</button></div><div id="reviewHistory" class="review-history" hidden></div>`);
  $("showPreview").onclick=()=>openPlatformPreview();
  $("openReviewHistory").onclick=showHistory;
@@ -112,7 +112,7 @@ async function saveCampaign(e){
  $("campaignDialog").close();await refresh();
 }
 function renderMedia(){
- $("assetGrid").innerHTML=state.media.map(m=>`<article class="workspace-card"><div class="asset-thumb">${state.urls[m.id]?'<img loading="lazy" src="'+safe(state.urls[m.id])+'" alt="'+safe(m.description)+'">':"Private image"}</div><h3>${safe(m.description||m.filename)}</h3><p class="hint">${safe(m.usage_rights||"No usage note")}</p><span class="suggestion-pill">${m.approved?"Approved for use":"Awaiting image approval"}</span>${!m.approved&&["admin","approver"].includes(state.role)?'<button data-approve-media="'+safe(m.id)+'">Approve image</button>':""}</article>`).join("")||"<p>No images yet. Upload real project or depot photographs with permission.</p>";
+ $("assetGrid").innerHTML=state.media.map(m=>`<article class="workspace-card"><div class="asset-thumb">${state.urls[m.id]?'<img loading="lazy" src="'+safe(state.urls[m.id])+'" alt="'+safe(m.description)+'">':"Private image"}</div><h3>${safe(m.description||m.filename)}</h3><p class="hint">${safe(m.usage_rights||"No usage note")}</p></article>`).join("")||"<p>No images yet. Upload real project or depot photographs with permission.</p>";
 }
 async function uploadAsset(e){
  e.preventDefault();
@@ -125,7 +125,7 @@ async function uploadAsset(e){
  const {error}=await db.storage.from("foxon-approved-media").upload(path,file,{upsert:false,contentType:file.type});
  if(error){$("assetMessage").textContent=error.message;return;}
  const result=await db.from("studio_media").insert({file_path:path,filename,description:$("assetDescription").value.trim(),usage_rights:"",mime_type:file.type,uploaded_by:state.user.id});
- $("assetMessage").textContent=result.error?result.error.message:"Image uploaded privately for approval.";
+ $("assetMessage").textContent=result.error?result.error.message:"Image added to the Media Library.";
  if(!result.error){$("assetUploadForm").reset();await refresh();}
 }
 async function approveMedia(id,button){
@@ -182,7 +182,7 @@ async function showPlatform(channel){
  document.querySelector("#platformPreview .social-mock").className="social-mock platform-"+channel.toLowerCase();
  $("mockCaption").textContent=state.currentPost.caption||"No caption yet. Add a caption or generate one when AI credits are available.";
  const url=state.urls[state.currentPost.media_id];
- $("mockImage").innerHTML=url?'<img src="'+safe(url)+'" alt="Selected approved image">':'<div class="mock-placeholder">NO ARTWORK ATTACHED<br><small>The published post will need its approved visual</small></div>';
+ $("mockImage").innerHTML=url?'<img src="'+safe(url)+'" alt="Selected image">':'<div class="mock-placeholder">NO ARTWORK ATTACHED<br><small>The published post will need an image</small></div>';
  $("previewStatus").textContent="Preview uses the actual caption and selected approved artwork. Platform layout is approximate. Nothing has been published.";
 }
 async function changeReviewStatus(status,action){

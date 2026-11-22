@@ -12,7 +12,7 @@ function insertControls(){
  if($("generateFOXONArt")||!$("mediaStudioTools"))return false;
  $("mediaStudioTools").insertAdjacentHTML("beforeend",`<section id="foxonArtworkSection" class="foxon-art-generator">
  <h3>Artwork for this post</h3>
- <p class="hint">Create a relevant FOXON image. A generated image is stored privately and requires approval before publication.</p>
+ <p class="hint">Create a relevant FOXON image. Generated images are saved privately to the Media Library.</p>
  <label>Art direction<select id="foxonArtStyle"><option value="photography">Realistic trade photography</option><option value="branded">Bold branded artwork</option><option value="phone">Smartphone mockup (screen placeholder)</option></select></label>
  <label class="foxon-art-checkbox"><input id="foxonAutoArt" type="checkbox" checked> Automatically create artwork when saving a new post without an image</label>
  <button id="generateFOXONArt" type="button">Generate / regenerate artwork</button>
@@ -76,7 +76,7 @@ async function generate(){
  const postAtStart=stillPost(),imageAtStart=$("postMedia")?.value;
  busy=true;
  const button=$("generateFOXONArt");button.disabled=true;button.textContent="Generating artwork…";
- notify("Creating FOXON artwork. It will be private and require approval.");
+ notify("Creating FOXON artwork. It will be saved privately.");
  try{
   const asset=await makeArtwork(post,$("foxonArtStyle")?.value||"photography");
   if(!$("editor")?.open||stillPost()!==postAtStart||$("postMedia")?.value!==imageAtStart){notify("Artwork saved to the Media Library. The current post was left as edited.");return null;}
@@ -89,10 +89,10 @@ async function generate(){
   if(signed.data?.signedUrl){
    const frame=$("foxonArtPreview");frame.hidden=false;
    frame.replaceChildren();
-   const img=document.createElement("img");img.src=signed.data.signedUrl;img.alt="New generated FOXON artwork, awaiting approval";
+   const img=document.createElement("img");img.src=signed.data.signedUrl;img.alt="New generated FOXON artwork";
    frame.append(img);
   }
-  notify("Generated artwork saved privately and attached to this draft. Approval is required before publication.");
+  notify("Generated artwork saved privately and attached to this draft.");
   document.dispatchEvent(new Event("vuba-media-updated"));
   return asset.record.id;
  }catch(e){

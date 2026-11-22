@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const types={jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",webp:"image/webp",mp4:"video/mp4",mov:"video/quicktime",webm:"video/webm"};
 const limit=45*1024*1024;
-let user=null,role="",current="",items=[],folders=[],urls={},typeFilter="all",search="",queue=null,busy=false;
+let user=null,initialisingUser=null,role="",current="",items=[],folders=[],urls={},typeFilter="all",search="",queue=null,busy=false;
 const lead=()=>role==="admin"||role==="approver";
 const ext=name=>String(name||"").split(".").pop().toLowerCase();
 function clean(path){
@@ -26,7 +26,7 @@ function build(){
   <input id="mmFolderInput" type="file" webkitdirectory directory multiple hidden>
   <p id="mmStatus" role="status"></p><button id="mmContinue" type="button" hidden>Import next batch →</button>
  </div>
- <div class="mm-toolbar"><div id="mmBreadcrumb" class="mm-breadcrumb"></div><div class="mm-controls"><input id="mmSearch" type="search" placeholder="Search media, tags or folder"><select id="mmType"><option value="all">All media</option><option value="photo">Photos</option><option value="video">Videos</option><option value="pending">Needs review</option><option value="approved">Approved</option></select><button id="mmRefresh" type="button">↻</button></div></div>
+ <div class="mm-toolbar"><div id="mmBreadcrumb" class="mm-breadcrumb"></div><div class="mm-controls"><input id="mmSearch" type="search" placeholder="Search media, tags or folder"><select id="mmType"><option value="all">All media</option><option value="photo">Photos</option><option value="video">Videos</option></select><button id="mmRefresh" type="button">↻</button></div></div>
  <div class="mm-totals"><span id="mmTotal"></span><span id="mmPending"></span></div><div id="mmFolders" class="mm-folder-grid"></div><div id="mmGrid" class="mm-asset-grid"></div>`;
  panel.prepend(manager);
  const dialog=document.createElement("dialog");dialog.id="mmDialog";
@@ -52,14 +52,19 @@ function build(){
   const b=e.target.closest("[data-asset-action]");if(!b)return;
   const item=items.find(x=>x.id===b.dataset.id);if(!item)return;
   if(b.dataset.assetAction==="edit")edit(item);
-  if(b.dataset.assetAction==="approve")await approve(item);
+  if(b.dataset.assetAction==="approve"&&item.mime_type.startsWith("video/"))await approve(item);
   if(b.dataset.assetAction==="open")await openAsset(item);
  };
  $("mmClose").onclick=()=>dialog.close();
+ const preview=document.createElement("dialog");preview.id="mmPreview";preview.setAttribute("aria-labelledby","mmPreviewTitle");
+ preview.innerHTML='<div class="dialogHead"><h2 id="mmPreviewTitle">Media preview</h2><button id="mmClosePreview" type="button" aria-label="Close preview">×</button></div><div id="mmPreviewBody" role="status"></div>';
+ document.body.appendChild(preview);
+ $("mmClosePreview").onclick=()=>preview.close();
+ preview.onclose=()=>$("mmPreviewBody")?.replaceChildren();
  $("mmForm").onsubmit=save;
  $("mmArchive").onclick=archive;
  const zone=$("mmDrop");let depth=0;
- $("mmStatus").textContent="Drop files here or choose Upload media. Files are saved privately and need approval.";
+ $("mmStatus").textContent="Drop files here or choose Upload media. Files are saved privately.";
  const hasFiles=event=>Array.from(event.dataTransfer?.types||[]).includes("Files");
  manager.ondragenter=e=>{if(!hasFiles(e))return;e.preventDefault();depth++;zone.classList.add("dragging");};
  manager.ondragover=e=>{if(hasFiles(e))e.preventDefault();};
@@ -177,19 +182,32 @@ function render(){
  const children=paths.filter(p=>p.startsWith(current?current+"/":"")&&p!==current&&p.slice(current?current.length+1:0).indexOf("/")<0);
  $("mmFolders").innerHTML=children.map(path=>'<button class="mm-folder" data-folder="'+safe(path)+'" type="button"><span>▰</span><strong>'+safe(path.split("/").pop())+'</strong><small>'+items.filter(m=>m.folder_path===path&&!m.archived_at).length+' items</small></button>').join("");
  const visible=items.filter(m=>!m.archived_at&&m.folder_path===current&&(!search||[m.filename,m.description,...(m.tags||[])].join(" ").toLowerCase().includes(search))&&
- (typeFilter==="all"||typeFilter==="photo"&&m.mime_type.startsWith("image/")||typeFilter==="video"&&m.mime_type.startsWith("video/")||typeFilter==="pending"&&!m.approved||typeFilter==="approved"&&m.approved));
+ (typeFilter==="all"||typeFilter==="photo"&&m.mime_type.startsWith("image/")||typeFilter==="video"&&m.mime_type.startsWith("video/")));
  $("mmTotal").textContent=items.filter(x=>!x.archived_at).length+" total assets";
- $("mmPending").textContent=items.filter(x=>!x.approved&&!x.archived_at).length+" awaiting review";
+ $("mmPending").textContent="";
  $("mmGrid").innerHTML=visible.map(m=>{
   const isVideo=m.mime_type.startsWith("video/"),url=urls[m.id]||"";
   const thumb=url?(isVideo?'<video preload="metadata" muted playsinline src="'+safe(url)+'#t=0.1"></video>':'<img loading="lazy" src="'+safe(url)+'" alt="'+safe(m.description)+'">'):'<div class="mm-placeholder">Private asset</div>';
-  return '<article class="mm-asset"><div class="mm-thumb">'+thumb+(isVideo?'<span class="mm-video-badge">▶ VIDEO</span>':'')+'</div><div class="mm-asset-body"><span class="mm-state '+(m.approved?'ok':'pending')+'">'+(m.approved?'✓ Approved':'● Needs review')+'</span><strong>'+safe(m.description||m.filename)+'</strong><small>'+safe(m.filename)+'</small><div class="mm-asset-buttons"><button type="button" data-asset-action="open" data-id="'+safe(m.id)+'">View</button>'+(lead()?'<button type="button" data-asset-action="edit" data-id="'+safe(m.id)+'">Organise</button>'+(!m.approved?'<button type="button" data-asset-action="approve" data-id="'+safe(m.id)+'">Approve</button>':''):'')+'</div></div></article>';
+  return '<article class="mm-asset"><div class="mm-thumb">'+thumb+(isVideo?'<span class="mm-video-badge">▶ VIDEO</span>':'')+'</div><div class="mm-asset-body">'+(isVideo&&!m.approved?'<span class="mm-state pending">Video needs review</span>':'')+'<strong>'+safe(m.description||m.filename)+'</strong><small>'+safe(m.filename)+'</small><div class="mm-asset-buttons"><button type="button" data-asset-action="open" data-id="'+safe(m.id)+'">View</button>'+(lead()?'<button type="button" data-asset-action="edit" data-id="'+safe(m.id)+'">Organise</button>'+(isVideo&&!m.approved?'<button type="button" data-asset-action="approve" data-id="'+safe(m.id)+'">Approve</button>':''):'')+'</div></div></article>';
  }).join("")||'<p class="mm-empty">No assets here yet. Drop files above or choose a folder to explore.</p>';
 }
 async function openAsset(m){
+ const preview=$("mmPreview"),body=$("mmPreviewBody");
+ if(!preview||preview.open)return;
+ $("mmPreviewTitle").textContent=m.description||m.filename;
+ body.textContent="Loading preview…";
+ const request=String(performance.now());
+ preview.dataset.request=request;
+ preview.showModal();
  const {data,error}=await db.storage.from("foxon-approved-media").createSignedUrl(m.file_path,300);
- if(error||!data?.signedUrl){$("mmStatus").textContent=error?.message||"Cannot open file.";return;}
- window.open(data.signedUrl,"_blank","noopener,noreferrer");
+ if(!preview.open||preview.dataset.request!==request)return;
+ if(error||!data?.signedUrl){body.textContent="Could not open the preview. Try again.";return;}
+ const video=m.mime_type.startsWith("video/");
+ const element=document.createElement(video?"video":"img");
+ element.src=data.signedUrl;
+ if(video)element.controls=true;
+ else element.alt=m.description||m.filename;
+ body.replaceChildren(element);
 }
 async function approve(m){
  if(!lead()||!confirm("Approve this media for use?"))return;
@@ -223,10 +241,13 @@ async function archive(){
  $("mmDialog").close();await load();await window.VubaStudioPlus?.refresh?.();
 }
 async function init(u){
+ if(u&&initialisingUser===u.id)return;
+ initialisingUser=u?.id||null;
  user=u;
- if(!u){queue=null;$("mediaManager")?.remove();$("mmDialog")?.remove();return;}
+ if(!u){queue=null;$("mediaManager")?.remove();$("mmDialog")?.remove();$("mmPreview")?.remove();return;}
  const {data}=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
- if(!data)return;role=data.role;
+ if(initialisingUser!==u.id)return;
+ if(!data){initialisingUser=null;return;}role=data.role;
  for(let i=0;i<150&&!$("assetsPanel");i++)await new Promise(resolve=>setTimeout(resolve,100));
  if(!$("assetsPanel")){console.error("FOXON media library could not initialise");return;}
  build();await load();

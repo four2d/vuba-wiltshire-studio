@@ -7,14 +7,14 @@ if(!valid){
 }else{
   await import("./app.js?v=20261122artwork");
   await import("./marketing.js?v=20261120m");
-  await import("./workspace.js?v=20261122directupload");
+  await import("./workspace.js?v=20261122immediatemedia");
   await import("./brain.js?v=20261120m");
   await import("./brain-documents.js?v=20261120m");
-  await import("./media-tools.js?v=20261122directupload");
-  await import("./media-manager.js?v=20261122directupload");
-  await import("./artwork.js?v=20261122artwork");
+  await import("./media-tools.js?v=20261122immediatemedia");
+  await import("./media-manager.js?v=20261122immediatemedia");
+  await import("./artwork.js?v=20261122immediatemedia");
   await import("./shell.js?v=20261122easy3");
   await import("./studio-upgrades.js?v=20261121hqMetrics2");
-  await import("./marketing-hq.js?v=20261122artwork");
+  await import("./marketing-hq.js?v=20261122immediatemedia");
   await import("./social-accounts.js?v=20261122pages");
 }

@@ -38,14 +38,14 @@ async function chooseForBuilder(input,{attach=true,force=false}={}){
  if(!$("postMedia"))return match;
  if($("postMedia").value&&!force){showAutoMessage("A photo is already selected. Keeping your choice.");return match;}
  if(!match){
-  showAutoMessage("Image needed — no relevant approved photo found. Import FOXON images or use Prepare image brief.");
+  showAutoMessage("Image needed — no relevant photo found. Import FOXON images or use Prepare image brief.");
   return null;
  }
  const select=$("postMedia");
  if(![...select.options].some(o=>o.value===match.id))select.add(new Option(match.description||match.filename,match.id));
  select.value=match.id;
  updateSelected();
- showAutoMessage("Suggested approved photo: "+(match.description||match.filename)+". Check it suits the post before publishing.");
+ showAutoMessage("Suggested photo: "+(match.description||match.filename)+". Check it suits the post before publishing.");
  return match;
 }
 function showAutoMessage(message){
@@ -69,11 +69,11 @@ function install(){
  const mediaLabel=$("postMedia").closest("label");
  mediaLabel.insertAdjacentHTML("afterend",`<div id="mediaStudioTools" class="media-tools">
  <div class="editor-extras"><button type="button" id="choosePostImage">Choose or replace image from Media Library</button><button type="button" id="imageBrief">Prepare image brief</button></div>
- <div id="selectedPostPhoto" class="post-image-status">No approved image selected yet.</div><p id="autoImageStatus" class="hint" role="status">The builder will suggest an approved photo when preparing a draft.</p></div>`);
+ <div id="selectedPostPhoto" class="post-image-status">No approved image selected yet.</div><p id="autoImageStatus" class="hint" role="status">The builder will suggest an photo when preparing a draft.</p></div>`);
  const assetForm=$("assetUploadForm");
  assetForm.insertAdjacentHTML("afterend",`<div class="folder-import">
  <h3>Import a photo folder from your Mac</h3>
- <p class="hint">Choose the local <strong>OneDrive_1_19-11-2026</strong> folder, or a subfolder. Images are copied privately into the Studio. The original folder is left untouched. Files require approval before use.</p>
+ <p class="hint">Choose the local <strong>OneDrive_1_19-11-2026</strong> folder, or a subfolder. Images are copied privately into the Studio. The original folder is left untouched. </p>
  <label>Choose folder<input id="folderPicker" type="file" accept="image/jpeg,image/png,image/webp" webkitdirectory directory multiple></label>
  <div class="folder-import-actions"><button type="button" id="importFolder">Import selected photos</button><span class="hint" id="folderFileCount">No folder selected</span></div>
  <p id="folderImportStatus" role="status"></p>
@@ -82,19 +82,19 @@ function install(){
  const chooser=document.createElement("dialog");chooser.id="postImagePicker";
  chooser.innerHTML=`<div class="dialogHead"><h2>Choose an approved FOXON image</h2><button id="closeImagePicker" type="button" aria-label="Close">×</button></div>
  <p class="hint">Suggested images are matched by filenames and descriptions, not AI analysis. Please inspect the photo before attaching it.</p>
- <label>Search approved photos<input id="imagePickerSearch" type="search" placeholder="invoice, cis, miles, gas…"></label>
+ <label>Search photos<input id="imagePickerSearch" type="search" placeholder="invoice, cis, miles, gas…"></label>
  <div id="imagePickerGrid" class="image-picker-grid"></div>
  <div class="dialogActions"><button type="button" id="clearPostImage">Remove selected photo</button></div><p id="imagePickerMessage" role="status"></p>`;
  document.body.appendChild(chooser);
  const brief=document.createElement("dialog");brief.id="imageBriefDialog";
  brief.innerHTML=`<div class="dialogHead"><h2>Image brief for this post</h2><button type="button" id="closeImageBrief" aria-label="Close">×</button></div>
- <p>Generate a new visual here in ChatGPT using the brief below, then save and upload it to the private Creative library for approval.</p>
+ <p>Generate a new visual here in ChatGPT using the brief below, then save and upload it to the private Media Library.</p>
  <textarea id="imageBriefText" rows="15" readonly></textarea>
  <div class="dialogActions"><button type="button" id="copyImageBrief">Copy image brief</button></div><p id="briefFeedback" class="hint" role="status"></p>`;
  document.body.appendChild(brief);
  $("choosePostImage").onclick=async()=>{await loadMedia();selectedMedia=$("postMedia").value;chooser.showModal();drawPicker();};
  $("imageBrief").onclick=()=>{$("imageBriefText").value=promptForPost();$("briefFeedback").textContent="";brief.showModal();};
- $("copyImageBrief").onclick=async()=>{try{await navigator.clipboard.writeText($("imageBriefText").value);$("briefFeedback").textContent="Copied. Paste it in ChatGPT to generate a visual; return here to upload it for approval.";}catch{$("briefFeedback").textContent="Copy unavailable. Select the text in the box instead.";}}; 
+ $("copyImageBrief").onclick=async()=>{try{await navigator.clipboard.writeText($("imageBriefText").value);$("briefFeedback").textContent="Copied. Paste it in ChatGPT to generate a visual; return here to upload it.";}catch{$("briefFeedback").textContent="Copy unavailable. Select the text in the box instead.";}}; 
  $("closeImagePicker").onclick=()=>chooser.close();
  $("closeImageBrief").onclick=()=>brief.close();
  $("imagePickerSearch").oninput=drawPicker;
@@ -119,7 +119,7 @@ function updateSelected(){
  const id=$("postMedia")?.value;
  const m=media.find(x=>x.id===id);
  $("selectedPostPhoto").innerHTML=m&&signedUrls[id]?
-  '<img src="'+safe(signedUrls[id])+'" alt="Selected artwork"><span>'+safe((m.description||m.filename)+(m.approved?"":" · Awaiting approval"))+'</span>':
+  '<img src="'+safe(signedUrls[id])+'" alt="Selected artwork"><span>'+safe((m.description||m.filename))+'</span>':
   'No image selected yet.';
 }
 async function loadMedia(){
@@ -150,7 +150,7 @@ function drawPicker(){
  const matches=media.filter(m=>m.approved).map(m=>({...m,score:ranking(m,words)})).filter(m=>!term||[m.filename,m.description,m.usage_rights].join(" ").toLowerCase().includes(term)).sort((a,b)=>b.score-a.score);
  grid.innerHTML=matches.map((m,i)=>`<button type="button" data-media-id="${safe(m.id)}" class="image-choice">
   <span class="image-choice-frame">${signedUrls[m.id]?'<img loading="lazy" src="'+safe(signedUrls[m.id])+'" alt="'+safe(m.description)+'">':"Photo unavailable"}</span>
-  <span class="image-choice-copy"><strong>${safe(m.description||m.filename)}</strong><small>${i<3&&m.score>0?"Relevant filename match · ":""}${safe(m.filename)}</small></span></button>`).join("")||"<p>No approved photos match. Import your Mac folder and approve its images first.</p>";
+  <span class="image-choice-copy"><strong>${safe(m.description||m.filename)}</strong><small>${i<3&&m.score>0?"Relevant filename match · ":""}${safe(m.filename)}</small></span></button>`).join("")||"<p>No photos match. Import your Mac folder and approve its images first.</p>";
 }
 async function importFolder(){
  const files=[...($("folderPicker").files||[])];
@@ -180,7 +180,7 @@ async function importFolder(){
  }
  batchOffset+=batch.length;
  const remain=images.length-batchOffset;
- out.textContent=uploaded+" photo(s) imported in this batch, "+skipped+" unsupported/oversized skipped, "+errors.length+" failed. All imported photos await approval."+(errors.length?" First error: "+errors[0]:"")+(remain?" "+remain+" remaining. Click Import next batch.":" Folder import complete.");
+ out.textContent=uploaded+" photo(s) imported in this batch, "+skipped+" unsupported/oversized skipped, "+errors.length+" failed."+(errors.length?" First error: "+errors[0]:"")+(remain?" "+remain+" remaining. Click Import next batch.":" Folder import complete.");
  button.disabled=false;
  if(remain){button.textContent="Import next batch ("+Math.min(40,remain)+")";$("folderFileCount").textContent=batchOffset+" of "+images.length+" eligible images processed";}
  else{$("folderPicker").value="";$("folderFileCount").textContent="No folder selected";button.textContent="Import selected photos";batchOffset=0;}
