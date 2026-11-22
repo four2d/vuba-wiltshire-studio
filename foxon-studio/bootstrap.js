@@ -11,7 +11,7 @@ if(!valid){
   await import("./brain.js?v=20261120m");
   await import("./brain-documents.js?v=20261120m");
   await import("./media-tools.js?v=20261122immediatemedia");
-  await import("./media-manager.js?v=20261122quickmedia");
+  await import("./media-manager.js?v=20261122thumbpreview");
   await import("./artwork.js?v=20261122immediatemedia");
   await import("./shell.js?v=20261122easy3");
   await import("./studio-upgrades.js?v=20261121hqMetrics2");
