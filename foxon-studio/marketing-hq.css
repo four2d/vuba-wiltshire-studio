@@ -185,3 +185,43 @@ body.studio-shell-ready #mediaManager #mmRights:focus-visible{
 body.studio-shell-ready #mediaManager #mmStatus{
  white-space:normal;overflow-wrap:anywhere;line-height:1.5
 }
+
+/* Direct social-account administration — contained in FOXON Publishing Desk. */
+body.studio-shell-ready .foxon-social-accounts{
+ --sa-line:var(--hq-line,var(--read-stroke,#4b4b4b));
+ --sa-bg:var(--hq-paper,var(--read-soft,#1a1a1a));
+ --sa-fg:var(--hq-fg,var(--read-text,#f3f3f3));
+ --sa-muted:var(--hq-muted,var(--read-muted,#bcbcbc));
+ --sa-accent:var(--hq-accent,var(--read-accent,#f2c500));
+ padding:18px 0;margin-bottom:21px;border-bottom:1px solid var(--sa-line)
+}
+body.studio-shell-ready .foxon-social-heading{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px
+}
+body.studio-shell-ready .foxon-social-heading small{display:block;color:var(--sa-accent);font-size:10px;letter-spacing:.11em;font-weight:900}
+body.studio-shell-ready .foxon-social-accounts .foxon-social-heading :is(h3,h4){margin:2px 0 5px;color:var(--sa-fg)}
+body.studio-shell-ready .foxon-social-accounts .foxon-social-heading p{margin:0;color:var(--sa-muted);font-size:12px}
+body.studio-shell-ready .foxon-social-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:13px 0 19px}
+body.studio-shell-ready .foxon-social-card{
+ border:1px solid var(--sa-line);border-radius:10px;padding:14px;background:var(--sa-bg);
+ display:flex;flex-direction:column;gap:8px
+}
+body.studio-shell-ready .foxon-social-card-header{display:flex;align-items:start;justify-content:space-between;gap:7px;flex-wrap:wrap}
+body.studio-shell-ready .foxon-social-card-header strong{font-size:13px;color:var(--sa-fg)}
+body.studio-shell-ready .foxon-connection-state{
+ font-size:10px;font-weight:800;background:transparent;border:1px solid var(--sa-line);
+ border-radius:20px;padding:4px 8px;color:var(--sa-muted)
+}
+body.studio-shell-ready .foxon-connection-state[data-state="Connected"]{color:var(--sa-accent);border-color:var(--sa-accent)}
+body.studio-shell-ready .foxon-social-card p{font-size:11px;color:var(--sa-muted);margin:0}
+body.studio-shell-ready .foxon-social-card a{margin-top:auto;font-size:11px;font-weight:800;line-height:1.5}
+body.studio-shell-ready .foxon-social-card ul{font-size:11px;margin:0;padding-left:16px;overflow-wrap:anywhere}
+body.studio-shell-ready #foxonSocialStatus{font-size:12px;line-height:1.5;color:var(--sa-muted)}
+body.studio-shell-ready .foxon-delivery-panel{padding-top:15px;border-top:1px solid var(--sa-line)}
+body.studio-shell-ready .foxon-delivery-table{overflow:auto}
+body.studio-shell-ready .foxon-delivery-table table{border-collapse:collapse;width:100%;font-size:11px}
+body.studio-shell-ready .foxon-delivery-table :is(th,td){padding:9px;border-bottom:1px solid var(--sa-line);text-align:left}
+body.studio-shell-ready .foxon-delivery-table th{color:var(--sa-muted);font-size:10px}
+body.studio-shell-ready .foxon-social-disclaimer,
+body.studio-shell-ready .foxon-social-empty{color:var(--sa-muted);font-size:11px;line-height:1.6;margin:12px 0}
+@media(max-width:900px){body.studio-shell-ready .foxon-social-cards{grid-template-columns:1fr}}
