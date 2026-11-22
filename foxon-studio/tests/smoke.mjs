@@ -7,6 +7,7 @@ const upgrade=read("studio-upgrades.js"),css=read("studio-upgrades.css");
 const index=read("index.html"),boot=read("bootstrap.js");
 const hq=read("marketing-hq.js"),hqCss=read("marketing-hq.css");
 const mediaManager=read("media-manager.js");
+const social=read("social-accounts.js");
 const themeKeys=["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"];
 for(const theme of themeKeys)assert(shell.includes('<option value="'+theme+'">'),"Missing selectable theme: "+theme);
 assert.equal((shell.match(/class="stat-mark-symbol"/g)||[]).length,4,"Four stat icons must be explicit SVGs");
@@ -50,4 +51,16 @@ assert(mediaManager.includes('rightsField.value.trim()'),"Media upload must read
 assert(mediaManager.includes('db.storage.from("foxon-approved-media").upload'),"Media files must use the private bucket");
 assert(mediaManager.includes('db.from("studio_media").insert'),"Every uploaded file must be recorded in the media library");
 assert(mediaManager.includes("approved:false"),"New files must remain unapproved");
+assert(boot.includes("social-accounts.js"),"Social accounts UI must load");
+assert(index.includes("marketing-hq.css"),"Connected account styles must load");
+for(const name of ["Facebook","Instagram","LinkedIn"])
+ assert(social.includes(name),"Missing social platform "+name);
+assert(social.includes("studio_social_accounts"),"Real account statuses must come from Supabase");
+assert(social.includes("studio_publish_deliveries"),"Real publishing receipts must come from Supabase");
+assert(social.includes('action:"begin"'),"Official OAuth must be initiated through secure backend");
+assert(social.includes('action:"publish"'),"Publishing must use secure backend");
+assert(social.includes('answer!=="PUBLISH"'),"Manual publishing must require explicit typed confirmation");
+assert(social.includes('post.status==="approved"'),"Only approved posts should be offered for direct publishing");
+assert(!social.includes("service_role"),"Browser must not contain a service-role secret");
+assert(!social.includes("client_secret"),"Browser must not contain provider client secrets");
 console.log("FOXON Studio static upgrade smoke checks passed.");
