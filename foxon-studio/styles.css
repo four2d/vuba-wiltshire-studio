@@ -220,3 +220,5 @@ body.studio-shell-ready #workspacePlus>.workspace-tabs{display:none}
 .foxon-connections-page .fc-welcome{padding:18px 22px;border:1px solid #333;border-radius:14px}
 #foxonFacebookPages input[type=checkbox]{width:auto;min-height:0;accent-color:#f2c500}
 #foxonFacebookPages fieldset label{display:flex;align-items:center;gap:8px;padding:7px 0}
+
+.meta-calendar-tools:not([hidden]){display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 14px}.meta-calendar-tools [role=status]{font-size:.82rem}.meta-calendar-entry{margin:5px 0;padding:6px 7px;border-left:2px solid #f2c500;background:#272319;color:#fff;border-radius:4px;font-size:.76rem;overflow-wrap:anywhere}.meta-calendar-entry summary{cursor:pointer;font-weight:700}.meta-calendar-entry small{display:block;margin-top:5px;color:#f4d962}.meta-calendar-entry p{margin:6px 0 0;white-space:pre-wrap}
