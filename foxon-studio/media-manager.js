@@ -21,7 +21,7 @@ function build(){
  manager.innerHTML=`<div class="mm-header"><div><span class="studio-kicker">VISUAL ASSET WORKSPACE</span><h2>Everything worth sharing.</h2><p>A home for your best photography, video and branded content.</p></div><div class="mm-actions"><button type="button" id="mmNewFolder">＋ New folder</button><button type="button" id="mmSelectFolder">⇧ Import folder</button><button type="button" id="mmSelectFiles" class="mm-main">＋ Upload media</button></div></div>
  <div class="mm-import">
   <label class="mm-rights-label" for="mmRights"><strong>Image/video usage rights</strong><span>Before uploading, state who owns these files or confirm you have permission to use them.</span><input id="mmRights" name="mmRights" type="text" maxlength="300" autocomplete="off" placeholder="e.g. FOXON-owned screenshots; permission confirmed" required></label>
-  <div id="mmDrop" class="mm-drop" tabindex="0" role="button"><span class="mm-drop-icon">⇧</span><strong>Drop photos, videos or folders</strong><span>Keep folder structure intact, or focus here and paste images</span><small>JPG · PNG · WebP · MP4 · MOV · WebM · maximum 45 MB per file</small></div>
+  <div id="mmDrop" class="mm-drop" tabindex="0" role="button"><span class="mm-drop-icon">⇧</span><strong>Drop photos, videos or folders</strong><span>Keep folder structure intact, even with nested folders</span><small>JPG · PNG · WebP · MP4 · MOV · WebM · maximum 45 MB per file</small></div>
   
   <input id="mmFileInput" type="file" multiple hidden accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.webm">
   <input id="mmFolderInput" type="file" webkitdirectory directory multiple hidden>
@@ -65,31 +65,6 @@ function build(){
  zone.ondragenter=e=>{e.preventDefault();depth++;zone.classList.add("dragging");};
  zone.ondragover=e=>e.preventDefault();
  zone.ondragleave=e=>{e.preventDefault();depth=Math.max(0,depth-1);if(!depth)zone.classList.remove("dragging");};
- zone.onpaste=async event=>{
-  const clip=event.clipboardData;
-  if(!clip)return;
-  const photos=[...clip.files].filter(file=>file.type.startsWith("image/"));
-  const text=clip.getData("text/plain");
-  if(!photos.length&&!text.startsWith("FOXON-ARTWORK\n"))return;
-  event.preventDefault();
-  try{
-   if(photos.length){
-    const files=photos.map(file=>types[ext(file.name)]?file:new File([file],"pasted-"+crypto.randomUUID()+"."+file.type.split("/")[1],{type:file.type}));
-    await begin(files,false);
-    return;
-   }
-   if(text.length>32*1024*1024)throw Error("Pasted artwork is too large.");
-   const entries=JSON.parse(text.slice("FOXON-ARTWORK\n".length));
-   if(!Array.isArray(entries)||entries.length<1||entries.length>12)throw Error("Paste up to 12 artwork files.");
-   const files=entries.map(entry=>{
-    if(!entry||!(/^[a-z0-9-]{1,120}\.jpg$/i.test(entry.name))||typeof entry.base64!=="string")throw Error("Invalid pasted artwork.");
-    const binary=atob(entry.base64);
-    if(binary.charCodeAt(0)!==255||binary.charCodeAt(1)!==216)throw Error("Pasted artwork must be JPEG.");
-    return new File([Uint8Array.from(binary,c=>c.charCodeAt(0))],entry.name,{type:"image/jpeg"});
-   });
-   await begin(files,false);
-  }catch(error){$("mmStatus").textContent=error?.message||"Could not read pasted artwork.";}
- };
  zone.ondrop=async e=>{e.preventDefault();depth=0;zone.classList.remove("dragging");await dropped(e.dataTransfer);};
  zone.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("mmFileInput").click();}};
  zone.onclick=()=>$("mmFileInput").click();
