@@ -54,6 +54,8 @@ function build(){
   if(b.dataset.assetAction==="edit")edit(item);
   if(b.dataset.assetAction==="approve"&&item.mime_type.startsWith("video/"))await approve(item);
   if(b.dataset.assetAction==="open")await openAsset(item);
+  if(b.dataset.assetAction==="archive")await archive(item.id);
+  if(b.dataset.assetAction==="delete")await deleteAsset(item,b);
  };
  $("mmClose").onclick=()=>dialog.close();
  const preview=document.createElement("dialog");preview.id="mmPreview";preview.setAttribute("aria-labelledby","mmPreviewTitle");
@@ -62,7 +64,7 @@ function build(){
  $("mmClosePreview").onclick=()=>preview.close();
  preview.onclose=()=>$("mmPreviewBody")?.replaceChildren();
  $("mmForm").onsubmit=save;
- $("mmArchive").onclick=archive;
+ $("mmArchive").onclick=()=>archive($("mmForm").elements.id.value);
  const zone=$("mmDrop");let depth=0;
  $("mmStatus").textContent="Drop files here or choose Upload media. Files are saved privately.";
  const hasFiles=event=>Array.from(event.dataTransfer?.types||[]).includes("Files");
@@ -167,7 +169,7 @@ async function load(){
  ]);
  if(a.error||b.error){$("mmStatus").textContent=(a.error||b.error).message;return;}
  items=a.data||[];folders=b.data||[];urls={};
- await Promise.all(items.filter(x=>!x.archived_at).map(async m=>{
+ await Promise.all(items.filter(x=>!x.archived_at&&!x.deletion_started_at).map(async m=>{
   const {data}=await db.storage.from("foxon-approved-media").createSignedUrl(m.file_path,1800);
   if(data?.signedUrl)urls[m.id]=data.signedUrl;
  }));
@@ -187,8 +189,9 @@ function render(){
  $("mmPending").textContent="";
  $("mmGrid").innerHTML=visible.map(m=>{
   const isVideo=m.mime_type.startsWith("video/"),url=urls[m.id]||"";
+  if(m.deletion_started_at)return '<article class="mm-asset"><div class="mm-asset-body"><strong>'+safe(m.description||m.filename)+'</strong><small>Deletion incomplete</small>'+(role==="admin"?'<button type="button" data-asset-action="delete" data-id="'+safe(m.id)+'">Retry delete</button>':"")+'</div></article>';
   const thumb=url?(isVideo?'<video preload="metadata" muted playsinline src="'+safe(url)+'#t=0.1"></video>':'<img loading="lazy" src="'+safe(url)+'" alt="'+safe(m.description)+'">'):'<div class="mm-placeholder">Private asset</div>';
-  return '<article class="mm-asset"><div class="mm-thumb">'+thumb+(isVideo?'<span class="mm-video-badge">▶ VIDEO</span>':'')+'</div><div class="mm-asset-body">'+(isVideo&&!m.approved?'<span class="mm-state pending">Video needs review</span>':'')+'<strong>'+safe(m.description||m.filename)+'</strong><small>'+safe(m.filename)+'</small><div class="mm-asset-buttons"><button type="button" data-asset-action="open" data-id="'+safe(m.id)+'">View</button>'+(lead()?'<button type="button" data-asset-action="edit" data-id="'+safe(m.id)+'">Organise</button>'+(isVideo&&!m.approved?'<button type="button" data-asset-action="approve" data-id="'+safe(m.id)+'">Approve</button>':''):'')+'</div></div></article>';
+  return '<article class="mm-asset"><div class="mm-thumb">'+thumb+(isVideo?'<span class="mm-video-badge">▶ VIDEO</span>':'')+'</div><div class="mm-asset-body">'+(isVideo&&!m.approved?'<span class="mm-state pending">Video needs review</span>':'')+'<strong>'+safe(m.description||m.filename)+'</strong><small>'+safe(m.filename)+'</small><div class="mm-asset-buttons"><button type="button" data-asset-action="open" data-id="'+safe(m.id)+'">View</button>'+(lead()?'<button type="button" data-asset-action="edit" data-id="'+safe(m.id)+'">Organise</button><button type="button" data-asset-action="archive" data-id="'+safe(m.id)+'">Archive</button>'+(role==="admin"?'<button class="danger" type="button" data-asset-action="delete" data-id="'+safe(m.id)+'">Delete</button>':'')+(isVideo&&!m.approved?'<button type="button" data-asset-action="approve" data-id="'+safe(m.id)+'">Approve</button>':''):'')+'</div></div></article>';
  }).join("")||'<p class="mm-empty">No assets here yet. Drop files above or choose a folder to explore.</p>';
 }
 async function openAsset(m){
@@ -232,13 +235,27 @@ async function save(e){
  if(error){$("mmError").textContent=error.message;return;}
  $("mmDialog").close();await load();await window.VubaStudioPlus?.refresh?.();
 }
-async function archive(){
- if(!lead())return;
- if(!confirm("Archive this media? It will be hidden from the active library. The original file is preserved."))return;
- const id=$("mmForm").elements.id.value;
+async function archive(id){
+ if(!lead()||!confirm("Archive this media? It will be hidden from the active library."))return;
+ const fromDialog=$("mmDialog").open;
  const {error}=await db.from("studio_media").update({archived_at:new Date().toISOString()}).eq("id",id);
- if(error){$("mmError").textContent=error.message;return;}
- $("mmDialog").close();await load();await window.VubaStudioPlus?.refresh?.();
+ if(error){$(fromDialog?"mmError":"mmStatus").textContent=error.message;return;}
+ if(fromDialog)$("mmDialog").close();
+ await load();await window.FOXONStudioPlus?.refresh?.();
+ $("mmStatus").textContent="Media archived.";
+}
+async function deleteAsset(item,button){
+ if(role!=="admin"||button.disabled)return;
+ if(!confirm('Permanently delete "'+(item.description||item.filename)+'"? The original file will be removed.'))return;
+ button.disabled=true;
+ try{
+  const {data,error}=await db.functions.invoke("foxon-media-delete",{body:{id:item.id}});
+  const details=error?.context?.json?await error.context.json().catch(()=>null):data;
+  await load();
+  await window.FOXONStudioPlus?.refresh?.();
+  $("mmStatus").textContent=details?.error==="media_in_use"?"This file is attached to a post. Remove or replace it there first.":error||!data?.deleted?"Deletion could not finish. Please try again.":"Media deleted.";
+ }catch{$("mmStatus").textContent="Deletion could not finish. Please try again.";}
+ finally{button.disabled=false;}
 }
 async function init(u){
  if(u&&initialisingUser===u.id)return;
