@@ -11,12 +11,12 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   {name:"Instagram",label:"FOXON Instagram Professional",url:"https://developers.facebook.com/apps/",help:"Share approved graphics to a professional Instagram account."},
   {name:"LinkedIn",label:"FOXON LinkedIn Company Page",url:"https://www.linkedin.com/developers/apps",help:"Publish company updates from your LinkedIn Page."}
  ];
- let user=null,role="",accounts=[],deliveries=[],posts=[],providerReady={},providerError="";
+ let user=null,role="",accounts=[],deliveries=[],posts=[],connecting=false;
  function setMessage(message){const el=$("foxonSocialStatus");if(el)el.textContent=message;}
  function mount(){
   const host=$("foxonConnectionWorkspace");if(!host||$("foxonSocialAccounts"))return;
   const root=document.createElement("section");root.id="foxonSocialAccounts";root.className="foxon-social-accounts foxon-easy-connect";
-  root.innerHTML='<header class="fc-welcome"><span class="fc-spark">✦</span><div><h2>Add your accounts</h2><p>Choose the places you want to post. Connect once, then use FOXON Studio for everything else.</p></div></header><div id="foxonSocialCards" class="fc-primary-cards"></div><p id="foxonSocialStatus" role="status" aria-live="polite" class="fc-friendly-status"></p><p class="fc-reassurance">✓ Your passwords stay with Facebook, Instagram and LinkedIn.</p><details id="foxonConnectedTools" class="fc-optional-details" hidden><summary>Posts and activity</summary><section class="foxon-direct-publish"><h3>Approved posts</h3><div id="foxonPublishCandidates"></div></section><section class="foxon-delivery-panel"><h3>Publishing history</h3><div id="foxonDeliveryList"></div></section></details>';
+  root.innerHTML='<header class="fc-welcome"><span class="fc-spark">✦</span><div><h2>Add your accounts</h2><p>Choose an account below. Sign in on the social network, select the Page or account you want, then review the permissions. You’ll return here to see whether it connected.</p></div></header><div id="foxonSocialCards" class="fc-primary-cards"></div><p id="foxonSocialStatus" role="status" aria-live="polite" class="fc-friendly-status"></p><p class="fc-reassurance">✓ Your passwords stay with Facebook, Instagram and LinkedIn.</p><details id="foxonConnectedTools" class="fc-optional-details" hidden><summary>Posts and activity</summary><section class="foxon-direct-publish"><h3>Approved posts</h3><div id="foxonPublishCandidates"></div></section><section class="foxon-delivery-panel"><h3>Publishing history</h3><div id="foxonDeliveryList"></div></section></details>';
   host.replaceChildren(root);
   const admin=document.createElement("section");admin.id="foxonDeveloperAdmin";admin.className="fc-admin-section";admin.hidden=true;host.append(admin);
   render();
@@ -45,9 +45,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const existing=accounts.filter(a=>a.platform===platform&&a.connection_status==="connected");
   if(existing.length){setMessage(platform+' connected: '+existing.map(a=>a.display_name).join(', '));return;}
   if(role!=="admin"){setMessage("Account connection is not yet enabled for your access level. FOXON is working on making this a simple sign-in for every user.");return;}
-  if(providerReady[platform]){await connect(platform);return;}
-  setMessage("We're getting "+platform+" ready for FOXON Studio. Nothing you need to log into elsewhere just yet.");
-  // Keep developer setup out of the ordinary Add account flow. The owner can open settings separately.
+  await connect(platform);
  }
  function renderReadyPosts(){
   const root=$("foxonPublishCandidates");if(!root)return;
@@ -96,12 +94,14 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  }
  async function connectorRequest(body){
   const {data,error}=await db.functions.invoke("foxon-social-oauth",{body});
+  if(error?.context?.status===409)throw Error("Studio is still being set up for this social network. Please try again later.");
   if(error)throw Error(error.message||"Social authorisation unavailable.");
   if(data?.error)throw Error(data.error);
   return data;
  }
  async function connect(platform){
-  if(role!=="admin"||!providerReady[platform])return;
+  if(role!=="admin"||connecting)return;
+  connecting=true;
   setMessage("Opening official "+platform+" account authorisation…");
   try{
    const data=await connectorRequest({action:"begin",platform});
@@ -110,24 +110,25 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    if(!["www.facebook.com","www.linkedin.com"].includes(url.hostname)||url.protocol!=="https:")throw Error("Unexpected authorisation destination.");
    window.location.assign(url.toString());
   }catch(e){setMessage("Could not start "+platform+" connection: "+(e.message||String(e)));}
+  finally{connecting=false;}
  }
  async function load(){
   if(!user||!$("foxonSocialAccounts"))return;
-  setMessage("Checking your accounts…");
-  const [ac,delivery,post,provider]=await Promise.all([
+  if(!connecting)setMessage("Checking your accounts…");
+  const [ac,delivery,post]=await Promise.all([
    db.from("studio_social_accounts").select("id,platform,display_name,connection_status,last_error,connected_at").order("platform"),
    db.from("studio_publish_deliveries").select("id,post_id,social_account_id,status,published_at,last_error").order("created_at",{ascending:false}).limit(60),
-   db.from("studio_posts").select("id,title,status,channel,format,caption,source_notes,media_id").limit(500),
-   role==="admin"?connectorRequest({action:"status"}).catch(e=>({error:e.message})):Promise.resolve({platforms:{}})
+   db.from("studio_posts").select("id,title,status,channel,format,caption,source_notes,media_id").limit(500)
   ]);
-  providerReady=Object.fromEntries(Object.entries(provider?.platforms||{}).map(([name,config])=>[name,config.ready===true]));
-  providerError=provider?.error||"";
   if(ac.error||delivery.error){setMessage("Account status unavailable: "+(ac.error||delivery.error).message);return;}
   accounts=ac.data||[];deliveries=delivery.data||[];posts=post.data||[];
   render();
   const count=accounts.filter(a=>a.connection_status==="connected").length;
   const notice=new URLSearchParams(window.location.search).get("social_connect");
-  setMessage(count?count+" account"+(count===1?"":"s")+" ready to use.":notice?"Connection result: "+notice+".":"");
+  if(connecting)return;
+  if(notice==="cancelled"){setMessage("Connection cancelled. Choose Add account to try again.");return;}
+  if(notice&&notice!=="connected"){setMessage("The account could not be connected. Choose Add account to try again.");return;}
+  setMessage(count?count+" account"+(count===1?"":"s")+" ready to use.":"");
  }
  async function init(u){
   user=u;
