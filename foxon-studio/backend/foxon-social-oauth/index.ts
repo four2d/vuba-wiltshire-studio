@@ -25,7 +25,9 @@ async function encrypt(token:string){
  const enc=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},key,new TextEncoder().encode(token)));
  return {token_ciphertext:toBase64(enc),token_iv:toBase64(iv)};
 }
-function secretsConfigured(p:"Facebook"|"Instagram"|"LinkedIn"){return Boolean(config[p].client&&config[p].secret&&env("FOXON_SOCIAL_TOKEN_KEY_B64"));}
+function secretsConfigured(p:"Facebook"|"Instagram"|"LinkedIn"){
+ try{return Boolean(config[p].client&&config[p].secret&&fromBase64(env("FOXON_SOCIAL_TOKEN_KEY_B64")).length===32);}catch{return false;}
+}
 function adminClient(){
  const secret=env("SUPABASE_SERVICE_ROLE_KEY")||(JSON.parse(env("SUPABASE_SECRET_KEYS")||"{}").default||"");
  if(!base||!secret)throw Error("backend_not_ready");
