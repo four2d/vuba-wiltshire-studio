@@ -225,3 +225,35 @@ body.studio-shell-ready .foxon-delivery-table th{color:var(--sa-muted);font-size
 body.studio-shell-ready .foxon-social-disclaimer,
 body.studio-shell-ready .foxon-social-empty{color:var(--sa-muted);font-size:11px;line-height:1.6;margin:12px 0}
 @media(max-width:900px){body.studio-shell-ready .foxon-social-cards{grid-template-columns:1fr}}
+
+/* Explicit manual provider publication — never expose accidental one-click posting. */
+body.studio-shell-ready .foxon-direct-publish{
+ border-top:1px solid var(--sa-line);padding:18px 0;margin:16px 0
+}
+body.studio-shell-ready .foxon-ready-row{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,220px) auto;
+ gap:12px;align-items:center;padding:12px;margin:7px 0;
+ border:1px solid var(--sa-line);background:var(--sa-bg);border-radius:10px
+}
+body.studio-shell-ready .foxon-ready-row>div:first-child{display:grid;gap:4px;min-width:0}
+body.studio-shell-ready .foxon-ready-row strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+body.studio-shell-ready .foxon-ready-row :is(small,p){color:var(--sa-muted);font-size:10px;margin:0}
+body.studio-shell-ready .foxon-ready-row label{display:grid;gap:6px;font-size:11px}
+body.studio-shell-ready .foxon-ready-row select{
+ min-height:35px;padding:7px 10px;border:1px solid var(--sa-line);
+ background:var(--sa-bg);color:var(--sa-fg);border-radius:7px
+}
+body.studio-shell-ready .foxon-ready-row button{
+ background:var(--sa-accent);color:var(--hq-ink,#161616);
+ border:1px solid var(--sa-accent);font-size:11px;font-weight:850
+}
+body.studio-shell-ready .foxon-social-card button[data-social-connect]{
+ background:var(--sa-accent);color:var(--hq-ink,#161616);border-color:var(--sa-accent);
+ font-size:11px;font-weight:850
+}
+body.studio-shell-ready .foxon-social-setup-note{
+ margin-top:4px;font-size:11px;color:var(--sa-muted);line-height:1.4
+}
+@media(max-width:730px){
+ body.studio-shell-ready .foxon-ready-row{grid-template-columns:1fr}
+}
