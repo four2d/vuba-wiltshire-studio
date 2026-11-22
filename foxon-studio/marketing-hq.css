@@ -257,3 +257,79 @@ body.studio-shell-ready .foxon-social-setup-note{
 @media(max-width:730px){
  body.studio-shell-ready .foxon-ready-row{grid-template-columns:1fr}
 }
+
+/* Dedicated Connections route: uses FOXON theme tokens and the existing account service. */
+body.studio-shell-ready .foxon-connections-page{
+ --fc-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fc-ink:var(--read-accent-text,#111);
+ --fc-ink-soft:var(--read-text,#f3f3f3);
+ --fc-muted:var(--read-muted,#c3c3c3);
+ --fc-panel:var(--read-card,var(--theme-panel,#1f1f1f));
+ --fc-line:var(--read-stroke,var(--theme-edge,#4a4a4a));
+ color:var(--fc-ink-soft);
+ padding-bottom:40px
+}
+body.studio-shell-ready .foxon-connections-page :is(h1,h2,h3,h4,strong){color:var(--fc-ink-soft)}
+body.studio-shell-ready .foxon-connections-page .foxon-connect-intro{
+ background:var(--fc-panel);border:1px solid var(--fc-line);
+ border-left:5px solid var(--fc-accent);padding:21px 23px;
+ border-radius:11px;margin:14px 0 21px
+}
+body.studio-shell-ready .foxon-connections-page .foxon-connect-intro strong{
+ display:block;font:900 19px/1.25 Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.04em
+}
+body.studio-shell-ready .foxon-connections-page .foxon-connect-intro p{
+ max-width:700px;margin:8px 0 0;color:var(--fc-muted);
+ font:500 13px/1.65 'Helvetica Neue',Arial,sans-serif
+}
+body.studio-shell-ready .foxon-connections-page .foxon-social-accounts{
+ --sa-line:var(--fc-line);--sa-bg:var(--fc-panel);
+ --sa-fg:var(--fc-ink-soft);--sa-muted:var(--fc-muted);--sa-accent:var(--fc-accent);
+ background:transparent;margin:0;padding:0;border:0
+}
+body.studio-shell-ready .foxon-connections-page .foxon-social-heading h3{
+ font:900 24px/1.25 Impact,'Arial Narrow',Arial,sans-serif
+}
+body.studio-shell-ready .foxon-connections-page .foxon-social-card{min-height:196px}
+body.studio-shell-ready .foxon-connections-page .foxon-social-card :is(a,button){min-height:35px}
+body.studio-shell-ready .foxon-connections-page .foxon-social-card a{color:var(--fc-accent);font-weight:800}
+body.studio-shell-ready .foxon-connections-page .foxon-future-connections{
+ padding:22px 0 0;margin-top:22px;border-top:1px solid var(--fc-line)
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;margin:16px 0 0
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-card{
+ border:1px solid var(--fc-line);background:var(--fc-panel);
+ border-radius:10px;padding:16px;min-width:0;
+ display:flex;flex-direction:column;gap:8px
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-card>div{
+ display:flex;align-items:start;justify-content:space-between;flex-wrap:wrap;gap:8px
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-card strong{
+ font-weight:850;font-size:13px
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-card span{
+ border:1px solid var(--fc-line);border-radius:30px;padding:4px 8px;
+ font-size:10px;color:var(--fc-muted)
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-card p{
+ color:var(--fc-ink-soft);font-size:12px;margin:0
+}
+body.studio-shell-ready .foxon-connections-page .foxon-future-card small{
+ color:var(--fc-muted);font-size:10px;line-height:1.5;margin-top:auto
+}
+body.studio-shell-ready .foxon-connections-page :is(button,a,select):focus-visible{
+ outline:3px solid var(--fc-accent);outline-offset:3px
+}
+@media(max-width:1050px){
+ body.studio-shell-ready .foxon-connections-page .foxon-future-grid{
+ grid-template-columns:repeat(2,minmax(0,1fr))
+ }
+}
+@media(max-width:680px){
+ body.studio-shell-ready .foxon-connections-page .foxon-future-grid{grid-template-columns:1fr}
+ body.studio-shell-ready .foxon-connections-page .foxon-connect-intro{padding:16px}
+}
