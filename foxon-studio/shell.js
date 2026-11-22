@@ -78,8 +78,8 @@ function buildShell(){
    </div><div class="builder-note"><span>ⓘ</span> Automatic text and image matching work without API credits. New AI-generated images will require a connected generation service.</div>
  </section>
  <section id="studioConnections" class="studio-page foxon-connections-page" aria-label="Connections" hidden>
-  <header class="studio-page-heading"><div><span class="studio-kicker">FOXON / INTEGRATIONS</span><h1>CONNECTIONS.</h1><p>Bring the accounts your team uses into one secure workspace.</p></div></header>
-  <div class="foxon-connect-intro"><strong>YOUR ACCOUNTS. YOUR CONTROL.</strong><p>Connect using the provider’s official sign-in. FOXON never asks you to paste passwords or access tokens into the Studio.</p></div>
+  <header class="studio-page-heading"><div><span class="studio-kicker">YOUR ACCOUNTS</span><h1>CONNECTIONS.</h1><p>Facebook, Instagram and LinkedIn — all in one place.</p></div></header>
+  
   <div id="foxonConnectionWorkspace" class="foxon-connection-workspace"></div>
  </section>`;
 
