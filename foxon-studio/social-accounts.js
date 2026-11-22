@@ -32,7 +32,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   cards.querySelectorAll("[data-fc-action]").forEach(button=>button.addEventListener("click",()=>accountAction(button.dataset.fcAction)));
   const admin=$("foxonDeveloperAdmin");if(admin){
    admin.hidden=role!=="admin";
-   admin.innerHTML=role==="admin"?'<details id="foxonAdminDetails"><summary>Studio owner settings</summary><p>Provider setup is only needed once by the Studio owner. Other users will just choose Add account.</p><div id="foxonAdminHelp"></div></details>':"";
+   admin.innerHTML=role==="admin"?'<details id="foxonAdminDetails"><summary>FOXON platform setup</summary><p>FOXON configures the social network integrations for the service. Customers should not need developer accounts or technical setup.</p><div id="foxonAdminHelp"></div></details>':"";
   }
   const tools=$("foxonConnectedTools");if(tools)tools.hidden=!accounts.some(a=>a.connection_status==="connected");
   renderReadyPosts();
@@ -44,7 +44,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  async function accountAction(platform){
   const existing=accounts.filter(a=>a.platform===platform&&a.connection_status==="connected");
   if(existing.length){setMessage(platform+' connected: '+existing.map(a=>a.display_name).join(', '));return;}
-  if(role!=="admin"){setMessage("Your Studio owner can add "+platform+" for your team.");return;}
+  if(role!=="admin"){setMessage("Account connection is not yet enabled for your access level. FOXON is working on making this a simple sign-in for every user.");return;}
   if(providerReady[platform]){await connect(platform);return;}
   setMessage("We're getting "+platform+" ready for FOXON Studio. Nothing you need to log into elsewhere just yet.");
   // Keep developer setup out of the ordinary Add account flow. The owner can open settings separately.
@@ -86,7 +86,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const details=$("foxonAdminDetails"),help=$("foxonAdminHelp");if(!details||!help)return;
   details.open=true;
   const url=platform==="LinkedIn"?"https://www.linkedin.com/developers/apps":"https://developers.facebook.com/apps/";
-  help.innerHTML='<h4>'+escapeHtml(platform)+' · Administrator setup</h4><p>Register FOXON Studio with the provider once and configure credentials securely on the server. Other team members will not need developer accounts.</p><p><a href="'+url+'" target="_blank" rel="noopener noreferrer">Open provider setup</a></p><p><a href="https://github.com/four2d/vuba-wiltshire-studio/blob/main/foxon-studio/DIRECT-SOCIAL-CONNECTIONS.md" target="_blank" rel="noopener noreferrer">Step-by-step instructions</a></p>';
+  help.innerHTML='<h4>'+escapeHtml(platform)+' · Administrator setup</h4><p>FOXON configures this provider once for the whole platform. Customers will sign in to their own social accounts; they will not create developer apps.</p><p><a href="'+url+'" target="_blank" rel="noopener noreferrer">Open provider setup</a></p><p><a href="https://github.com/four2d/vuba-wiltshire-studio/blob/main/foxon-studio/DIRECT-SOCIAL-CONNECTIONS.md" target="_blank" rel="noopener noreferrer">Step-by-step instructions</a></p>';
   details.scrollIntoView({block:"nearest"});
  }
  function requestAccess(platform){
