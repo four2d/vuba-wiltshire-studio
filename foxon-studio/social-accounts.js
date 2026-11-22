@@ -47,7 +47,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   if(role!=="admin"){setMessage("Your Studio owner can add "+platform+" for your team.");return;}
   if(providerReady[platform]){await connect(platform);return;}
   setMessage("We're getting "+platform+" ready for FOXON Studio. Nothing you need to log into elsewhere just yet.");
-  const details=$("foxonAdminDetails");if(details){details.open=true;showSetup(platform);}
+  // Keep developer setup out of the ordinary Add account flow. The owner can open settings separately.
  }
  function renderReadyPosts(){
   const root=$("foxonPublishCandidates");if(!root)return;
