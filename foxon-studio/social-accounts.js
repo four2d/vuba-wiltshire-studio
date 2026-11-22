@@ -17,18 +17,18 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const hq=$("foxonConnectionWorkspace");if(!hq||$("foxonSocialAccounts"))return;
   const root=document.createElement("section");
   root.id="foxonSocialAccounts";root.className="foxon-social-accounts";
-  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT SOCIAL CHANNELS</small><h3>Publishing accounts</h3><p>Link your business Pages with provider-authorised sign-in. Connection status is checked against FOXON’s backend.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><section class="foxon-direct-publish"><div class="foxon-social-heading"><div><h4>Approved posts ready for direct publishing</h4><p>Publish now only after explicit confirmation. Future-dated automated scheduling is not enabled.</p></div></div><div id="foxonPublishCandidates"></div></section><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div><p class="foxon-social-disclaimer">Social credentials are never entered or stored in this browser. The official account authorisation and server-side publishing service must be configured before live connection or posting is enabled.</p>';
+  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT SOCIAL CHANNELS</small><h3>Connect your accounts</h3><p>Connect once. Manage everything in FOXON Studio.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><details class="foxon-extra-panel"><summary>Publishing tools and activity</summary><section class="foxon-direct-publish"><div class="foxon-social-heading"><div><h4>Approved posts ready for direct publishing</h4><p>Publish now only after explicit confirmation. Future-dated automated scheduling is not enabled.</p></div></div><div id="foxonPublishCandidates"></div></section><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div></details><p class="foxon-social-disclaimer">Your password stays with the social network. Nothing publishes without approval.</p>';
   hq.prepend(root);
   const admin=document.createElement("section");admin.id="foxonDeveloperAdmin";admin.className="foxon-developer-admin";admin.hidden=true;hq.append(admin);
   const extra=document.createElement("section");extra.id="foxonFutureConnections";extra.className="foxon-future-connections";
-  extra.innerHTML='<div class="foxon-social-heading"><div><small>INTEGRATION CATALOGUE</small><h3>More services</h3><p>Potential future connections for your marketing and website workflow. These are not active integrations.</p></div></div><div class="foxon-future-grid">' + [
+  extra.innerHTML='<details class="foxon-extra-panel"><summary>More services (coming later)</summary><div class="foxon-future-grid">' + [
    ["YouTube","Videos, Shorts and performance reports"],
    ["TikTok","Short-form video publishing and insights"],
    ["Pinterest","Visual campaigns and Pins"],
    ["Google Business Profile","Business updates, posts and local visibility"],
    ["Google Analytics 4","Website visits, campaigns and conversions"],
    ["WordPress","Website articles and FOXON product updates"]
-  ].map(([name,description])=>'<article class="foxon-future-card"><div><strong>'+escapeHtml(name)+'</strong><span>Not yet integrated</span></div><p>'+escapeHtml(description)+'</p><small>Requires a supported API connection and account authorisation.</small></article>').join("") + "</div>";
+  ].map(([name,description])=>'<article class="foxon-future-card"><div><strong>'+escapeHtml(name)+'</strong><span>Not yet integrated</span></div><p>'+escapeHtml(description)+'</p><small>Requires a supported API connection and account authorisation.</small></article>').join("") + "</div></details>";
   hq.append(extra);
   $("foxonSocialRefresh").addEventListener("click",load);
   render();
@@ -40,15 +40,17 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    const connected=found.filter(a=>a.connection_status==="connected");
    const state=connected.length?"Connected":found.length?"Needs attention":"Not connected";
    const ready=role==="admin"&&providerReady[p.name]===true;
-   const connectionAction=ready?'<button type="button" data-social-connect="'+escapeHtml(p.name)+'">Connect '+escapeHtml(p.name)+'</button>':'<button type="button" disabled aria-disabled="true" title="One-time provider setup is not complete">Connect '+escapeHtml(p.name)+'</button><span class="foxon-social-setup-note">'+(role!=="admin"?"FOXON administrator will connect this account.":providerError?"Connection service needs attention.":"FOXON app setup pending — see Administrator setup below.")+"</span>";
-   const items=found.map(a=>'<li>'+escapeHtml(a.display_name)+' <span>('+escapeHtml(a.connection_status)+')</span></li>').join("");
-   return '<article class="foxon-social-card"><div class="foxon-social-card-header"><strong>'+escapeHtml(p.label)+'</strong><span class="foxon-connection-state" data-state="'+escapeHtml(state)+'">'+escapeHtml(state)+'</span></div><p>'+escapeHtml(p.help)+'</p>'+(items?'<ul>'+items+'</ul>':'<p>No account connected yet.</p>')+connectionAction+'</article>';
+   const action=ready?'<button type="button" data-social-connect="'+escapeHtml(p.name)+'">'+(connected.length?"Add account":"Connect")+'</button>':role==="admin"?'<button type="button" data-social-setup="'+escapeHtml(p.name)+'">Finish setup</button>':'<button type="button" data-social-request="'+escapeHtml(p.name)+'">Request connection</button>';
+   const items=connected.map(a=>'<li>'+escapeHtml(a.display_name)+'</li>').join("");
+   return '<article class="foxon-social-card foxon-simple-card"><div class="foxon-social-card-header"><strong>'+escapeHtml(p.name)+'</strong><span class="foxon-connection-state" data-state="'+escapeHtml(state)+'">'+escapeHtml(state)+'</span></div><p>'+escapeHtml(p.help)+'</p>'+(items?'<ul>'+items+'</ul>':'')+action+'</article>';
   }).join("");
   cards.querySelectorAll("[data-social-connect]").forEach(b=>b.addEventListener("click",()=>connect(b.dataset.socialConnect)));
+  cards.querySelectorAll("[data-social-setup]").forEach(b=>b.addEventListener("click",()=>showSetup(b.dataset.socialSetup)));
+  cards.querySelectorAll("[data-social-request]").forEach(b=>b.addEventListener("click",()=>requestAccess(b.dataset.socialRequest)));
   const adminArea=$("foxonDeveloperAdmin");
   if(adminArea){
    adminArea.hidden=role!=="admin";
-   adminArea.innerHTML=role!=="admin"?"":'<details><summary>Administrator setup · one time only</summary><p>Ordinary team members do not need developer accounts. FOXON administrators register the FOXON application with each provider and configure server-side credentials once.</p><div class="foxon-admin-provider-links"><a href="https://developers.facebook.com/apps/" target="_blank" rel="noopener noreferrer">Meta developer console</a><a href="https://www.linkedin.com/developers/apps" target="_blank" rel="noopener noreferrer">LinkedIn developer console</a><a href="https://github.com/four2d/vuba-wiltshire-studio/blob/main/foxon-studio/DIRECT-SOCIAL-CONNECTIONS.md" target="_blank" rel="noopener noreferrer">FOXON setup instructions</a></div><p>Provider approval and secure backend configuration are required before a Connect button can become active. Do not enter passwords or app secrets here.</p></details>';
+   adminArea.innerHTML=role!=="admin"?"":'<details id="foxonAdminDetails" class="foxon-extra-panel"><summary>Administrator settings</summary><p>One-time provider configuration is only for FOXON administrators, not team members.</p><div id="foxonAdminHelp"></div></details>';
   }
   renderReadyPosts();
   const log=$("foxonDeliveryList");if(log)log.innerHTML=deliveries.length?'<div class="foxon-delivery-table"><table><thead><tr><th>Post</th><th>Platform</th><th>Status</th><th>Sent</th></tr></thead><tbody>'+deliveries.map(d=>{
@@ -88,6 +90,19 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    setMessage("Publishing was not confirmed: "+(e.message||String(e))+". Check the platform and delivery log before retrying to avoid duplicates.");
   }finally{buttons.forEach(b=>b.disabled=false);}
  }
+ function showSetup(platform){
+  if(role!=="admin")return;
+  const details=$("foxonAdminDetails"),help=$("foxonAdminHelp");if(!details||!help)return;
+  details.open=true;
+  const url=platform==="LinkedIn"?"https://www.linkedin.com/developers/apps":"https://developers.facebook.com/apps/";
+  help.innerHTML='<h4>'+escapeHtml(platform)+' · Administrator setup</h4><p>Register FOXON Studio with the provider once and configure credentials securely on the server. Other team members will not need developer accounts.</p><p><a href="'+url+'" target="_blank" rel="noopener noreferrer">Open provider setup</a></p><p><a href="https://github.com/four2d/vuba-wiltshire-studio/blob/main/foxon-studio/DIRECT-SOCIAL-CONNECTIONS.md" target="_blank" rel="noopener noreferrer">Step-by-step instructions</a></p>';
+  details.scrollIntoView({block:"nearest"});
+ }
+ function requestAccess(platform){
+  const message="Please connect "+platform+" in FOXON Studio. A Studio administrator needs to authorise this account once.";
+  if(!navigator.clipboard?.writeText){setMessage(message);return;}
+  navigator.clipboard.writeText(message).then(()=>setMessage("Request copied — send it to your Studio administrator.")).catch(()=>setMessage(message));
+ }
  async function connectorRequest(body){
   const {data,error}=await db.functions.invoke("foxon-social-oauth",{body});
   if(error)throw Error(error.message||"Social authorisation unavailable.");
@@ -121,7 +136,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   render();
   const count=accounts.filter(a=>a.connection_status==="connected").length;
   const notice=new URLSearchParams(window.location.search).get("social_connect");
-  setMessage(count?count+" provider-verified account connection(s) recorded. Check token access and posting permissions before use.":notice?"Connection returned: "+notice+". Check the provider setup and refresh.":"No social accounts connected yet. Meta and LinkedIn developer authorisation is required before live posting.");
+  setMessage(count?count+" account"+(count===1?"":"s")+" connected.":notice?"Connection result: "+notice+".":"Choose an account above to get started.");
  }
  async function init(u){
   user=u;
