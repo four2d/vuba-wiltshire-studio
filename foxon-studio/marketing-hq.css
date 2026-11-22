@@ -421,3 +421,18 @@ body.studio-shell-ready .foxon-connections-page .fc-admin-section summary{cursor
 body.studio-shell-ready .foxon-connections-page .fc-admin-section{margin-top:30px}
 @media(max-width:1080px){body.studio-shell-ready .foxon-connections-page .fc-primary-cards{grid-template-columns:1fr}}
 @media(max-width:680px){body.studio-shell-ready .foxon-connections-page .fc-account-card{min-height:200px;padding:17px}body.studio-shell-ready .foxon-connections-page .fc-welcome{align-items:flex-start}}
+
+/* Calm page heading; remove the overwhelming banner on beginner Connections. */
+body.studio-shell-ready .foxon-connections-page > .studio-page-heading{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ padding:10px 0 18px!important;margin:0 0 8px!important;min-height:0!important
+}
+body.studio-shell-ready .foxon-connections-page > .studio-page-heading :is(h1,p,.studio-kicker){
+ color:var(--fc-ink-soft)!important;text-shadow:none!important
+}
+body.studio-shell-ready .foxon-connections-page > .studio-page-heading h1{
+ font-size:clamp(22px,2vw,28px)!important;letter-spacing:-.025em!important;margin:0!important
+}
+body.studio-shell-ready .foxon-connections-page > .studio-page-heading p{
+ color:var(--fc-muted)!important;font-size:12px!important;line-height:1.5!important
+}
