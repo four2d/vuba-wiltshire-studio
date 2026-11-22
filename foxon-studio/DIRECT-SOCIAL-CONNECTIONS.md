@@ -6,7 +6,7 @@ FOXON Studio now has:
 - OAuth and encrypted-token backing tables with no `anon` or `authenticated` access.
 - Deployed Edge Functions `foxon-social-oauth` and `foxon-social-publish`.
 - Account cards and a publishing receipt log in Marketing HQ → Publishing Desk.
-- Explicit `PUBLISH` confirmation for approved posts.
+- Explicit `PUBLISH` confirmation for approved posts, using the deployed `foxon-social-publish` service.
 - **Zero connected accounts at the time of implementation.**
 - **No existing drafts/posts were sent to any provider.**
 
@@ -26,7 +26,7 @@ The OAuth app credentials and approvals are not supplied yet. The UI will not sh
 1. Create or open a FOXON LinkedIn Developer app at https://www.linkedin.com/developers/apps
 2. Associate it with the official FOXON LinkedIn Company Page and request Community Management API access.
 3. Ensure the authorising member has permitted page roles (typically Administrator or content administrator).
-4. Request approved scopes for company-page posting such as `w_organization_social` and `r_organization_social`. These are not always immediately available.
+4. Request approved scopes for company-page posting such as `w_organization_social`, `r_organization_social` and `r_organization_admin` for page discovery. These are not always immediately available.
 5. Add the same exact OAuth redirect URI above.
 
 ### Server-side secrets (never paste them into chat or commit them to GitHub)
