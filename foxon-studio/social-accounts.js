@@ -14,11 +14,21 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  let user=null,role="",accounts=[],deliveries=[],posts=[],providerReady={},providerError="";
  function setMessage(message){const el=$("foxonSocialStatus");if(el)el.textContent=message;}
  function mount(){
-  const hq=$("hqPublishing");if(!hq||$("foxonSocialAccounts"))return;
+  const hq=$("foxonConnectionWorkspace");if(!hq||$("foxonSocialAccounts"))return;
   const root=document.createElement("section");
   root.id="foxonSocialAccounts";root.className="foxon-social-accounts";
-  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT NETWORK CONNECTIONS</small><h3>FOXON accounts</h3><p>Manage all three channels from FOXON Studio. No third-party scheduler subscription.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><section class="foxon-direct-publish"><div class="foxon-social-heading"><div><h4>Approved posts ready for direct publishing</h4><p>Publish now only after explicit confirmation. Future-dated automated scheduling is not enabled.</p></div></div><div id="foxonPublishCandidates"></div></section><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div><p class="foxon-social-disclaimer">Social credentials are never entered or stored in this browser. The official account authorisation and server-side publishing service must be configured before live connection or posting is enabled.</p>';
-  hq.insertAdjacentElement("afterbegin",root);
+  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT SOCIAL CHANNELS</small><h3>Publishing accounts</h3><p>Link your business Pages with provider-authorised sign-in. Connection status is checked against FOXON’s backend.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><section class="foxon-direct-publish"><div class="foxon-social-heading"><div><h4>Approved posts ready for direct publishing</h4><p>Publish now only after explicit confirmation. Future-dated automated scheduling is not enabled.</p></div></div><div id="foxonPublishCandidates"></div></section><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div><p class="foxon-social-disclaimer">Social credentials are never entered or stored in this browser. The official account authorisation and server-side publishing service must be configured before live connection or posting is enabled.</p>';
+  hq.prepend(root);
+  const extra=document.createElement("section");extra.id="foxonFutureConnections";extra.className="foxon-future-connections";
+  extra.innerHTML='<div class="foxon-social-heading"><div><small>INTEGRATION CATALOGUE</small><h3>More services</h3><p>Potential future connections for your marketing and website workflow. These are not active integrations.</p></div></div><div class="foxon-future-grid">' + [
+   ["YouTube","Videos, Shorts and performance reports"],
+   ["TikTok","Short-form video publishing and insights"],
+   ["Pinterest","Visual campaigns and Pins"],
+   ["Google Business Profile","Business updates, posts and local visibility"],
+   ["Google Analytics 4","Website visits, campaigns and conversions"],
+   ["WordPress","Website articles and FOXON product updates"]
+  ].map(([name,description])=>'<article class="foxon-future-card"><div><strong>'+escapeHtml(name)+'</strong><span>Not yet integrated</span></div><p>'+escapeHtml(description)+'</p><small>Requires a supported API connection and account authorisation.</small></article>').join("") + "</div>";
+  hq.append(extra);
   $("foxonSocialRefresh").addEventListener("click",load);
   render();
  }
@@ -109,12 +119,13 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  }
  async function init(u){
   user=u;
-  if(!u){$("foxonSocialAccounts")?.remove();return;}
+  if(!u){$("foxonSocialAccounts")?.remove();$("foxonFutureConnections")?.remove();return;}
   const m=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
   if(m.error||!m.data)return;
   role=m.data.role;
-  for(let i=0;i<45&&!$("hqPublishing");i++)await new Promise(r=>setTimeout(r,100));
+  for(let i=0;i<45&&!$("foxonConnectionWorkspace");i++)await new Promise(r=>setTimeout(r,100));
   mount();await load();
+  window.FOXONSocialAccounts={refresh:load};
  }
  db.auth.onAuthStateChange((_event,session)=>setTimeout(()=>init(session?.user||null),0));
  db.auth.getSession().then(({data})=>init(data.session?.user||null));
