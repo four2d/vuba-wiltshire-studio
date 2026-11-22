@@ -14,49 +14,40 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  let user=null,role="",accounts=[],deliveries=[],posts=[],providerReady={},providerError="";
  function setMessage(message){const el=$("foxonSocialStatus");if(el)el.textContent=message;}
  function mount(){
-  const hq=$("foxonConnectionWorkspace");if(!hq||$("foxonSocialAccounts"))return;
-  const root=document.createElement("section");
-  root.id="foxonSocialAccounts";root.className="foxon-social-accounts";
-  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT SOCIAL CHANNELS</small><h3>Connect your accounts</h3><p>Connect once. Manage everything in FOXON Studio.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><details class="foxon-extra-panel"><summary>Publishing tools and activity</summary><section class="foxon-direct-publish"><div class="foxon-social-heading"><div><h4>Approved posts ready for direct publishing</h4><p>Publish now only after explicit confirmation. Future-dated automated scheduling is not enabled.</p></div></div><div id="foxonPublishCandidates"></div></section><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div></details><p class="foxon-social-disclaimer">Your password stays with the social network. Nothing publishes without approval.</p>';
-  hq.prepend(root);
-  const admin=document.createElement("section");admin.id="foxonDeveloperAdmin";admin.className="foxon-developer-admin";admin.hidden=true;hq.append(admin);
-  const extra=document.createElement("section");extra.id="foxonFutureConnections";extra.className="foxon-future-connections";
-  extra.innerHTML='<details class="foxon-extra-panel"><summary>More services (coming later)</summary><div class="foxon-future-grid">' + [
-   ["YouTube","Videos, Shorts and performance reports"],
-   ["TikTok","Short-form video publishing and insights"],
-   ["Pinterest","Visual campaigns and Pins"],
-   ["Google Business Profile","Business updates, posts and local visibility"],
-   ["Google Analytics 4","Website visits, campaigns and conversions"],
-   ["WordPress","Website articles and FOXON product updates"]
-  ].map(([name,description])=>'<article class="foxon-future-card"><div><strong>'+escapeHtml(name)+'</strong><span>Not yet integrated</span></div><p>'+escapeHtml(description)+'</p><small>Requires a supported API connection and account authorisation.</small></article>').join("") + "</div></details>";
-  hq.append(extra);
-  $("foxonSocialRefresh").addEventListener("click",load);
+  const host=$("foxonConnectionWorkspace");if(!host||$("foxonSocialAccounts"))return;
+  const root=document.createElement("section");root.id="foxonSocialAccounts";root.className="foxon-social-accounts foxon-easy-connect";
+  root.innerHTML='<header class="fc-welcome"><span class="fc-spark">✦</span><div><h2>Add your accounts</h2><p>Choose the places you want to post. Connect once, then use FOXON Studio for everything else.</p></div></header><div id="foxonSocialCards" class="fc-primary-cards"></div><p id="foxonSocialStatus" role="status" aria-live="polite" class="fc-friendly-status"></p><p class="fc-reassurance">✓ Your passwords stay with Facebook, Instagram and LinkedIn.</p><details id="foxonConnectedTools" class="fc-optional-details" hidden><summary>Posts and activity</summary><section class="foxon-direct-publish"><h3>Approved posts</h3><div id="foxonPublishCandidates"></div></section><section class="foxon-delivery-panel"><h3>Publishing history</h3><div id="foxonDeliveryList"></div></section></details>';
+  host.replaceChildren(root);
+  const admin=document.createElement("section");admin.id="foxonDeveloperAdmin";admin.className="fc-admin-section";admin.hidden=true;host.append(admin);
   render();
  }
  function render(){
   const cards=$("foxonSocialCards");if(!cards)return;
   cards.innerHTML=platforms.map(p=>{
-   const found=accounts.filter(a=>a.platform===p.name);
-   const connected=found.filter(a=>a.connection_status==="connected");
-   const state=connected.length?"Connected":found.length?"Needs attention":"Not connected";
-   const ready=role==="admin"&&providerReady[p.name]===true;
-   const action=ready?'<button type="button" data-social-connect="'+escapeHtml(p.name)+'">'+(connected.length?"Add account":"Connect")+'</button>':role==="admin"?'<button type="button" data-social-setup="'+escapeHtml(p.name)+'">Finish setup</button>':'<button type="button" data-social-request="'+escapeHtml(p.name)+'">Request connection</button>';
-   const items=connected.map(a=>'<li>'+escapeHtml(a.display_name)+'</li>').join("");
-   return '<article class="foxon-social-card foxon-simple-card"><div class="foxon-social-card-header"><strong>'+escapeHtml(p.name)+'</strong><span class="foxon-connection-state" data-state="'+escapeHtml(state)+'">'+escapeHtml(state)+'</span></div><p>'+escapeHtml(p.help)+'</p>'+(items?'<ul>'+items+'</ul>':'')+action+'</article>';
+   const connected=accounts.filter(a=>a.platform===p.name&&a.connection_status==="connected");
+   const ready=connected.length>0;
+   const mark={Facebook:"f",Instagram:"◎",LinkedIn:"in"}[p.name];
+   return '<article class="fc-account-card"><div class="fc-card-top"><span class="fc-mark fc-mark-'+p.name.toLowerCase()+'" aria-hidden="true">'+mark+'</span><span class="fc-connection-status'+(ready?' is-connected':'')+'">'+(ready?'✓ Connected':'Not connected')+'</span></div><h3>'+escapeHtml(p.name)+'</h3><p>'+escapeHtml(p.help)+'</p>'+(ready?'<small>'+connected.map(a=>escapeHtml(a.display_name)).join(", ")+'</small>':'')+'<button type="button" data-fc-action="'+escapeHtml(p.name)+'">'+(ready?'View account':'Add '+escapeHtml(p.name))+'</button></article>';
   }).join("");
-  cards.querySelectorAll("[data-social-connect]").forEach(b=>b.addEventListener("click",()=>connect(b.dataset.socialConnect)));
-  cards.querySelectorAll("[data-social-setup]").forEach(b=>b.addEventListener("click",()=>showSetup(b.dataset.socialSetup)));
-  cards.querySelectorAll("[data-social-request]").forEach(b=>b.addEventListener("click",()=>requestAccess(b.dataset.socialRequest)));
-  const adminArea=$("foxonDeveloperAdmin");
-  if(adminArea){
-   adminArea.hidden=role!=="admin";
-   adminArea.innerHTML=role!=="admin"?"":'<details id="foxonAdminDetails" class="foxon-extra-panel"><summary>Administrator settings</summary><p>One-time provider configuration is only for FOXON administrators, not team members.</p><div id="foxonAdminHelp"></div></details>';
+  cards.querySelectorAll("[data-fc-action]").forEach(button=>button.addEventListener("click",()=>accountAction(button.dataset.fcAction)));
+  const admin=$("foxonDeveloperAdmin");if(admin){
+   admin.hidden=role!=="admin";
+   admin.innerHTML=role==="admin"?'<details id="foxonAdminDetails"><summary>Studio owner settings</summary><p>Provider setup is only needed once by the Studio owner. Other users will just choose Add account.</p><div id="foxonAdminHelp"></div></details>':"";
   }
+  const tools=$("foxonConnectedTools");if(tools)tools.hidden=!accounts.some(a=>a.connection_status==="connected");
   renderReadyPosts();
   const log=$("foxonDeliveryList");if(log)log.innerHTML=deliveries.length?'<div class="foxon-delivery-table"><table><thead><tr><th>Post</th><th>Platform</th><th>Status</th><th>Sent</th></tr></thead><tbody>'+deliveries.map(d=>{
-    const account=accounts.find(a=>a.id===d.social_account_id),post=posts.find(p=>p.id===d.post_id);
-    return '<tr><td>'+escapeHtml(post?.title||"Unknown post")+'</td><td>'+escapeHtml(account?.platform||"Unknown platform")+'</td><td>'+escapeHtml(d.status)+'</td><td>'+escapeHtml(d.published_at?new Date(d.published_at).toLocaleString("en-GB"):"Not published")+'</td></tr>';
-  }).join("")+'</tbody></table></div>':'<p class="foxon-social-empty">No platform delivery records yet. Internal draft/scheduled posts are not proof of external publication.</p>';
+   const account=accounts.find(a=>a.id===d.social_account_id),post=posts.find(p=>p.id===d.post_id);
+   return '<tr><td>'+escapeHtml(post?.title||"Post")+'</td><td>'+escapeHtml(account?.platform||"Platform")+'</td><td>'+escapeHtml(d.status)+'</td><td>'+escapeHtml(d.published_at?new Date(d.published_at).toLocaleString("en-GB"):"Not published")+'</td></tr>';
+  }).join("")+'</tbody></table></div>':'<p>No activity yet.</p>';
+ }
+ async function accountAction(platform){
+  const existing=accounts.filter(a=>a.platform===platform&&a.connection_status==="connected");
+  if(existing.length){setMessage(platform+' connected: '+existing.map(a=>a.display_name).join(', '));return;}
+  if(role!=="admin"){setMessage("Your Studio owner can add "+platform+" for your team.");return;}
+  if(providerReady[platform]){await connect(platform);return;}
+  setMessage("We're getting "+platform+" ready for FOXON Studio. Nothing you need to log into elsewhere just yet.");
+  const details=$("foxonAdminDetails");if(details){details.open=true;showSetup(platform);}
  }
  function renderReadyPosts(){
   const root=$("foxonPublishCandidates");if(!root)return;
@@ -122,7 +113,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
  }
  async function load(){
   if(!user||!$("foxonSocialAccounts"))return;
-  setMessage("Checking FOXON's own account records…");
+  setMessage("Checking your accounts…");
   const [ac,delivery,post,provider]=await Promise.all([
    db.from("studio_social_accounts").select("id,platform,display_name,connection_status,last_error,connected_at").order("platform"),
    db.from("studio_publish_deliveries").select("id,post_id,social_account_id,status,published_at,last_error").order("created_at",{ascending:false}).limit(60),
@@ -136,7 +127,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   render();
   const count=accounts.filter(a=>a.connection_status==="connected").length;
   const notice=new URLSearchParams(window.location.search).get("social_connect");
-  setMessage(count?count+" account"+(count===1?"":"s")+" connected.":notice?"Connection result: "+notice+".":"Choose an account above to get started.");
+  setMessage(count?count+" account"+(count===1?"":"s")+" ready to use.":notice?"Connection result: "+notice+".":"");
  }
  async function init(u){
   user=u;
