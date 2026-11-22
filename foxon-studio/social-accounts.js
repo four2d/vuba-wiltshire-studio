@@ -17,7 +17,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const hq=$("hqPublishing");if(!hq||$("foxonSocialAccounts"))return;
   const root=document.createElement("section");
   root.id="foxonSocialAccounts";root.className="foxon-social-accounts";
-  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT NETWORK CONNECTIONS</small><h3>FOXON accounts</h3><p>Manage all three channels from FOXON Studio. No third-party scheduler subscription.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div><p class="foxon-social-disclaimer">Social credentials are never entered or stored in this browser. The official account authorisation and server-side publishing service must be configured before live connection or posting is enabled.</p>';
+  root.innerHTML='<div class="foxon-social-heading"><div><small>DIRECT NETWORK CONNECTIONS</small><h3>FOXON accounts</h3><p>Manage all three channels from FOXON Studio. No third-party scheduler subscription.</p></div><button type="button" id="foxonSocialRefresh">Refresh connections</button></div><p id="foxonSocialStatus" role="status"></p><div id="foxonSocialCards" class="foxon-social-cards"></div><section class="foxon-direct-publish"><div class="foxon-social-heading"><div><h4>Approved posts ready for direct publishing</h4><p>Publish now only after explicit confirmation. Future-dated automated scheduling is not enabled.</p></div></div><div id="foxonPublishCandidates"></div></section><div class="foxon-delivery-panel"><div class="foxon-social-heading"><div><h4>Publishing delivery log</h4><p>Only successful network API confirmation counts as published.</p></div></div><div id="foxonDeliveryList"></div></div><p class="foxon-social-disclaimer">Social credentials are never entered or stored in this browser. The official account authorisation and server-side publishing service must be configured before live connection or posting is enabled.</p>';
   hq.insertAdjacentElement("afterbegin",root);
   $("foxonSocialRefresh").addEventListener("click",load);
   render();
@@ -34,10 +34,43 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    return '<article class="foxon-social-card"><div class="foxon-social-card-header"><strong>'+escapeHtml(p.label)+'</strong><span class="foxon-connection-state" data-state="'+escapeHtml(state)+'">'+escapeHtml(state)+'</span></div><p>'+escapeHtml(p.help)+'</p>'+(items?'<ul>'+items+'</ul>':'<p>Account authorisation has not been completed.</p>')+'<a href="'+p.url+'" target="_blank" rel="noopener noreferrer">Set up '+escapeHtml(p.name)+' developer access</a>'+connectionAction+'</article>';
   }).join("");
   cards.querySelectorAll("[data-social-connect]").forEach(b=>b.addEventListener("click",()=>connect(b.dataset.socialConnect)));
+  renderReadyPosts();
   const log=$("foxonDeliveryList");if(log)log.innerHTML=deliveries.length?'<div class="foxon-delivery-table"><table><thead><tr><th>Post</th><th>Platform</th><th>Status</th><th>Sent</th></tr></thead><tbody>'+deliveries.map(d=>{
     const account=accounts.find(a=>a.id===d.social_account_id),post=posts.find(p=>p.id===d.post_id);
     return '<tr><td>'+escapeHtml(post?.title||"Unknown post")+'</td><td>'+escapeHtml(account?.platform||"Unknown platform")+'</td><td>'+escapeHtml(d.status)+'</td><td>'+escapeHtml(d.published_at?new Date(d.published_at).toLocaleString("en-GB"):"Not published")+'</td></tr>';
   }).join("")+'</tbody></table></div>':'<p class="foxon-social-empty">No platform delivery records yet. Internal draft/scheduled posts are not proof of external publication.</p>';
+ }
+ function renderReadyPosts(){
+  const root=$("foxonPublishCandidates");if(!root)return;
+  const eligible=posts.filter(p=>p.status==="approved"&&accounts.some(a=>a.platform===p.channel&&a.connection_status==="connected")&&!deliveries.some(d=>d.post_id===p.id));
+  if(!eligible.length){root.innerHTML='<p class="foxon-social-empty">No posts currently qualify. Connect an account and approve individual posts before they become available here.</p>';return;}
+  root.innerHTML=eligible.map(p=>{
+   const choices=accounts.filter(a=>a.platform===p.channel&&a.connection_status==="connected");
+   const limited=["Carousel","Reel","Video"].includes(p.format)||p.channel==="LinkedIn"&&!!p.media_id;
+   return '<article class="foxon-ready-row"><div><strong>'+escapeHtml(p.title)+'</strong><small>'+escapeHtml(p.channel)+' · '+escapeHtml(p.format||"Text-led")+'</small>'+(limited?'<p>Format not yet supported by the direct publisher.</p>':'')+'</div><label>Destination<select data-destination="'+escapeHtml(p.id)+'">'+choices.map(a=>'<option value="'+escapeHtml(a.id)+'">'+escapeHtml(a.display_name)+'</option>').join("")+'</select></label><button type="button" data-publish="'+escapeHtml(p.id)+'" '+(limited?'disabled':'')+'>Publish now</button></article>';
+  }).join("");
+  root.querySelectorAll("[data-publish]").forEach(b=>b.addEventListener("click",()=>publishNow(b.dataset.publish)));
+ }
+ async function publishNow(id){
+  if(role!=="admin")return;
+  const post=posts.find(p=>p.id===id);
+  const select=[...document.querySelectorAll("#foxonPublishCandidates [data-destination]")].find(el=>el.dataset.destination===id);
+  const account=accounts.find(a=>a.id===select?.value);
+  if(!post||!account||account.connection_status!=="connected")return;
+  const answer=window.prompt('You are about to PUBLISH "'+post.title+'" to '+account.display_name+' NOW. Type PUBLISH to confirm. This cannot be undone automatically.');
+  if(answer!=="PUBLISH"){setMessage("Publishing cancelled; no network request sent.");return;}
+  setMessage("Sending approved post to "+account.display_name+"…");
+  const buttons=[...document.querySelectorAll("#foxonPublishCandidates [data-publish]")];buttons.forEach(b=>b.disabled=true);
+  try{
+   const {data,error}=await db.functions.invoke("foxon-social-publish",{body:{action:"publish",post_id:id,social_account_id:account.id}});
+   if(error||data?.error)throw Error(data?.error||error?.message||"Publisher did not confirm the post.");
+   if(!data?.success||data.status!=="published"||!data.external_post_id)throw Error("No confirmed platform post ID returned.");
+   await load();
+   setMessage("Published successfully to "+account.display_name+". Provider post ID: "+data.external_post_id);
+  }catch(e){
+   await load();
+   setMessage("Publishing was not confirmed: "+(e.message||String(e))+". Check the platform and delivery log before retrying to avoid duplicates.");
+  }finally{buttons.forEach(b=>b.disabled=false);}
  }
  async function connectorRequest(body){
   const {data,error}=await db.functions.invoke("foxon-social-oauth",{body});
@@ -62,7 +95,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const [ac,delivery,post,provider]=await Promise.all([
    db.from("studio_social_accounts").select("id,platform,display_name,connection_status,last_error,connected_at").order("platform"),
    db.from("studio_publish_deliveries").select("id,post_id,social_account_id,status,published_at,last_error").order("created_at",{ascending:false}).limit(60),
-   db.from("studio_posts").select("id,title").limit(500),
+   db.from("studio_posts").select("id,title,status,channel,format,caption,source_notes,media_id").limit(500),
    role==="admin"?connectorRequest({action:"status"}).catch(e=>({error:e.message})):Promise.resolve({platforms:{}})
   ]);
   providerReady=Object.fromEntries(Object.entries(provider?.platforms||{}).map(([name,config])=>[name,config.ready===true]));
