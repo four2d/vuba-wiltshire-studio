@@ -21,13 +21,44 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const admin=document.createElement("section");admin.id="foxonDeveloperAdmin";admin.className="fc-admin-section";admin.hidden=true;host.append(admin);
   render();
  }
+ function facebookPages(){
+  return accounts.filter(account=>account.platform==="Facebook"&&account.created_by===user?.id&&["pending","connected","disconnected"].includes(account.connection_status));
+ }
+ function openFacebookPages(){
+  if($("foxonFacebookPages"))return;
+  const dialog=document.createElement("dialog");
+  dialog.id="foxonFacebookPages";
+  dialog.setAttribute("aria-labelledby","foxonFacebookPagesTitle");
+  const pages=facebookPages();
+  dialog.innerHTML='<form><h2 id="foxonFacebookPagesTitle">Facebook Pages</h2><p>Choose which Pages Studio can use. Unchecked Pages stay available here.</p><fieldset><legend>Available Pages</legend>'+pages.map(page=>'<div><label><input type="checkbox" name="facebookPage" value="'+escapeHtml(page.id)+'" '+(page.connection_status==="connected"?'checked':'')+'> '+escapeHtml(page.display_name)+'</label></div>').join('')+'</fieldset><p role="status" data-page-status></p><div class="dialogActions"><button type="button" data-find-pages>Find more Pages</button><button type="button" data-cancel-pages>Cancel</button><button type="submit">Save Pages</button></div></form>';
+  document.body.append(dialog);
+  dialog.addEventListener("close",()=>dialog.remove(),{once:true});
+  dialog.querySelector("[data-cancel-pages]").onclick=()=>dialog.close();
+  dialog.querySelector("[data-find-pages]").onclick=()=>{dialog.close();void connect("Facebook");};
+  const form=dialog.querySelector("form");
+  form.onsubmit=async event=>{
+   event.preventDefault();
+   const submit=form.querySelector('[type="submit"]');
+   submit.disabled=true;
+   try{
+    const ids=new FormData(form).getAll("facebookPage");
+    await connectorRequest({action:"select_facebook_pages",ids});
+    dialog.close();
+    await load();
+    setMessage(ids.length?ids.length+" Facebook "+(ids.length===1?"Page selected.":"Pages selected."):"No Facebook Pages selected.");
+   }catch{
+    dialog.querySelector("[data-page-status]").textContent="Could not save your selection. Please try again.";
+   }finally{submit.disabled=false;}
+  };
+  dialog.showModal();
+ }
  function render(){
   const cards=$("foxonSocialCards");if(!cards)return;
   cards.innerHTML=platforms.map(p=>{
    const connected=accounts.filter(a=>a.platform===p.name&&a.connection_status==="connected");
    const ready=connected.length>0;
    const mark={Facebook:"f",Instagram:"◎",LinkedIn:"in"}[p.name];
-   return '<article class="fc-account-card"><div class="fc-card-top"><span class="fc-mark fc-mark-'+p.name.toLowerCase()+'" aria-hidden="true">'+mark+'</span><span class="fc-connection-status'+(ready?' is-connected':'')+'">'+(ready?'✓ Connected':'Not connected')+'</span></div><h3>'+escapeHtml(p.name)+'</h3><p>'+escapeHtml(p.help)+'</p>'+(ready?'<small>'+connected.map(a=>escapeHtml(a.display_name)).join(", ")+'</small>':'')+'<button type="button" data-fc-action="'+escapeHtml(p.name)+'">'+(ready?'View account':'Add '+escapeHtml(p.name))+'</button></article>';
+   return '<article class="fc-account-card"><div class="fc-card-top"><span class="fc-mark fc-mark-'+p.name.toLowerCase()+'" aria-hidden="true">'+mark+'</span><span class="fc-connection-status'+(ready?' is-connected':'')+'">'+(ready?'✓ Connected':'Not connected')+'</span></div><h3>'+escapeHtml(p.name)+'</h3><p>'+escapeHtml(p.help)+'</p>'+(ready?'<small>'+connected.map(a=>escapeHtml(a.display_name)).join(", ")+'</small>':'')+'<button type="button" data-fc-action="'+escapeHtml(p.name)+'">'+((ready||(p.name==='Facebook'&&role==='admin'&&facebookPages().length))?'View account':'Add '+escapeHtml(p.name))+'</button></article>';
   }).join("");
   cards.querySelectorAll("[data-fc-action]").forEach(button=>button.addEventListener("click",()=>accountAction(button.dataset.fcAction)));
   const admin=$("foxonDeveloperAdmin");if(admin){
@@ -42,6 +73,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   }).join("")+'</tbody></table></div>':'<p>No activity yet.</p>';
  }
  async function accountAction(platform){
+  if(platform==="Facebook"&&role==="admin"&&facebookPages().length){openFacebookPages();return;}
   const existing=accounts.filter(a=>a.platform===platform&&a.connection_status==="connected");
   if(existing.length){setMessage(platform+' connected: '+existing.map(a=>a.display_name).join(', '));return;}
   if(role!=="admin"){setMessage("Account connection is not yet enabled for your access level. FOXON is working on making this a simple sign-in for every user.");return;}
@@ -116,7 +148,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   if(!user||!$("foxonSocialAccounts"))return;
   if(!connecting)setMessage("Checking your accounts…");
   const [ac,delivery,post]=await Promise.all([
-   db.from("studio_social_accounts").select("id,platform,display_name,connection_status,last_error,connected_at").order("platform"),
+   db.from("studio_social_accounts").select("id,platform,display_name,connection_status,last_error,connected_at,created_by").order("platform"),
    db.from("studio_publish_deliveries").select("id,post_id,social_account_id,status,published_at,last_error").order("created_at",{ascending:false}).limit(60),
    db.from("studio_posts").select("id,title,status,channel,format,caption,source_notes,media_id").limit(500)
   ]);
@@ -126,13 +158,14 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const count=accounts.filter(a=>a.connection_status==="connected").length;
   const notice=new URLSearchParams(window.location.search).get("social_connect");
   if(connecting)return;
+  if(notice==="facebook_pages_ready"){setMessage("Facebook Pages found. Choose View account to select the Pages Studio can use.");return;}
   if(notice==="cancelled"){setMessage("Connection cancelled. Choose Add account to try again.");return;}
   if(notice&&notice!=="connected"){setMessage("The account could not be connected. Choose Add account to try again.");return;}
   setMessage(count?count+" account"+(count===1?"":"s")+" ready to use.":"");
  }
  async function init(u){
   user=u;
-  if(!u){$("foxonSocialAccounts")?.remove();$("foxonFutureConnections")?.remove();$("foxonDeveloperAdmin")?.remove();return;}
+  if(!u){$("foxonFacebookPages")?.close();$("foxonSocialAccounts")?.remove();$("foxonFutureConnections")?.remove();$("foxonDeveloperAdmin")?.remove();return;}
   const m=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
   if(m.error||!m.data)return;
   role=m.data.role;
