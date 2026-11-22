@@ -24,6 +24,7 @@ jobs:
           node --check foxon-studio/shell.js
           node --check foxon-studio/studio-upgrades.js
           node --check foxon-studio/marketing-hq.js
+          node --check foxon-studio/social-accounts.js
           node --check foxon-studio/workspace.js
           node --check foxon-studio/marketing.js
           node --check foxon-studio/brain.js
