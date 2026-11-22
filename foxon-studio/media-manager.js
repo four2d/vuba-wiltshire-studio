@@ -4,7 +4,7 @@ const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const types={jpg:"image/jpeg",jpeg:"image/jpeg",png:"image/png",webp:"image/webp",mp4:"video/mp4",mov:"video/quicktime",webm:"video/webm"};
 const limit=45*1024*1024;
-let user=null,role="",current="",items=[],folders=[],urls={},typeFilter="all",search="",queue=null,busy=false;
+let user=null,role="",current="",items=[],folders=[],urls={},typeFilter="all",search="",queue=null,waitingForRights=null,busy=false;
 const lead=()=>role==="admin"||role==="approver";
 const ext=name=>String(name||"").split(".").pop().toLowerCase();
 function clean(path){
@@ -25,7 +25,7 @@ function build(){
   
   <input id="mmFileInput" type="file" multiple hidden accept=".jpg,.jpeg,.png,.webp,.mp4,.mov,.webm">
   <input id="mmFolderInput" type="file" webkitdirectory directory multiple hidden>
-  <p id="mmStatus" role="status"></p><button id="mmContinue" type="button" hidden>Import next batch →</button>
+  <p id="mmStatus" role="status"></p><button id="mmUploadQueued" type="button" hidden disabled>Upload queued files</button><button id="mmContinue" type="button" hidden>Import next batch →</button>
  </div>
  <div class="mm-toolbar"><div id="mmBreadcrumb" class="mm-breadcrumb"></div><div class="mm-controls"><input id="mmSearch" type="search" placeholder="Search media, tags or folder"><select id="mmType"><option value="all">All media</option><option value="photo">Photos</option><option value="video">Videos</option><option value="pending">Needs review</option><option value="approved">Approved</option></select><button id="mmRefresh" type="button">↻</button></div></div>
  <div class="mm-totals"><span id="mmTotal"></span><span id="mmPending"></span></div><div id="mmFolders" class="mm-folder-grid"></div><div id="mmGrid" class="mm-asset-grid"></div>`;
@@ -45,6 +45,8 @@ function build(){
  $("mmFolderInput").onchange=async()=>{await begin([...$("mmFolderInput").files],true);$("mmFolderInput").value="";};
  $("mmNewFolder").onclick=createFolder;
  $("mmContinue").onclick=processBatch;
+ $("mmUploadQueued").onclick=uploadQueued;
+ $("mmRights").oninput=()=>{$("mmUploadQueued").disabled=!$("mmRights").value.trim();};
  $("mmRefresh").onclick=load;
  $("mmSearch").oninput=e=>{search=e.target.value.toLowerCase();render();};
  $("mmType").onchange=e=>{typeFilter=e.target.value;render();};
@@ -62,10 +64,11 @@ function build(){
  $("mmArchive").onclick=archive;
  const zone=$("mmDrop");let depth=0;
  $("mmStatus").textContent="Add usage rights above, then drop files or choose Upload media. Files are saved privately and need approval.";
- zone.ondragenter=e=>{e.preventDefault();depth++;zone.classList.add("dragging");};
- zone.ondragover=e=>e.preventDefault();
- zone.ondragleave=e=>{e.preventDefault();depth=Math.max(0,depth-1);if(!depth)zone.classList.remove("dragging");};
- zone.ondrop=async e=>{e.preventDefault();depth=0;zone.classList.remove("dragging");await dropped(e.dataTransfer);};
+ const hasFiles=event=>Array.from(event.dataTransfer?.types||[]).includes("Files");
+ manager.ondragenter=e=>{if(!hasFiles(e))return;e.preventDefault();depth++;zone.classList.add("dragging");};
+ manager.ondragover=e=>{if(hasFiles(e))e.preventDefault();};
+ manager.ondragleave=()=>{depth=Math.max(0,depth-1);if(!depth)zone.classList.remove("dragging");};
+ manager.ondrop=async e=>{if(!hasFiles(e))return;e.preventDefault();depth=0;zone.classList.remove("dragging");await dropped(e.dataTransfer);};
  zone.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();$("mmFileInput").click();}};
  zone.onclick=()=>$("mmFileInput").click();
 }
@@ -100,20 +103,39 @@ async function ensureFolder(path){
  }
 }
 async function begin(input,withFolders){
- if(busy){$("mmStatus").textContent="An upload is already running; finish the current batch first.";return;}
+ if(busy||queue){$("mmStatus").textContent="Finish the current batch before adding more files.";return;}
  if(!user||!["admin","approver","editor"].includes(role)){$("mmStatus").textContent="Sign in with FOXON Studio upload access first.";return;}
  const rightsField=$("mmRights");
  if(!rightsField){$("mmStatus").textContent="Upload form is incomplete. Refresh FOXON Studio and try again.";return;}
- const rights=rightsField.value.trim();
- if(!rights){$("mmStatus").textContent="UPLOAD NOT STARTED: Enter the image or video usage rights above, then try again.";rightsField.focus();return;}
  const records=input.map(x=>{
   const file=x.file||x,relative=clean(x.relative||file.webkitRelativePath||file.name),parts=relative.split("/");
   parts.pop();
   return {file,folder:withFolders?clean([current,...parts].filter(Boolean).join("/")):current};
  }).filter(x=>types[ext(x.file.name)]&&x.file.size>0);
  if(!records.length){$("mmStatus").textContent="No supported files were found.";return;}
- queue={records:records.filter(x=>x.file.size<=limit),skipped:records.filter(x=>x.file.size>limit).length,offset:0,success:0,errors:[],rights};
- if(!queue.records.length){$("mmStatus").textContent="Files exceed the current 45 MB upload limit.";return;}
+ const ready=records.filter(x=>x.file.size<=limit);
+ if(!ready.length){$("mmStatus").textContent="Files exceed the current 45 MB upload limit.";return;}
+ const skipped=records.length-ready.length;
+ if(waitingForRights){
+  waitingForRights.records.push(...ready);
+  waitingForRights.skipped+=skipped;
+ }else{
+  waitingForRights={records:ready,skipped};
+ }
+ if(rightsField.value.trim()){await uploadQueued();return;}
+ $("mmUploadQueued").hidden=false;
+ $("mmUploadQueued").disabled=true;
+ const count=waitingForRights.records.length;
+ $("mmStatus").textContent=count+" "+(count===1?"file":"files")+" ready. Enter usage rights, then choose Upload queued files.";
+ rightsField.focus();
+}
+async function uploadQueued(){
+ if(!waitingForRights||busy||queue)return;
+ const rights=$("mmRights").value.trim();
+ if(!rights)return;
+ queue={...waitingForRights,offset:0,success:0,errors:[],rights};
+ waitingForRights=null;
+ $("mmUploadQueued").hidden=true;
  try{await processBatch();}catch(error){$("mmStatus").textContent="UPLOAD FAILED: "+(error?.message||String(error));console.error("FOXON media upload",error);}
 }
 async function processBatch(){
@@ -229,7 +251,7 @@ async function archive(){
 }
 async function init(u){
  user=u;
- if(!u){$("mediaManager")?.remove();$("mmDialog")?.remove();return;}
+ if(!u){waitingForRights=null;queue=null;$("mediaManager")?.remove();$("mmDialog")?.remove();return;}
  const {data}=await db.from("studio_members").select("role").eq("user_id",u.id).maybeSingle();
  if(!data)return;role=data.role;
  for(let i=0;i<150&&!$("assetsPanel");i++)await new Promise(resolve=>setTimeout(resolve,100));
