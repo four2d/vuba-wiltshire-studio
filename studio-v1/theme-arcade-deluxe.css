@@ -144,10 +144,6 @@ body.studio-shell-ready[data-vuba-theme="arcade"] .studio-stat::after{opacity:.1
 body.studio-shell-ready[data-vuba-theme="arcade"] .studio-stat .stat-top small{
  color:#fcf5ff!important;font:800 11px/1.35 'Courier New',monospace!important
 }
-body.studio-shell-ready[data-vuba-theme="arcade"] .studio-stat .stat-mark{
- border:3px solid #fff0a3!important;border-radius:3px!important;
- background:#a74aed!important;color:#fff!important;box-shadow:3px 3px #251143!important
-}
 body.studio-shell-ready[data-vuba-theme="arcade"] .studio-stat .stat-number{
  color:#fef7f2!important;font:900 32px/1 'Courier New',monospace!important;
  text-shadow:2px 3px #702daf!important
