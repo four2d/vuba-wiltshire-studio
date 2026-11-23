@@ -79,6 +79,7 @@ assert(social.includes("fc-optional-details"),"Publishing controls must remain h
 assert(social.includes("FOXONSocialAccounts={refresh:load}"),"Connections must expose refresh");
 assert(social.includes("Add your accounts"),"Simple account onboarding heading must be present");
 assert(social.includes("data-fc-action"),"Each account card must have an obvious action");
-assert(social.includes("providerReady[platform]"),"Connection requests must fail safely when provider configuration is missing");
+assert(social.includes('if(role!=="admin"||connecting)return;'),"Only authorised admins may start legacy connection");
+assert(social.includes('action:"begin"'),"Provider connection must use server-side OAuth");
 assert(!social.includes("Refresh connections"),"Ordinary user interface must not show redundant refresh controls");
 console.log("FOXON Studio static upgrade smoke checks passed.");
