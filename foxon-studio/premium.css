@@ -109,10 +109,6 @@ body.studio-shell-ready #app{display:block;padding:0 42px 52px 310px;max-width:n
 .studio-stat:hover{border-color:#cddce3;box-shadow:0 9px 30px #17334712;transform:translateY(-2px)}
 .stat-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .stat-top small{font-size:9px;letter-spacing:.105em;font-weight:850;color:#88949d}
-.stat-mark{width:29px;height:29px;border-radius:8px;background:#eaf4ed;color:#3d8a65;display:grid;place-items:center;font-size:17px}
-.stat-mark.amber{background:#fcf1e4;color:#c38d49}
-.stat-mark.rose{background:#f8e9ed;color:#b05171}
-.stat-mark.blue{background:#e8f0f5;color:#4b7f9b}
 .stat-number{font-size:36px;font-family:Manrope,sans-serif;font-weight:800;letter-spacing:-.075em;line-height:1}
 .stat-foot{color:#8996a0;font-size:11px}
 .studio-home-grid{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(288px,.9fr);gap:19px;align-items:start}
@@ -281,7 +277,6 @@ body.studio-shell-ready .workspace-grid,body.studio-shell-ready .brain-grid,body
  .studio-stat-grid{gap:9px}
  .studio-stat{padding:15px;gap:10px}
  .stat-top small{font-size:8px}
- .stat-mark{width:25px;height:25px}
  .stat-number{font-size:29px}
  .stat-foot{font-size:10px}
  .studio-home-grid .panel{padding:17px}

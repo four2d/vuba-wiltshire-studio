@@ -1,0 +1,16 @@
+name: FOXON dashboard icons
+on:
+  pull_request:
+    paths:
+      - 'foxon-studio/**'
+      - '.github/workflows/foxon-icon-smoke.yml'
+  workflow_dispatch:
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node foxon-studio/tests/dashboard-icons.mjs

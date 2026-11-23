@@ -10,7 +10,14 @@ const mediaManager=read("media-manager.js");
 const social=read("social-accounts.js");
 const themeKeys=["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"];
 for(const theme of themeKeys)assert(shell.includes('<option value="'+theme+'">'),"Missing selectable theme: "+theme);
-assert.equal((shell.match(/class="stat-mark-symbol"/g)||[]).length,4,"Four stat icons must be explicit SVGs");
+assert.equal((shell.match(/dashboard-metric-icon--/g)||[]).length,4,"Four FOXON dashboard metrics need outlined icons");
+for(const kind of ["planned","approval","image","opportunity"])assert(shell.includes("dashboard-metric-icon--"+kind),"Missing "+kind+" icon");
+assert(index.includes("dashboard-icons.css"),"Icon stylesheet must load");
+const iconCss=read("dashboard-icons.css");
+assert(iconCss.includes("#f2c500"),"FOXON icons must keep yellow styling");
+for(const name of ["premium.css","foxon-theme.css","theme-options.css","theme-contrast.css","theme-edition-v2.css","theme-arcade-deluxe.css","icon-colour-invert.css"]){
+ assert(!/\\.stat-mark(?:\\b|[.])/g.test(read(name)), "Old stat-mark CSS remains in "+name);
+}
 assert(calendar.includes('data-date="'),"Calendar days need canonical drop dates");
 assert(calendar.includes("foxon:post-saved"),"Successful post saves must trigger an upgrade refresh");
 assert(upgrade.includes('["idea","draft"]'),"Only editable draft stages may be dragged");

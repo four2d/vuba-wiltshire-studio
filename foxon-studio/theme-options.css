@@ -29,8 +29,7 @@ body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
  .studio-navigation:before,.studio-hero:before
 ){background:repeating-linear-gradient(-45deg,var(--theme-accent) 0 17px,var(--theme-nav) 17px 34px)!important}
 body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
- .studio-nav-links a.is-active,.topbar-create,.studio-stat .stat-mark,
- #fillCalendar,.hero-actions button:not(.hero-secondary),
+ .studio-nav-links a.is-active,.topbar-create,#fillCalendar,.hero-actions button:not(.hero-secondary),
  .studio-builder-card button,.studio-text-btn,.studio-tip-card button,
  .studio-builder-icon,.studio-workspace-label,.sidebar-brand-chip>span,
  .studio-live-pill,.workspace-tabs button.active,.strategy-tabs button.active,
@@ -42,7 +41,7 @@ body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
 body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
  .studio-kicker,.section-eyebrow,.brain-eyebrow,.studio-nav-heading,
  .hero-eyebrow,.hero-copy h2 em,.studio-stat .stat-number,
- .studio-stat strong,.metrics strong,.stat-mark,.studio-footnote-dot,
+ .studio-stat strong,.metrics strong,.studio-footnote-dot,
  .builder-card-index,.builder-visual-chip,.studio-link-tools a,
  .suggestion-pill,.studio-automation-panel .progress-label strong,
  #vubaBrain .brain-tag,#vubaBrain .brain-doc-total
@@ -55,8 +54,7 @@ body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
  .topbar-create span,.sidebar-brand-chip>span,.studio-text-btn span
 ){color:var(--theme-accent-ink)!important}
 body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
- .studio-workspace-label,.studio-live-pill,.studio-stat .stat-mark,
- .studio-builder-icon.secondary
+ .studio-workspace-label,.studio-live-pill,.studio-builder-icon.secondary
 ){border-color:var(--theme-edge)!important}
 body.studio-shell-ready[data-foxon-theme]:not([data-foxon-theme="classic"]) :is(
  .studio-home-main p,.studio-builder-card p,.studio-page-heading p,
