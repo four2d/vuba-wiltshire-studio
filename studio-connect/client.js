@@ -28,6 +28,11 @@ if(cfg.supabaseUrl&&cfg.supabaseAnonKey){
    details.addEventListener("toggle",()=>{if(details.open){active=true;refresh()}else active=false});
   }
   if(!parent.contains(details))parent.append(details);
+  if(!parent.dataset.sharedConnectObserver){
+   const observer=new MutationObserver(()=>{if(user&&details&&!parent.contains(details))parent.append(details)});
+   observer.observe(parent,{childList:true});
+   parent.dataset.sharedConnectObserver="yes";
+  }
  }
  function render(){
   if(!details)return;
@@ -78,6 +83,7 @@ if(cfg.supabaseUrl&&cfg.supabaseAnonKey){
  async function init(u){user=u||null;if(!user){details?.remove();details=null;active=false;return}
   for(let i=0;i<45&&!document.getElementById(tenant==="foxon"?"foxonConnectionWorkspace":"vubaConnectionWorkspace");i++)await new Promise(r=>setTimeout(r,100));
   mount();
+  if(new URL(location.href).searchParams.get("studio_connect")==="select_pages"&&details)details.open=true;
   if(details?.open){active=true;refresh()}
  }
  window.StudioSharedConnect={refresh:()=>{mount();return refresh()}};
