@@ -87,10 +87,6 @@ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="stea
 body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat .stat-foot{
  font-size:10px!important;color:var(--edition-muted)!important;
 }
-body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat :not(*){
- width:34px!important;height:34px!important;border-radius:8px!important;
- flex-shrink:0!important;font-size:20px!important;
-}
 body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-home-grid{align-items:stretch!important}
 body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-home-grid .panel{overflow:hidden}
 body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-section-heading h2{
