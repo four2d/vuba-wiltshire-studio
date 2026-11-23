@@ -31,4 +31,14 @@ assert.match(shell,/Vuba Classic · Red & Blue/);
 assert.ok(!/FOXON|foxon/i.test([html,shell,hq,theme,accounts,media].join('\n')), 'FOXON wording must not appear in Vuba runtime');
 assert.ok(!/#f2c500/i.test(theme), 'FOXON yellow must not appear in default Vuba theme');
 assert.ok(!/invoice, cis, miles, gas/i.test(media), 'FOXON tags must not appear in Vuba media library');
-console.log('Vuba static and branding smoke checks passed');
+const stats=fs.readFileSync(path.join(root,'shell.js'),'utf8');
+const iconCss=fs.readFileSync(path.join(root,'dashboard-icons.css'),'utf8');
+for(const kind of ['planned','approval','image','opportunity'])assert.match(stats,new RegExp('dashboard-metric-icon--'+kind));
+assert.equal((stats.match(/dashboard-metric-icon--/g)||[]).length,4);
+assert.equal((stats.match(/<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"/g)||[]).length,4);
+for(const name of ['premium.css','vuba-theme.css','theme-options.css','theme-contrast.css','theme-edition-v2.css','theme-arcade-deluxe.css']){
+ assert.ok(!/\\.stat-mark(?:\\b|[.])/g.test(fs.readFileSync(path.join(root,name),'utf8')), 'legacy icon styles in '+name);
+}
+assert.match(html,/dashboard-icons\\.css/);
+assert.match(iconCss,/stroke-linecap:round/);
+console.log('Vuba static, branding and dashboard icon checks passed');
