@@ -53,8 +53,8 @@ assert(hq.includes('state.image=null'),"Changing the FOXON product must not reta
 assert(hq.includes('No actual platform metrics imported yet'),"Performance must not be invented");
 assert(!hq.includes("service_role"),"No service-role secrets in browser sources");
 assert(hqCss.includes("prefers-reduced-motion"),"New design respects reduced motion");
-assert(mediaManager.includes('id="mmRights"'),"Media upload rights field must exist in the interface");
-assert(mediaManager.includes('rightsField.value.trim()'),"Media upload must read rights from the actual field");
+assert(!mediaManager.includes('id="mmRights"'),"Media upload should not ask for rights paperwork");
+assert(mediaManager.includes('usage_rights:""'),"Uploads should not require a rights field");
 assert(mediaManager.includes('db.storage.from("foxon-approved-media").upload'),"Media files must use the private bucket");
 assert(mediaManager.includes('db.from("studio_media").insert'),"Every uploaded file must be recorded in the media library");
 assert(mediaManager.includes("approved:false"),"New files must remain unapproved");
