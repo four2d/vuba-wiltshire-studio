@@ -1,0 +1,16 @@
+name: Vuba Studio smoke
+on:
+  pull_request:
+    paths:
+      - 'studio-v1/**'
+      - '.github/workflows/vuba-studio-smoke.yml'
+  workflow_dispatch:
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node studio-v1/tests/smoke.mjs
