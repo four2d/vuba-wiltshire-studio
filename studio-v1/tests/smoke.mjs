@@ -39,6 +39,6 @@ assert.equal((stats.match(/<svg viewBox="0 0 24 24" fill="none" stroke="currentC
 for(const name of ['premium.css','vuba-theme.css','theme-options.css','theme-contrast.css','theme-edition-v2.css','theme-arcade-deluxe.css']){
  assert.ok(!/\\.stat-mark(?:\\b|[.])/g.test(fs.readFileSync(path.join(root,name),'utf8')), 'legacy icon styles in '+name);
 }
-assert.match(html,/dashboard-icons\\.css/);
+assert.match(html,/dashboard-icons\.css/);
 assert.match(iconCss,/stroke-linecap:round/);
 console.log('Vuba static, branding and dashboard icon checks passed');
