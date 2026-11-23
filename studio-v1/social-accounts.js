@@ -12,6 +12,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   {name:"LinkedIn",label:"VUBA LinkedIn Company Page",url:"https://www.linkedin.com/developers/apps",help:"Publish company updates from your LinkedIn Page."}
  ];
  let user=null,role="",accounts=[],deliveries=[],posts=[],connecting=false;
+ const integrationReady=false; // Vuba OAuth credentials and backend are not provisioned; fail closed.
  function setMessage(message){const el=$("vubaSocialStatus");if(el)el.textContent=message;}
  function mount(){
   const host=$("vubaConnectionWorkspace");if(!host||$("vubaSocialAccounts"))return;
@@ -53,6 +54,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   dialog.showModal();
  }
  function render(){
+  if(!integrationReady){const host=$("vubaSocialAccounts");if(host){host.innerHTML='<header class="fc-welcome"><div><h2>Social account connections</h2><p>Vuba account connections are being set up independently from FOXON. Facebook, Instagram and LinkedIn sign-in is not yet available here. You can still plan, approve and export posts from Studio.</p></div></header>';}return;}
   const cards=$("vubaSocialCards");if(!cards)return;
   cards.innerHTML=platforms.map(p=>{
    const connected=accounts.filter(a=>a.platform===p.name&&a.connection_status==="connected");
@@ -170,7 +172,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   if(m.error||!m.data)return;
   role=m.data.role;
   for(let i=0;i<45&&!$("vubaConnectionWorkspace");i++)await new Promise(r=>setTimeout(r,100));
-  mount();await load();
+  mount();if(integrationReady)await load();
   window.VUBASocialAccounts={refresh:load};
  }
  db.auth.onAuthStateChange((_event,session)=>setTimeout(()=>init(session?.user||null),0));
