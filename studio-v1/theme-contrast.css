@@ -109,7 +109,7 @@ body.studio-shell-ready :is(.mm-actions .mm-main,.mm-asset-buttons button:focus-
  outline-offset:2px
 }
 body.studio-shell-ready :is(
- .studio-stat .stat-mark,.studio-builder-icon,
+ .studio-builder-icon,
  .topbar-create,#fillCalendar,.studio-text-btn,
  .hero-actions button:not(.hero-secondary),
  .studio-builder-card>button,#generateVUBAArt,
