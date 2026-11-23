@@ -2,28 +2,6 @@
    Presentation only. b.1 branch is not modified. Other themes untouched. */
 /* Exact studio-v1 stat-mark glyphs and proportions, with FOXON colours.
    Source: studio-v1/shell.js and studio-v1/premium.css. */
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.amber,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.rose,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.blue {
- box-sizing:border-box!important;
- width:29px!important;height:29px!important;
- min-width:29px!important;min-height:29px!important;
- padding:0!important;
- display:grid!important;place-items:center!important;
- flex-shrink:0!important;
- border:1px solid #171717!important;border-radius:8px!important;
- border-color:#171717!important;
- box-shadow:none!important;
- background:#171717!important;
- color:var(--foxon-yellow)!important;
- -webkit-text-fill-color:var(--foxon-yellow)!important;
- font-family:Arial,'Helvetica Neue',sans-serif!important;
- font-size:17px!important;font-weight:400!important;
- font-style:normal!important;line-height:1!important;
- text-shadow:none!important;letter-spacing:0!important;
- opacity:1!important;visibility:visible!important;
-}
 body.studio-shell-ready[data-foxon-theme="classic"] :is(.studio-builder-icon,.automation-icon){
  background:#101010!important;
  color:#f2c500!important;
@@ -64,19 +42,6 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-tip-card .tip-spark 
  width:34px;height:34px;
 }
 
-/* Visibility safeguard for FOXON Classic icons, including selected nav links.
-   Explicit stroke and text fill prevent inherited active-state colours
-   from making the icon disappear into its background. */
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.amber,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.rose,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark.blue{
- background-color:#171717!important;
- border-color:#171717!important;
- color:#f2c500!important;
- -webkit-text-fill-color:#f2c500!important;
- text-shadow:0 0 .35px #f2c500!important;
-}
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a .nav-glyph,
 body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a.is-active .nav-glyph{
  background-color:#171717!important;
@@ -95,31 +60,3 @@ body.studio-shell-ready[data-foxon-theme="classic"] .studio-nav-links a .nav-gly
  visibility:visible!important;
 }
 
-/* SVG stat glyphs are real inline artwork, not font characters.
-   Explicit stroke/fill prevents Safari text-fill and inherited theme rules
-   from hiding strokes on the dark stat tile. */
-body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol {
- display:block!important;
- width:20px!important;height:20px!important;
- min-width:20px!important;min-height:20px!important;
- flex:0 0 20px!important;
- fill:none!important;
- stroke:currentColor!important;
- stroke-width:2!important;
- stroke-linecap:round!important;
- stroke-linejoin:round!important;
- overflow:visible!important;
- opacity:1!important;
- visibility:visible!important;
-}
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol,
-body.studio-shell-ready[data-foxon-theme="classic"] .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol :is(path,rect,circle) {
- stroke:#f2c500!important;
- fill:none!important;
- opacity:1!important;
- visibility:visible!important;
-}
-body.studio-shell-ready .studio-stat-grid .studio-stat .stat-mark .stat-mark-symbol :is(path,rect,circle) {
- fill:none!important;
- stroke:currentColor;
-}
