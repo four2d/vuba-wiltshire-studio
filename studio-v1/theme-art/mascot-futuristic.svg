@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 400" aria-label="Decorative fox mascot for futuristic edition"><defs><linearGradient id="coat" x2=".3" y2="1"><stop stop-color="#8bfcff"/><stop offset=".45" stop-color="#2783ba"/><stop offset="1" stop-color="#112744"/></linearGradient><linearGradient id="shine" x2="0" y2="1"><stop stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient><filter id="drop"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<ellipse cx="165" cy="367" rx="113" ry="20" fill="#65f8ff" opacity=".16" filter="url(#drop)"/>
+<path d="M81 385q-50-60-36-120l63-77 110 3 65 78q21 80-29 116z" fill="url(#coat)" stroke="#65f8ff" stroke-width="5"/>
+<path d="M88 253L58 59 141 135 170 145 202 130 270 53 241 259 207 300 161 360 110 306Z" fill="url(#coat)" stroke="#65f8ff" stroke-width="6" stroke-linejoin="round"/>
+<path d="M79 87l18 84 38-19zM245 85l-48 68 40 15z" fill="#112744" opacity=".8" stroke="#8bfcff" stroke-width="4"/>
+<path d="M99 225L70 267l63 57 32-14 27 14 69-61-34-38-58 40z" fill="#8bfcff" stroke="#65f8ff" stroke-width="3"/>
+<path d="M92 213l52 13-22 20-40-7ZM237 213l-53 13 20 20 41-7Z" fill="#49fcff" stroke="#112744" stroke-width="5"/>
+<path d="M140 253l24 11 23-11-23 33Z" fill="#112744" stroke="#65f8ff" stroke-width="3"/>
+<path d="M151 284q14 9 27 0" stroke="#112744" stroke-width="4" fill="none"/>
+<path d="M118 339l40 39 42-39" stroke="#8bfcff" stroke-width="8" fill="none" opacity=".7"/>
+<path d="M62 65L118 169 142 135 167 149 196 136 259 58" fill="url(#shine)" opacity=".5"/>
+<path d="M60 179l48-19 38 20 55-5" fill="none" stroke="#7afbff" stroke-width="5"/><path d="M81 199l38 20 79-16" stroke="#ff8ab8" stroke-width="4" fill="none"/><circle cx="146" cy="234" r="10" fill="#0b1f34" stroke="#8dfbff" stroke-width="4"/><path d="M90 292h126m-96 18h82" stroke="#6deafa" stroke-width="3" stroke-dasharray="13 8"/><path d="M78 65l40 80 20-12 M236 65l-43 75-20-13" stroke="#f9a8c1" stroke-width="4" fill="none"/></svg>

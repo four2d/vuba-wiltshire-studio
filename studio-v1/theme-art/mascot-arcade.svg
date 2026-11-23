@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 400" aria-label="Decorative fox mascot for arcade edition"><defs><linearGradient id="coat" x2=".3" y2="1"><stop stop-color="#fff2bc"/><stop offset=".45" stop-color="#f79e4d"/><stop offset="1" stop-color="#3c234b"/></linearGradient><linearGradient id="shine" x2="0" y2="1"><stop stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient><filter id="drop"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<ellipse cx="165" cy="367" rx="113" ry="20" fill="#fff07d" opacity=".16" filter="url(#drop)"/>
+<path d="M81 385q-50-60-36-120l63-77 110 3 65 78q21 80-29 116z" fill="url(#coat)" stroke="#fff07d" stroke-width="5"/>
+<path d="M88 253L58 59 141 135 170 145 202 130 270 53 241 259 207 300 161 360 110 306Z" fill="url(#coat)" stroke="#fff07d" stroke-width="6" stroke-linejoin="round"/>
+<path d="M79 87l18 84 38-19zM245 85l-48 68 40 15z" fill="#3c234b" opacity=".8" stroke="#fff2bc" stroke-width="4"/>
+<path d="M99 225L70 267l63 57 32-14 27 14 69-61-34-38-58 40z" fill="#fff2bc" stroke="#fff07d" stroke-width="3"/>
+<path d="M92 213l52 13-22 20-40-7ZM237 213l-53 13 20 20 41-7Z" fill="#242149" stroke="#3c234b" stroke-width="5"/>
+<path d="M140 253l24 11 23-11-23 33Z" fill="#3c234b" stroke="#fff07d" stroke-width="3"/>
+<path d="M151 284q14 9 27 0" stroke="#3c234b" stroke-width="4" fill="none"/>
+<path d="M118 339l40 39 42-39" stroke="#fff2bc" stroke-width="8" fill="none" opacity=".7"/>
+<path d="M62 65L118 169 142 135 167 149 196 136 259 58" fill="url(#shine)" opacity=".5"/>
+<path d="M87 181h62v16h17v-16h64v23h-63v13h-18v-13H87Z" fill="#25224d" stroke="#a3f8ff" stroke-width="7"/><path d="M101 183h36v20h-36zm81 0h36v20h-36z" fill="#a74dda"/><path d="M88 259h142v20H88Z" fill="#7040b0" stroke="#ffe179" stroke-width="5"/><rect x="74" y="305" width="22" height="22" fill="#7afb9a"/><rect x="96" y="283" width="22" height="22" fill="#7afb9a"/><rect x="118" y="305" width="22" height="22" fill="#7afb9a"/><rect x="205" y="298" width="18" height="18" fill="#ff9edb"/><rect x="229" y="320" width="18" height="18" fill="#7cddff"/></svg>

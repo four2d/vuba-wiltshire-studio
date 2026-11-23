@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 330 400" aria-label="Decorative fox mascot for christmas edition"><defs><linearGradient id="coat" x2=".3" y2="1"><stop stop-color="#fff0d8"/><stop offset=".45" stop-color="#d27e42"/><stop offset="1" stop-color="#493022"/></linearGradient><linearGradient id="shine" x2="0" y2="1"><stop stop-color="#ffffff" stop-opacity=".28"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></linearGradient><filter id="drop"><feGaussianBlur stdDeviation="8"/></filter></defs>
+<ellipse cx="165" cy="367" rx="113" ry="20" fill="#f3d791" opacity=".16" filter="url(#drop)"/>
+<path d="M81 385q-50-60-36-120l63-77 110 3 65 78q21 80-29 116z" fill="url(#coat)" stroke="#f3d791" stroke-width="5"/>
+<path d="M88 253L58 59 141 135 170 145 202 130 270 53 241 259 207 300 161 360 110 306Z" fill="url(#coat)" stroke="#f3d791" stroke-width="6" stroke-linejoin="round"/>
+<path d="M79 87l18 84 38-19zM245 85l-48 68 40 15z" fill="#493022" opacity=".8" stroke="#fff0d8" stroke-width="4"/>
+<path d="M99 225L70 267l63 57 32-14 27 14 69-61-34-38-58 40z" fill="#fff0d8" stroke="#f3d791" stroke-width="3"/>
+<path d="M92 213l52 13-22 20-40-7ZM237 213l-53 13 20 20 41-7Z" fill="#293c2d" stroke="#493022" stroke-width="5"/>
+<path d="M140 253l24 11 23-11-23 33Z" fill="#493022" stroke="#f3d791" stroke-width="3"/>
+<path d="M151 284q14 9 27 0" stroke="#493022" stroke-width="4" fill="none"/>
+<path d="M118 339l40 39 42-39" stroke="#fff0d8" stroke-width="8" fill="none" opacity=".7"/>
+<path d="M62 65L118 169 142 135 167 149 196 136 259 58" fill="url(#shine)" opacity=".5"/>
+<path d="M78 129Q99 24 224 73Q253 90 262 140" fill="#bb3444" stroke="#f5d2c9" stroke-width="9"/><path d="M73 129Q161 106 251 137" stroke="#fff1d8" stroke-width="25" fill="none" stroke-linecap="round"/><path d="M222 77Q274 52 284 110" fill="#bb3444" stroke="#e4ac9e" stroke-width="5"/><circle cx="280" cy="116" r="23" fill="#fff1d8"/><path d="M91 274Q151 302 218 268l8 58-57-21-57 21Z" fill="#bb3444" stroke="#f6e1b8" stroke-width="5"/><path d="M166 284l-9 57-36 22" fill="none" stroke="#e6bf97" stroke-width="6"/><g fill="#e9bc70"><circle cx="128" cy="297" r="5"/><circle cx="198" cy="295" r="5"/></g></svg>

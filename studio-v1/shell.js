@@ -6,7 +6,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const pages=[
  ["home","Overview","layout-dashboard"],["calendar","Calendar","calendar-days"],["builder","Post builder","square-pen"],
  ["ideas","Post ideas","lightbulb"],["plan","Marketing plan","target"],["campaigns","Campaigns","megaphone"],
- ["media","Media library","images"],["reviews","Approvals","check-check"],["brain","Vuba Brain","book-open"]
+ ["media","Media library","images"],["reviews","Approvals","check-check"],["brain","VUBA Brain","book-open"],["connections","Connections","plug-zap"]
 ];
 const allowed=new Set(pages.map(x=>x[0]));
 const dateKey=d=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
@@ -18,9 +18,11 @@ function buildShell(){
  const shell=document.createElement("div");shell.id="studioShell";
  shell.innerHTML=`
  <aside class="studio-navigation" aria-label="Studio navigation">
-  <div class="brand-lockup">
-   <div class="brand-monogram" aria-hidden="true"><svg viewBox="0 0 42 42" fill="none"><path d="M8 11L21 32 34 11" stroke="currentColor" stroke-width="5" stroke-linecap="square"/><path d="M14 11H28" stroke="currentColor" stroke-width="2"/></svg></div>
-   <div><strong>VUBA <span>WILTSHIRE</span></strong><small>SOCIAL STUDIO</small></div>
+  <div class="brand-lockup"><span class="neutral-brand-lockup"><span class="neutral-brand-icon">▦</span><span><strong>Social Studio</strong><small>Content workspace</small></span></span>
+   <img src="../logo.png" alt="VUBA WILTSHIRE" width="216" height="64">
+   <small class="vuba-product-label">SOCIAL STUDIO</small>
+   <span class="special-edition-plate" aria-hidden="true"></span>
+   <span class="edition-side-mascot" aria-hidden="true"></span>
   </div>
   <div class="studio-workspace-label"><span class="workspace-live-dot"></span> WORKSPACE <span class="workspace-chevron">⌄</span></div>
   <div class="studio-nav-scroll">
@@ -30,47 +32,55 @@ function buildShell(){
    </div>
    <span class="studio-nav-heading secondary-heading">MANAGE</span>
    <div class="studio-nav-links studio-secondary-links">
-    ${pages.filter(x=>["plan","campaigns","media","brain"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
+    ${pages.filter(x=>["plan","campaigns","media","brain","connections"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
    </div>
   </div>
+  <div class="vuba-theme-picker"><label for="vubaThemeSelect">STUDIO APPEARANCE</label><select id="vubaThemeSelect" aria-label="VUBA Studio theme"><option value="classic">VUBA Classic · Yellow</option><option value="graphite">Graphite · Steel</option><option value="midnight">Midnight · Electric Blue</option><option value="forest">Forest · Lime</option><option value="copper">Workshop · Copper</option><optgroup label="Unbranded workspace themes"><option value="paper">Paper · Minimal Light</option><option value="slate">Slate · Modern Dark</option><option value="ocean">Ocean · Soft Blue</option><option value="sand">Sand · Warm Neutral</option></optgroup><optgroup label="Special edition themes"><option value="futuristic">Futuristic · Neon Circuit</option><option value="steampunk">Steampunk · Brass & Gears</option><option value="christmas">Christmas · Evergreen & Gold</option><option value="synthwave">Synthwave · Sunset Neon</option><option value="arcade">Arcade · Retro Pixels</option></optgroup></select></div>
   <div class="sidebar-bottom">
-   <div class="sidebar-brand-chip"><span>V</span><div><strong>Vuba Wiltshire</strong><small>Team workspace</small></div></div>
+   <div class="sidebar-brand-chip"><span>F</span><div><strong>Vuba Wiltshire</strong><small>Team workspace</small></div></div>
    <button type="button" id="sidebarSignout" class="sidebar-signout">Sign out <span>↗</span></button>
   </div>
  </aside>
  <div class="studio-topbar"><button type="button" id="studioMobileMenu" class="mobile-menu-btn" aria-label="Open navigation" aria-expanded="false">☰</button><span id="studioBreadcrumb">Overview</span><div class="topbar-right"><span class="studio-live-pill"><i></i> No-credit mode</span><button type="button" id="topbarNewPost" class="topbar-create"><span>＋</span> Create post</button></div></div>
  <button type="button" id="studioNavShade" class="studio-nav-shade" aria-label="Close navigation" hidden></button>
  <section id="studioHome" class="studio-page" aria-label="Overview">
-  <div class="studio-page-heading"><div><span class="studio-kicker">YOUR CONTENT COMMAND CENTRE</span><h1>Good to see you.</h1><p>Everything your marketing needs, nothing it doesn't.</p></div><div class="heading-date" id="overviewDate"></div></div>
+  <div class="studio-page-heading"><div><span class="studio-kicker">VUBA SOCIAL CONTROL</span><h1>BUILT FOR THE TRADE.</h1><p>Real products. Strong stories. VUBA through and through.</p></div><div class="heading-date" id="overviewDate"></div></div>
   <div class="studio-hero">
    <div class="hero-grid-overlay" aria-hidden="true"></div>
-   <div class="hero-copy"><span class="hero-eyebrow"><span></span> AUTOMATED CONTENT STUDIO</span><h2>Great content.<br><em>Without the busywork.</em></h2><p>Build a consistent, professional presence for Vuba Wiltshire. Your next four weeks of content are a click away.</p>
-   <div class="hero-actions"><button type="button" id="heroFillCalendar">✦ &nbsp; Plan my next 4 weeks</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
+   <span class="special-hero-plate" aria-hidden="true"></span>
+   <span class="edition-hero-mascot" aria-hidden="true"></span>
+   <div class="hero-copy"><span class="hero-eyebrow"><span></span> RESIN-BOUND IDEAS</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan posts about resin-bound materials, colour blends, installer tips and Wiltshire stock. Use genuine photographs and approved Vuba content.</p>
+   <div class="hero-actions"><button type="button" id="heroFillCalendar">PLAN THE NEXT 4 WEEKS</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
    <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>VUBA WILTSHIRE</span><span>✦</span></div></div></div>
   </div>
   <div class="studio-stat-grid">
-   <button type="button" data-dash-route="calendar" class="studio-stat"><span class="stat-top"><small>PLANNED CONTENT</small><span class="stat-mark">↗</span></span><span class="stat-number" id="dashUpcoming">–</span><span class="stat-foot">Posts in the next 28 days</span></button>
-   <button type="button" data-dash-route="reviews" class="studio-stat"><span class="stat-top"><small>NEEDS APPROVAL</small><span class="stat-mark amber">◷</span></span><span class="stat-number" id="dashReview">–</span><span class="stat-foot">Waiting for your review</span></button>
-   <button type="button" data-dash-route="media" class="studio-stat"><span class="stat-top"><small>IMAGES NEEDED</small><span class="stat-mark rose">▧</span></span><span class="stat-number" id="dashImages">–</span><span class="stat-foot">Posts awaiting a visual</span></button>
-   <button type="button" data-dash-route="calendar" class="studio-stat"><span class="stat-top"><small>CONTENT OPPORTUNITIES</small><span class="stat-mark blue">＋</span></span><span class="stat-number" id="dashGaps">–</span><span class="stat-foot">Open slots to fill</span></button>
+   <button type="button" data-dash-route="calendar" class="studio-stat"><span class="stat-top"><small>PLANNED CONTENT</small><span class="stat-mark"><svg class="stat-mark-symbol" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 19 19 5M9 5h10v10"/></svg></span></span><span class="stat-number" id="dashUpcoming">–</span><span class="stat-foot">Posts in the next 28 days</span></button>
+   <button type="button" data-dash-route="reviews" class="studio-stat"><span class="stat-top"><small>NEEDS APPROVAL</small><span class="stat-mark amber"><svg class="stat-mark-symbol" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg></span></span><span class="stat-number" id="dashReview">–</span><span class="stat-foot">Waiting for your review</span></button>
+   <button type="button" data-dash-route="media" class="studio-stat"><span class="stat-top"><small>IMAGES NEEDED</small><span class="stat-mark rose"><svg class="stat-mark-symbol" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg></span></span><span class="stat-number" id="dashImages">–</span><span class="stat-foot">Posts awaiting a visual</span></button>
+   <button type="button" data-dash-route="calendar" class="studio-stat"><span class="stat-top"><small>CONTENT OPPORTUNITIES</small><span class="stat-mark blue"><svg class="stat-mark-symbol" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></span></span><span class="stat-number" id="dashGaps">–</span><span class="stat-foot">Open slots to fill</span></button>
   </div>
   <div class="studio-home-grid">
    <section class="panel studio-home-main"><div class="studio-section-heading"><div><span class="section-eyebrow">EDITORIAL PIPELINE</span><h2>On the horizon</h2><p>Upcoming stories, ready to take shape.</p></div><button type="button" class="studio-text-btn" data-dash-route="calendar">Full calendar <span>↗</span></button></div><div id="dashList"><p class="hint">Loading your editorial queue…</p></div></section>
-   <div class="home-side-stack"><section class="panel studio-automation-panel"><div class="automation-icon">✦</div><span class="studio-kicker">YOUR CONTENT ENGINE</span><h2>Keep the momentum.</h2><p>Fill gaps with seasonal, trade-first draft ideas. Match approved photography automatically where available.</p>
+   <div class="home-side-stack"><section class="panel studio-automation-panel"><div class="automation-icon">✦</div><span class="studio-kicker">YOUR EDITORIAL TOOLKIT</span><h2>KEEP IT MOVING.</h2><p>Fill gaps with seasonal, trade-first draft ideas. Match approved photography automatically where available.</p>
    <div class="automation-progress"><div class="progress-label"><span>4-week editorial plan</span><strong id="planProgress">0%</strong></div><div class="progress-track"><span id="planProgressBar"></span></div><small>Based on your planned publishing slots</small></div>
    <button id="fillCalendar" type="button">Fill calendar gaps <span>→</span></button><p id="fillCalendarMessage" class="hint" role="status"></p><div class="automation-disclaimer">✳ &nbsp; Drafts only. Approval always stays with your team.</div>
    </section>
-   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>A more visual feed starts here.</strong><p>Add your approved Vuba photography to bring every post to life.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
+   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>SHOW THE PRODUCT.</strong><p>Use genuine Vuba product photography, approved project images and accurate technical information.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
    </div>
   </div>
   <div class="studio-footnote"><span class="studio-footnote-dot"></span> Your team stays in control. Nothing publishes until it has been approved and connected to a publishing channel.</div>
  </section>
  <section id="studioBuilder" class="studio-page" aria-label="Post builder">
-   <div class="studio-page-heading"><div><span class="studio-kicker">THE CREATIVE WORKSPACE</span><h1>Make something great.</h1><p>From an idea to a polished, image-led post in a few steps.</p></div></div>
+   <div class="studio-page-heading"><div><span class="studio-kicker">VUBA POST BUILDER</span><h1>MAKE IT COUNT.</h1><p>Sharp copy. Genuine Vuba photos. No nonsense.</p></div></div>
    <div class="studio-builder-actions">
-    <article class="panel studio-builder-card featured"><div class="studio-builder-icon">✦</div><div class="builder-card-index">01 / SMART START</div><h2>Let the Studio lead.</h2><p>We'll suggest a relevant topic, prepare your first draft and search approved Vuba imagery automatically.</p><div class="builder-visual"><span class="builder-visual-chip">✦ &nbsp; CONTENT ASSISTANT</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-visual-photo">▧ &nbsp; Library image matched</span></div><button id="builderSuggest" type="button">Create a suggested draft <span>→</span></button></article>
+    <article class="panel studio-builder-card featured"><div class="studio-builder-icon">✦</div><div class="builder-card-index">01 / SMART START</div><h2>Let the Studio lead.</h2><p>We'll suggest a relevant topic, prepare your first draft and search approved VUBA imagery automatically.</p><div class="builder-visual"><span class="builder-visual-chip">✦ &nbsp; CONTENT ASSISTANT</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-visual-photo">▧ &nbsp; Library image matched</span></div><button id="builderSuggest" type="button">Create a suggested draft <span>→</span></button></article>
     <article class="panel studio-builder-card"><div class="studio-builder-icon secondary">＋</div><div class="builder-card-index">02 / YOUR DIRECTION</div><h2>Start with your idea.</h2><p>Got something specific to say? Set the topic, choose your channel and make it your own.</p><div class="builder-visual simple"><span class="builder-blank-label">YOUR NEXT POST</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-corner-accent"></span></div><button id="builderBlank" type="button">Create a blank post <span>→</span></button></article>
    </div><div class="builder-note"><span>ⓘ</span> Automatic text and image matching work without API credits. New AI-generated images will require a connected generation service.</div>
+ </section>
+ <section id="studioConnections" class="studio-page vuba-connections-page" aria-label="Connections" hidden>
+  <header class="studio-page-heading"><div><span class="studio-kicker">YOUR ACCOUNTS</span><h1>CONNECTIONS.</h1><p>Facebook, Instagram and LinkedIn — all in one place.</p></div></header>
+  
+  <div id="vubaConnectionWorkspace" class="vuba-connection-workspace"></div>
  </section>`;
 
  root.prepend(shell);
@@ -81,6 +91,20 @@ function buildShell(){
  $("studioMobileMenu").onclick=()=>toggleMobileMenu();
  $("studioNavShade").onclick=()=>toggleMobileMenu(false);
  $("overviewDate").textContent=new Date().toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+ const themePicker=$("vubaThemeSelect");
+ const themes=new Set(["classic","graphite","midnight","forest","copper","paper","slate","ocean","sand","futuristic","steampunk","christmas","synthwave","arcade"]);
+ let savedTheme="classic";
+ try{savedTheme=localStorage.getItem("vuba-studio-theme")||"classic";}catch{}
+ if(!themes.has(savedTheme))savedTheme="classic";
+ themePicker.value=savedTheme;
+ document.body.dataset.vubaTheme=savedTheme;
+ applyEditionDetails(savedTheme);
+ themePicker.onchange=()=>{
+  if(!themes.has(themePicker.value))return;
+  document.body.dataset.vubaTheme=themePicker.value;
+  applyEditionDetails(themePicker.value);
+  try{localStorage.setItem("vuba-studio-theme",themePicker.value);}catch{}
+ };
  installNavGlyphs();
  $("builderSuggest").onclick=()=>{$("autoSuggest")?.click();};
  $("builderBlank").onclick=()=>{$("new")?.click();};
@@ -91,6 +115,37 @@ function buildShell(){
  watch.observe(root,{childList:true});
  document.body.classList.add("studio-shell-ready");
  route();
+}
+/* Presentation-only special-edition headings. No content metrics or post data altered. */
+function applyEditionDetails(theme){
+ const themes={
+  futuristic:["NEON COMMAND","VUBA SOCIAL STUDIO","COMMAND CENTRE.","Plan content, navigate your calendar and keep your creative mission moving."],
+  steampunk:["THE CONTENT WORKSHOP","VUBA SOCIAL STUDIO","THE CONTENT ENGINE.","Turn your ideas into polished posts with the precision of a fine machine."],
+  christmas:["CHRISTMAS EDITION","VUBA SOCIAL STUDIO","FESTIVE WORKSHOP.","Plan your Christmas messages and keep every seasonal post on track."],
+  synthwave:["AFTER DARK","VUBA SOCIAL STUDIO","CREATE THE FUTURE.","Bold ideas, sharp visuals and a calendar that never misses a beat."],
+  arcade:["ARCADE MODE","VUBA SOCIAL STUDIO","LEVEL UP.","Ideas, posts and approvals: your content missions start here."]
+ };
+ const section=$("studioHome");
+ if(!section)return;
+ const eyebrow=section.querySelector(".hero-eyebrow");
+ const heading=section.querySelector(".hero-copy h2");
+ const copy=section.querySelector(".hero-copy>p");
+ if(!eyebrow||!heading||!copy)return;
+ if(!window.__vubaOriginalHero)window.__vubaOriginalHero={
+   eyebrow:eyebrow.innerHTML,heading:heading.innerHTML,copy:copy.textContent
+ };
+ const t=themes[theme];
+ if(!t){
+   eyebrow.innerHTML=window.__vubaOriginalHero.eyebrow;
+   heading.innerHTML=window.__vubaOriginalHero.heading;
+   copy.textContent=window.__vubaOriginalHero.copy;
+ }else{
+   eyebrow.replaceChildren();
+   const led=document.createElement("span");eyebrow.append(led,document.createTextNode(" "+t[0]));
+   heading.replaceChildren(document.createTextNode(t[1]),document.createElement("br"));
+   const em=document.createElement("em");em.textContent=t[2];heading.append(em);
+   copy.textContent=t[3];
+ }
 }
 function toggleMobileMenu(force){
  const open=typeof force==="boolean"?force:!document.body.classList.contains("studio-nav-open");
@@ -104,6 +159,7 @@ function installNavGlyphs(){
   calendar:"M3 6h18v15H3z M7 3v6 M17 3v6 M3 11h18",
   builder:"M4 20h16 M5 15l10-10 4 4-10 10H5z",
   ideas:"M9 18h6 M10 22h4 M12 2a7 7 0 0 0-4 13c1 1 1 2 1 3h6c0-1 0-2 1-3a7 7 0 0 0-4-13z",
+  connections:"M8 3v5 M16 3v5 M8 16v5 M16 16v5 M7 8h10v8H7z",
   reviews:"M4 12l5 5L20 6 M3 3h18v18H3z",
   plan:"M12 3v18 M3 12h18 M6 6l12 12 M18 6L6 18",
   campaigns:"M3 11l11-5v12L3 13z M14 8l5-3v14l-5-3 M6 14v6",
@@ -125,7 +181,7 @@ function route(){
  const name=currentRoute();activeRoute=name;
  const label=pages.find(p=>p[0]===name)?.[1]||"Overview";
  $("studioBreadcrumb").textContent=label;
- document.title=label+" · Vuba Social Studio";
+ document.title=label+" · VUBA Social Studio";
  if(document.body.classList.contains("studio-nav-open"))toggleMobileMenu(false);
  $("studioShell").querySelectorAll("[data-route-link]").forEach(a=>{
   const on=a.dataset.routeLink===name;
@@ -136,12 +192,14 @@ function route(){
  if(name==="home")refreshDashboard();
  window.scrollTo?.({top:0,behavior:"instant"});
  if(name==="campaigns"||name==="media"||name==="reviews")window.VubaStudioPlus?.refresh?.();
+ if(name==="connections")window.VUBASocialAccounts?.refresh?.();
 }
 function show(el,visible){if(el)el.hidden=!visible;}
 function applyVisibility(){
  if(!$("studioShell"))return;
  const p=activeRoute||currentRoute();
  show($("studioHome"),p==="home");show($("studioBuilder"),p==="builder");
+ show($("studioConnections"),p==="connections");
  for(const x of document.querySelectorAll("#app > .top,#app > .metrics,#app > .layout"))show(x,p==="calendar");
  // The current calendar markup is wrapped in #calendarPage on new installs.
  show($("calendarPage"),p==="calendar");
@@ -165,7 +223,7 @@ function applyVisibility(){
 function updateSectionHeading(page){
  const configs={
   campaigns:["CAMPAIGN PLANNING","Shape the story.","Create and manage connected campaigns, audiences and outcomes."],
-  media:["YOUR CREATIVE ASSETS","Make it visual.","Import authentic Vuba photography, approve assets and build a usable visual library."],
+  media:["YOUR CREATIVE ASSETS","Make it visual.","Import authentic VUBA product photography, approve assets and build a usable visual library."],
   reviews:["EDITORIAL APPROVALS","Ready for your review.","See what needs a decision, request changes and keep a clear approval history."],
   ideas:["EDITORIAL INSPIRATION","Fresh perspectives.","Trade-first content ideas informed by season, strategy and your approved knowledge."],
   plan:["THE BIGGER PICTURE","Plan with purpose.","Keep your shared marketing priorities and objectives in one place."]
@@ -226,17 +284,24 @@ async function refreshDashboard(){
   }
  }
  const symbols={"Instagram":"◎","Facebook":"f","LinkedIn":"in"};
- $("dashList").innerHTML=shortlisted.length?'<div class="editorial-post-grid">'+shortlisted.map((p,i)=>{
-  const image=urls[p.media_id];
-  const date=new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
-  const status=p.status.replaceAll("_"," ");
-  return '<button type="button" class="editorial-post-card" data-dash-edit="'+esc(p.id)+'">'+
-   '<span class="editorial-post-art art-'+i%4+'">'+
-    (image?'<img loading="lazy" src="'+esc(image)+'" alt="Approved Vuba post image">':
-    '<span class="editorial-art-pattern"><span></span><span></span><span></span></span><span class="editorial-image-needed">IMAGE TO ADD</span>')+
-    '<span class="editorial-channel">'+esc(symbols[p.channel]||"✦")+'</span></span>'+
-   '<span class="editorial-post-details"><span class="editorial-post-meta">'+esc(date)+' <span>·</span> '+esc(p.channel)+'</span>'+
-   '<strong>'+esc(p.title)+'</strong><span class="editorial-status status-'+esc(p.status)+'"><i></i>'+esc(status)+'</span></span></button>';
+ $("dashList").innerHTML=shortlisted.length?'<div class="editorial-post-grid vuba-feed-grid">'+shortlisted.map(p=>{
+   const image=urls[p.media_id];
+   const date=new Date(p.scheduled_date+"T12:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+   const status=p.status.replaceAll("_"," ");
+   const channel=p.channel||"Instagram";
+   const hasText=Boolean((p.caption||"").trim());
+   const caption=hasText?esc(p.caption):"Caption not written yet";
+   const media=image?'<span class="vuba-feed-image"><img loading="lazy" src="'+esc(image)+'" alt="Attached approved post artwork"></span>':
+     '<span class="vuba-feed-missing"><span>NO ARTWORK ATTACHED</span><small>Attach approved media to preview the final visual</small></span>';
+   const mediaBlock='<span class="vuba-feed-media">'+media+'</span>';
+   const captionBlock='<span class="vuba-feed-caption'+(hasText?"":" is-empty")+'">'+caption+'</span>';
+   const body=channel==="Instagram"?mediaBlock+captionBlock:captionBlock+mediaBlock;
+   return '<button type="button" class="vuba-feed-card platform-'+esc(channel.toLowerCase())+'" data-dash-edit="'+esc(p.id)+'" aria-label="Edit '+esc(channel)+' post: '+esc(p.title)+'">'+
+     '<span class="vuba-feed-header"><img src="../logo.png" alt="Vuba Wiltshire"><span class="vuba-feed-profile"><strong>Vuba Wiltshire</strong><small>'+esc(channel)+' · '+esc(date)+'</small></span><span class="vuba-feed-channel">'+esc(symbols[channel]||"✦")+'</span></span>'+
+     '<span class="vuba-feed-body">'+body+'</span>'+
+     '<span class="vuba-feed-actions" aria-hidden="true">♡ &nbsp; ◯ &nbsp; ↗</span>'+
+     '<span class="vuba-feed-footer"><strong>'+esc(p.title)+'</strong><span class="vuba-feed-state">'+esc(status)+'</span></span>'+
+     '</button>';
  }).join("")+'</div>':"<div class='studio-empty'><span>✦</span><h3>Make room for something good.</h3><p>Your next posts will appear here once you've planned them.</p><button type='button' id='emptyPlan'>Plan content →</button></div>";
  $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{navigate("calendar");window.VubaOpenPost?.(b.dataset.dashEdit)});
  if($("emptyPlan"))$("emptyPlan").onclick=fillCalendar;
@@ -258,9 +323,9 @@ async function fillCalendar(){
   const titles=existing.map(x=>x.title);
   const plan=[];
   await window.VubaMediaAssist?.refresh?.();
-  const pillars=["Installer Advice","Project Planning","Blends & Colour Inspiration","FAQs & Myth Busting","Behind the Scenes / Depot","Product Education"];
+  const pillars=["Product Education","Installer Advice","Blends & Colour Inspiration","Local Stock & Availability","Project Planning","Trade Productivity","Behind the Software","Frequently Asked Questions"];
   for(const s of scheduled){
-   const starter=window.VubaOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length]});
+   const starter=window.VubaOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length],channel:s.channel});
    if(!starter)throw Error("Offline content templates unavailable. Refresh the Studio.");
    titles.push(starter.title);
    const match=window.VubaMediaAssist?.bestForText?.([starter.title,starter.topic,starter.pillar].join(" "));
