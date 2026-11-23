@@ -5,14 +5,14 @@ body.studio-shell-ready .vuba-hq{
  --hq-line:var(--read-stroke,var(--theme-edge,#474747));
  --hq-fg:var(--read-text,#f3f3f3);
  --hq-muted:var(--read-muted,#bdbdbd);
- --hq-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --hq-accent:var(--read-accent,var(--theme-accent,#821732));
  --hq-ink:var(--read-accent-text,#121212);
  margin:20px 0 26px;padding:23px;border:1px solid var(--hq-line);border-radius:14px;
  background:var(--hq-bg);color:var(--hq-fg);font:400 13px/1.5 'Helvetica Neue',Arial,sans-serif;
 }
 body.studio-shell-ready[data-vuba-theme="classic"] .vuba-hq{
  --hq-bg:#151515;--hq-paper:#1f1f1f;--hq-line:#393939;
- --hq-fg:#f5f5f5;--hq-muted:#bfbfbf;--hq-accent:#f2c500;--hq-ink:#101010
+ --hq-fg:#f5f5f5;--hq-muted:#bfbfbf;--hq-accent:#821732;--hq-ink:#101010
 }
 body.studio-shell-ready .vuba-hq :is(h2,h3,h4,p){color:inherit}
 body.studio-shell-ready .vuba-hq :is(h2,h3,h4){margin:0;font-weight:850;line-height:1.18}
@@ -148,13 +148,13 @@ body.studio-shell-ready .vuba-hq .hq-insight-grid p{font-size:12px;color:var(--h
 /* Always-visible shortcut in the existing Overview heading. */
 body.studio-shell-ready #hqQuickJump{
  align-self:center;min-height:39px;padding:10px 15px;
- background:var(--read-accent,var(--theme-accent,#f2c500));
+ background:var(--read-accent,var(--theme-accent,#821732));
  color:var(--read-accent-text,#101010);
- border:1px solid var(--read-accent,var(--theme-accent,#f2c500));
+ border:1px solid var(--read-accent,var(--theme-accent,#821732));
  border-radius:8px;font-size:11px;font-weight:850;cursor:pointer;
 }
 body.studio-shell-ready #hqQuickJump:focus-visible{
- outline:3px solid var(--read-accent,var(--theme-accent,#f2c500));outline-offset:3px
+ outline:3px solid var(--read-accent,var(--theme-accent,#821732));outline-offset:3px
 }
 body.studio-shell-ready .vuba-hq a{
  color:var(--hq-accent);text-decoration:underline;text-underline-offset:3px
@@ -180,7 +180,7 @@ body.studio-shell-ready #mediaManager #mmRights{
  font:500 13px/1.4 'Helvetica Neue',Arial,sans-serif
 }
 body.studio-shell-ready #mediaManager #mmRights:focus-visible{
- outline:3px solid var(--read-accent,var(--theme-accent,#f2c500));outline-offset:2px
+ outline:3px solid var(--read-accent,var(--theme-accent,#821732));outline-offset:2px
 }
 body.studio-shell-ready #mediaManager #mmStatus{
  white-space:normal;overflow-wrap:anywhere;line-height:1.5
@@ -192,7 +192,7 @@ body.studio-shell-ready .vuba-social-accounts{
  --sa-bg:var(--hq-paper,var(--read-soft,#1a1a1a));
  --sa-fg:var(--hq-fg,var(--read-text,#f3f3f3));
  --sa-muted:var(--hq-muted,var(--read-muted,#bcbcbc));
- --sa-accent:var(--hq-accent,var(--read-accent,#f2c500));
+ --sa-accent:var(--hq-accent,var(--read-accent,#821732));
  padding:18px 0;margin-bottom:21px;border-bottom:1px solid var(--sa-line)
 }
 body.studio-shell-ready .vuba-social-heading{
@@ -260,7 +260,7 @@ body.studio-shell-ready .vuba-social-setup-note{
 
 /* Dedicated Connections route: uses VUBA theme tokens and the existing account service. */
 body.studio-shell-ready .vuba-connections-page{
- --fc-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fc-accent:var(--read-accent,var(--theme-accent,#821732));
  --fc-ink:var(--read-accent-text,#111);
  --fc-ink-soft:var(--read-text,#f3f3f3);
  --fc-muted:var(--read-muted,#c3c3c3);

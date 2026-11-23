@@ -218,10 +218,10 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const sizes={portrait:[1080,1350],square:[1080,1080],landscape:[1200,675]};
   const [w,h]=sizes[$("hqSize").value];c.width=w;c.height=h;
   const ctx=c.getContext("2d"),pad=w*.07,mode=$("hqLayout").value;
-  ctx.fillStyle="#121212";ctx.fillRect(0,0,w,h);
-  ctx.fillStyle="#f2c500";ctx.fillRect(pad,pad,70,8);
-  ctx.fillStyle="#f7f7f7";ctx.font="bold "+(w*.035)+"px Arial";ctx.fillText("VUBA WILTSHIRE",pad,pad+63);
-  ctx.fillStyle="#f2c500";ctx.font="bold "+(w*.022)+"px Arial";ctx.fillText($("hqProduct").value.toUpperCase(),pad,pad+106);
+  ctx.fillStyle="#111a1f";ctx.fillRect(0,0,w,h);
+  ctx.fillStyle="#821732";ctx.fillRect(pad,pad,70,8);
+  ctx.fillStyle="#ffffff";ctx.font="bold "+(w*.035)+"px Arial";ctx.fillText("VUBA WILTSHIRE",pad,pad+63);
+  ctx.fillStyle="#821732";ctx.font="bold "+(w*.022)+"px Arial";ctx.fillText($("hqProduct").value.toUpperCase(),pad,pad+106);
   const img=state.image;
   if(mode==="phone"){
    const height=h*.48,width=Math.min(w*.49,height*.53),x=(w-width)/2,y=h*.18;
@@ -229,23 +229,23 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
    ctx.fillStyle="#080808";ctx.beginPath();ctx.roundRect(x,y,width,height,42);ctx.fill();
    ctx.save();ctx.beginPath();ctx.roundRect(x+12,y+18,width-24,height-36,30);ctx.clip();
    if(img)drawImage(ctx,img,x+12,y+18,width-24,height-36);
-   else{ctx.fillStyle="#292929";ctx.fillRect(x+12,y+18,width-24,height-36);ctx.fillStyle="#f2c500";ctx.font="bold 22px Arial";ctx.textAlign="center";ctx.fillText("ADD REAL PHOTO",w/2,y+height/2);ctx.textAlign="left";}
+   else{ctx.fillStyle="#292929";ctx.fillRect(x+12,y+18,width-24,height-36);ctx.fillStyle="#821732";ctx.font="bold 22px Arial";ctx.textAlign="center";ctx.fillText("ADD REAL PHOTO",w/2,y+height/2);ctx.textAlign="left";}
    ctx.restore();
   }else if(mode==="photo"){
    const y=h*.2,height=h*.46;
    if(img){ctx.save();ctx.beginPath();ctx.rect(0,y,w,height);ctx.clip();drawImage(ctx,img,0,y,w,height);ctx.restore();}
-   else{ctx.fillStyle="#2b2b2b";ctx.fillRect(0,y,w,height);ctx.fillStyle="#f2c500";ctx.font="bold 31px Arial";ctx.textAlign="center";ctx.fillText("ADD GENUINE PHOTO",w/2,y+height/2);ctx.textAlign="left";}
+   else{ctx.fillStyle="#2b2b2b";ctx.fillRect(0,y,w,height);ctx.fillStyle="#821732";ctx.font="bold 31px Arial";ctx.textAlign="center";ctx.fillText("ADD GENUINE PHOTO",w/2,y+height/2);ctx.textAlign="left";}
   }else{
-   ctx.fillStyle="#242424";ctx.fillRect(pad,h*.23,w-pad*2,h*.42);ctx.fillStyle="#f2c500";ctx.fillRect(pad,h*.23,12,h*.42);
+   ctx.fillStyle="#242424";ctx.fillRect(pad,h*.23,w-pad*2,h*.42);ctx.fillStyle="#821732";ctx.fillRect(pad,h*.23,12,h*.42);
    ctx.font="bold "+(w*.13)+"px Arial";ctx.fillText("VUBA",pad+32,h*.48);
   }
   const fontSize=Math.min(w*.06,h*.078),lineHeight=fontSize*1.13;
-  ctx.fillStyle="#f2c500";ctx.font="900 "+fontSize+"px Arial";
+  ctx.fillStyle="#821732";ctx.font="900 "+fontSize+"px Arial";
   const lines=wrap(ctx,$("hqHeadline").value||"MADE FOR THE TRADE",w-pad*2);
   const baseY=Math.min(h*.8,h-66-(lines.length-1)*lineHeight-38);
   lines.forEach((line,i)=>ctx.fillText(line,pad,baseY+i*lineHeight,w-pad*2));
   ctx.fillStyle="#f7f7f7";ctx.font="bold "+Math.min(w*.022,h*.035)+"px Arial";ctx.fillText(($("hqSubline").value||"").toUpperCase(),pad,Math.min(h-37,baseY+lines.length*lineHeight+14),w-pad*2);
-  ctx.fillStyle="#f2c500";ctx.fillRect(pad,h-18,w-pad*2,5);
+  ctx.fillStyle="#821732";ctx.fillRect(pad,h-18,w-pad*2,5);
  }
  function validArt(){
   if($("hqLayout").value!=="bold"&&!state.image){note("Add a real screenshot/photo to this layout before export.");return false;}

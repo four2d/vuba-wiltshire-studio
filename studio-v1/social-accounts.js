@@ -54,7 +54,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   dialog.showModal();
  }
  function render(){
-  if(!integrationReady){const host=$("vubaSocialAccounts");if(host){host.innerHTML='<header class="fc-welcome"><div><h2>Social account connections</h2><p>Vuba account connections are being set up independently from FOXON. Facebook, Instagram and LinkedIn sign-in is not yet available here. You can still plan, approve and export posts from Studio.</p></div></header>';}return;}
+  if(!integrationReady){const host=$("vubaSocialAccounts");if(host){host.innerHTML='<header class="fc-welcome"><div><h2>Social account connections</h2><p>Vuba social account connections are being configured for this workspace. Facebook, Instagram and LinkedIn sign-in is not yet available here. You can still plan, approve and export posts from Studio.</p></div></header>';}return;}
   const cards=$("vubaSocialCards");if(!cards)return;
   cards.innerHTML=platforms.map(p=>{
    const connected=accounts.filter(a=>a.platform===p.name&&a.connection_status==="connected");

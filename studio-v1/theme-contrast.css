@@ -3,7 +3,7 @@
    Theme UI only: social previews/artwork retain their real colours. */
 body.studio-shell-ready{
  --read-text:#f6f7f8;--read-muted:#d0d2d5;--read-field:#111;--read-field-text:#fff;
- --read-panel:#171717;--read-stroke:#515151;--read-accent:#f2c500;--read-accent-text:#0b0b0b;
+ --read-panel:#171717;--read-stroke:#515151;--read-accent:#d991a5;--read-accent-text:#111a1f;
  --read-soft:#292929;--read-soft-text:#f7f7f7;
 }
 body.studio-shell-ready[data-vuba-theme="graphite"]{
@@ -151,7 +151,7 @@ body.studio-shell-ready .day button.review{background:#79561b!important;color:#f
 body.studio-shell-ready .day button.approved{background:#216348!important;color:#fff!important}
 body.studio-shell-ready .day button.changes_requested{background:#75411f!important;color:#fff!important}
 body.studio-shell-ready .day button.scheduled{background:#614d19!important;color:#fff!important}
-/* Neutral light mode specifically: previous yellow VUBA rules carry !important,
+/* Neutral light mode specifically: legacy accent rules carry !important,
    so override with a consistent dark-text-on-light-surface system. */
 body.studio-shell-ready:is([data-vuba-theme="paper"],[data-vuba-theme="ocean"],[data-vuba-theme="sand"]) :is(
  .panel,.studio-stat,.studio-builder-card,.studio-home-main,.studio-tip-card,
@@ -228,7 +228,7 @@ body.studio-shell-ready :is(.social-mock,.vuba-feed-card) :is(
 ){background:#fff!important;color:#171717!important}
 body.studio-shell-ready .vuba-feed-card .vuba-feed-footer{background:#f4f4f4!important}
 body.studio-shell-ready .vuba-feed-card .vuba-feed-missing{
- background:#0b0b0b!important;color:#f2c500!important
+ background:#0b0b0b!important;color:#d991a5!important
 }
 body.studio-shell-ready .vuba-feed-card .vuba-feed-missing small{color:#fff!important}
 
@@ -269,7 +269,7 @@ body.studio-shell-ready #vubaBrain .brain-command .brain-overview-bar>div span{
 }
 body.studio-shell-ready #vubaBrain .brain-command h2 em,
 body.studio-shell-ready #vubaBrain .brain-command .brain-overview-bar>div strong{
- color:#f2c500!important
+ color:#d991a5!important
 }
 /* Ensure selected blue/green/orange status controls still show readable text. */
 body.studio-shell-ready .mm-state{color:var(--read-text)!important}
