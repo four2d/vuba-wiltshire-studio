@@ -148,7 +148,7 @@ async function processBatch(){
   if(!more)queue=null;
   await load();
   if(queue===null&&$("mmStatus"))$("mmStatus").textContent+=" · Check the current folder below. New assets need approval.";
-  await window.VUBAStudioPlus?.refresh?.();
+  await window.VubaStudioPlus?.refresh?.();
  }catch(error){$("mmStatus").textContent="UPLOAD FAILED: "+(error?.message||String(error));console.error("VUBA media processing",error);}finally{busy=false;}
 }
 async function createFolder(){
@@ -241,7 +241,7 @@ async function archive(id){
  const {error}=await db.from("studio_media").update({archived_at:new Date().toISOString()}).eq("id",id);
  if(error){$(fromDialog?"mmError":"mmStatus").textContent=error.message;return;}
  if(fromDialog)$("mmDialog").close();
- await load();await window.VUBAStudioPlus?.refresh?.();
+ await load();await window.VubaStudioPlus?.refresh?.();
  $("mmStatus").textContent="Media archived.";
 }
 async function deleteAsset(item,button){
@@ -252,7 +252,7 @@ async function deleteAsset(item,button){
   const {data,error}=await db.functions.invoke("vuba-media-delete",{body:{id:item.id}});
   const details=error?.context?.json?await error.context.json().catch(()=>null):data;
   await load();
-  await window.VUBAStudioPlus?.refresh?.();
+  await window.VubaStudioPlus?.refresh?.();
   $("mmStatus").textContent=details?.error==="media_in_use"?"This file is attached to a post. Remove or replace it there first.":error||!data?.deleted?"Deletion could not finish. Please try again.":"Media deleted.";
  }catch{$("mmStatus").textContent="Deletion could not finish. Please try again.";}
  finally{button.disabled=false;}
