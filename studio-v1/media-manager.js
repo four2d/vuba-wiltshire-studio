@@ -33,7 +33,7 @@ function build(){
  dialog.innerHTML=`<form id="mmForm"><div class="dialogHead"><h2>Asset details</h2><button type="button" id="mmClose">×</button></div>
  <input name="id" type="hidden"><label>Filename<input name="filename" readonly></label>
  <label>Description<input name="description" maxlength="300"></label><label>Folder<select name="folder_path"></select></label>
- <label>Tags<input name="tags" placeholder="invoice, cis, miles, gas"></label>
+ <label>Tags<input name="tags" placeholder="resin-bound, blend, stock, depot"></label>
  <p class="hint">Organising an asset never changes the original private file.</p><p id="mmError" role="alert"></p>
  <div class="dialogActions"><button id="mmArchive" type="button" class="brain-danger-action">Archive asset</button><button type="submit">Save changes</button></div></form>`;
  document.body.appendChild(dialog);

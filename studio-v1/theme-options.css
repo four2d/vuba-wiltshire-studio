@@ -1,8 +1,8 @@
 /* VUBA Studio user-selectable interface palettes.
    Applies only to this app's chrome, never to generated artwork or platform previews.
-   Classic stays the original brand styling. */
+   Classic follows official Vuba Wiltshire branding. */
 .vuba-theme-picker{display:grid;gap:8px;padding:16px 16px 18px;margin-top:auto;border-top:1px solid #393939}
-.vuba-theme-picker label{font:800 10px/1.3 'Helvetica Neue',Arial,sans-serif;letter-spacing:.15em;color:#d7d7d7!important}
+.vuba-theme-picker label{font:800 10px/1.3 'Poppins',Arial,sans-serif;letter-spacing:.15em;color:#d7d7d7!important}
 .vuba-theme-picker select{width:100%;min-width:0;padding:10px 11px;border-radius:9px!important;font-size:12px;font-weight:750;background:#171717!important;color:#fff!important;border:1px solid #777!important;min-height:43px}
 body.studio-shell-ready[data-vuba-theme="graphite"]{--theme-base:#11151a;--theme-nav:#0b1015;--theme-panel:#1c232a;--theme-edge:#45525b;--theme-accent:#b9d0df;--theme-accent-ink:#101820;--theme-muted:#c8d2d9;--theme-hero:#24323d}
 body.studio-shell-ready[data-vuba-theme="midnight"]{--theme-base:#080f24;--theme-nav:#080c1a;--theme-panel:#101c35;--theme-edge:#334a75;--theme-accent:#66c8ff;--theme-accent-ink:#071327;--theme-muted:#c9d9f1;--theme-hero:#18365f}

@@ -1,0 +1,39 @@
+/* Vuba Wiltshire official identity: final brand layer, independent of optional layout themes. */
+@font-face{font-family:"Poppins";src:url("../fonts/Poppins-Regular.ttf") format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:"Poppins";src:url("../fonts/Poppins-Bold.ttf") format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:"Poppins";src:url("../fonts/Poppins-Black.ttf") format("truetype");font-weight:900;font-display:swap}
+:root{--vuba-brand-red:#821732;--vuba-brand-blue:#035b80;--vuba-brand-grey:#575756;--vuba-charcoal:#111a1f;--vuba-mist:#e8eef2}
+body,button,input,select,textarea{font-family:"Poppins",Arial,sans-serif!important}
+h1,h2,h3,h4,.studio-page-heading h1,.hero-copy h2,.studio-stat .stat-number,.studio-builder-card h2{font-family:"Poppins",Arial,sans-serif!important;font-weight:900;letter-spacing:-.02em!important}
+body.studio-shell-ready .brand-lockup::before{content:none!important;display:none!important;background:none!important}
+body.studio-shell-ready .studio-navigation .brand-lockup>img{display:block!important;object-fit:contain!important;object-position:left center!important;max-width:175px!important;width:175px!important;height:90px!important}
+body.studio-shell-ready .studio-navigation .neutral-brand-lockup{display:none!important}
+body.studio-shell-ready .sidebar-brand-chip>span{background:var(--vuba-brand-red)!important;color:#fff!important;font-family:"Poppins",Arial,sans-serif!important}
+body.studio-shell-ready .studio-navigation:before{background:linear-gradient(105deg,#821732 0 45%,#035b80 45% 100%)!important}
+body.studio-shell-ready .studio-hero:before{background:linear-gradient(105deg,#821732 0 45%,#035b80 45% 100%)!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]){
+ --theme-accent:#821732;--theme-accent-ink:#fff;
+ --read-accent:#d991a5;--read-accent-text:#111a1f;
+ --hq-accent:#d991a5;--fu-accent:#d991a5;
+ --studio-red:#821732;--studio-teal:#035b80;
+ --studio-navy:#035b80;--studio-navy-deep:#111a1f;
+ --studio-page:#111a1f;--studio-card:#1b303a;
+}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-navigation{background:#111a1f!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-nav-links a.is-active{background:#035b80!important;color:white!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-nav-links a.is-active .nav-glyph,
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-nav-links a.is-active .nav-active-mark{color:#fff!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .topbar-create,
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .hero-actions button:not(.hero-secondary){background:#821732!important;border-color:#821732!important;color:white!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .hero-actions .hero-secondary{background:transparent!important;border-color:#b2c7d1!important;color:#e8eef2!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-hero{background:linear-gradient(120deg,#111a1f,#153e53 58%,#035b80)!important;border-color:#35647a!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .hero-copy h2 em{color:#f0b3c3!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-kicker,
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .section-eyebrow,
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .brain-eyebrow{color:#d991a5!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-stat{border-top-color:#035b80!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .studio-workspace-label{color:#e8eef2!important;background:#173b4d!important;border-color:#37677f!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) .workspace-live-dot{background:#64a9c6!important;box-shadow:0 0 0 3px #64a9c633!important}
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) button:focus-visible,
+body.studio-shell-ready:is(:not([data-vuba-theme]),[data-vuba-theme="classic"]) a:focus-visible{outline-color:#d991a5!important}
+body.studio-shell-ready .vuba-product-label{font-family:"Poppins",Arial,sans-serif!important;letter-spacing:.1em}

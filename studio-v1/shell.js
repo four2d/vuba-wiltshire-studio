@@ -35,7 +35,7 @@ function buildShell(){
     ${pages.filter(x=>["plan","campaigns","media","brain","connections"].includes(x[0])).map(([id,name])=>'<a href="#'+id+'" data-route-link="'+id+'"><span class="nav-glyph" data-glyph="'+id+'"></span><span>'+esc(name)+'</span><span class="nav-active-mark"></span></a>').join("")}
    </div>
   </div>
-  <div class="vuba-theme-picker"><label for="vubaThemeSelect">STUDIO APPEARANCE</label><select id="vubaThemeSelect" aria-label="VUBA Studio theme"><option value="classic">VUBA Classic · Yellow</option><option value="graphite">Graphite · Steel</option><option value="midnight">Midnight · Electric Blue</option><option value="forest">Forest · Lime</option><option value="copper">Workshop · Copper</option><optgroup label="Unbranded workspace themes"><option value="paper">Paper · Minimal Light</option><option value="slate">Slate · Modern Dark</option><option value="ocean">Ocean · Soft Blue</option><option value="sand">Sand · Warm Neutral</option></optgroup><optgroup label="Special edition themes"><option value="futuristic">Futuristic · Neon Circuit</option><option value="steampunk">Steampunk · Brass & Gears</option><option value="christmas">Christmas · Evergreen & Gold</option><option value="synthwave">Synthwave · Sunset Neon</option><option value="arcade">Arcade · Retro Pixels</option></optgroup></select></div>
+  <div class="vuba-theme-picker"><label for="vubaThemeSelect">STUDIO APPEARANCE</label><select id="vubaThemeSelect" aria-label="VUBA Studio theme"><option value="classic">Vuba Classic · Red & Blue</option><option value="graphite">Graphite · Steel</option><option value="midnight">Midnight · Electric Blue</option><option value="forest">Forest · Lime</option><option value="copper">Workshop · Copper</option><optgroup label="Unbranded workspace themes"><option value="paper">Paper · Minimal Light</option><option value="slate">Slate · Modern Dark</option><option value="ocean">Ocean · Soft Blue</option><option value="sand">Sand · Warm Neutral</option></optgroup><optgroup label="Special edition themes"><option value="futuristic">Futuristic · Neon Circuit</option><option value="steampunk">Steampunk · Brass & Gears</option><option value="christmas">Christmas · Evergreen & Gold</option><option value="synthwave">Synthwave · Sunset Neon</option><option value="arcade">Arcade · Retro Pixels</option></optgroup></select></div>
   <div class="sidebar-bottom">
    <div class="sidebar-brand-chip"><span>F</span><div><strong>Vuba Wiltshire</strong><small>Team workspace</small></div></div>
    <button type="button" id="sidebarSignout" class="sidebar-signout">Sign out <span>↗</span></button>
@@ -44,12 +44,12 @@ function buildShell(){
  <div class="studio-topbar"><button type="button" id="studioMobileMenu" class="mobile-menu-btn" aria-label="Open navigation" aria-expanded="false">☰</button><span id="studioBreadcrumb">Overview</span><div class="topbar-right"><span class="studio-live-pill"><i></i> No-credit mode</span><button type="button" id="topbarNewPost" class="topbar-create"><span>＋</span> Create post</button></div></div>
  <button type="button" id="studioNavShade" class="studio-nav-shade" aria-label="Close navigation" hidden></button>
  <section id="studioHome" class="studio-page" aria-label="Overview">
-  <div class="studio-page-heading"><div><span class="studio-kicker">VUBA SOCIAL CONTROL</span><h1>BUILT FOR THE TRADE.</h1><p>Real products. Strong stories. VUBA through and through.</p></div><div class="heading-date" id="overviewDate"></div></div>
+  <div class="studio-page-heading"><div><span class="studio-kicker">VUBA SOCIAL CONTROL</span><h1>BUILT FOR WILTSHIRE.</h1><p>Resin-bound materials, local stock and practical installer support.</p></div><div class="heading-date" id="overviewDate"></div></div>
   <div class="studio-hero">
    <div class="hero-grid-overlay" aria-hidden="true"></div>
    <span class="special-hero-plate" aria-hidden="true"></span>
    <span class="edition-hero-mascot" aria-hidden="true"></span>
-   <div class="hero-copy"><span class="hero-eyebrow"><span></span> RESIN-BOUND IDEAS</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan posts about resin-bound materials, colour blends, installer tips and Wiltshire stock. Use genuine photographs and approved Vuba content.</p>
+   <div class="hero-copy"><span class="hero-eyebrow"><span></span> RESIN-BOUND IDEAS</span><h2>THE RIGHT MATERIALS.<br><em>READY FOR SITE.</em></h2><p>Plan posts about resin-bound materials, colour blends, installer tips and Wiltshire stock. Use genuine photographs and approved Vuba content.</p>
    <div class="hero-actions"><button type="button" id="heroFillCalendar">PLAN THE NEXT 4 WEEKS</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
    <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>VUBA WILTSHIRE</span><span>✦</span></div></div></div>
   </div>
@@ -323,7 +323,7 @@ async function fillCalendar(){
   const titles=existing.map(x=>x.title);
   const plan=[];
   await window.VubaMediaAssist?.refresh?.();
-  const pillars=["Product Education","Installer Advice","Blends & Colour Inspiration","Local Stock & Availability","Project Planning","Trade Productivity","Behind the Software","Frequently Asked Questions"];
+  const pillars=["Product Education","Installer Advice","Blends & Colour Inspiration","Local Stock & Availability","Project Planning","Trade Productivity","Behind the Depot","Frequently Asked Questions"];
   for(const s of scheduled){
    const starter=window.VubaOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length],channel:s.channel});
    if(!starter)throw Error("Offline content templates unavailable. Refresh the Studio.");
