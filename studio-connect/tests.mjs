@@ -1,0 +1,33 @@
+import assert from 'node:assert/strict';
+import {readFileSync,existsSync} from 'node:fs';
+import {spawnSync} from 'node:child_process';
+const server=readFileSync('studio-connect/index.ts','utf8');
+const client=readFileSync('studio-connect/client.js','utf8');
+const css=readFileSync('studio-connect/client.css','utf8');
+const sql=readFileSync('studio-connect/schema.sql','utf8');
+assert.match(server,/studio_connect_accounts/);
+assert.match(server,/studio_connect_candidates/);
+assert.match(server,/studio_connect_states/);
+assert.match(server,/client\.auth\.getUser\(token\)/);
+assert.match(server,/studio_members/);
+assert.match(server,/STUDIO_META_APP_ID/);
+assert.match(server,/STUDIO_LINKEDIN_CLIENT_ID/);
+assert.match(server,/AES-GCM/);
+assert.match(server,/expires_at/);
+assert.match(server,/tenant,user_id,platform,provider_id/);
+assert.match(server,/input\.action==="select"/);
+assert.match(server,/input\.action==="disconnect"/);
+assert.match(server,/input\.action==="status"/);
+assert.ok(!server.includes('FOXON_META_APP_SECRET'),'Legacy FOXON secret must never be used');
+assert.ok(sql.includes('enable row level security'));
+assert.ok(sql.includes('revoke all'));
+assert.match(client,/Confirm|Connect selected Pages|Connect selected/);
+assert.match(client,/tenant,action/);
+for(const app of ['studio-v1','foxon-studio']){
+ const html=readFileSync(app+'/index.html','utf8');
+ assert.ok(html.includes('../studio-connect/client.js'),app+' must load shared client');
+ assert.ok(html.includes('../studio-connect/client.css'),app+' must load shared styles');
+}
+const check=spawnSync(process.execPath,['--input-type=module','--check'],{input:client,encoding:'utf8'});
+assert.equal(check.status,0,check.stderr);
+console.log('Shared Studio connection source and safety checks passed');
