@@ -1,0 +1,14 @@
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+const oauth=readFileSync('studio-v1/supabase/functions/vuba-social-oauth/index.ts','utf8');
+const client=readFileSync('studio-v1/social-accounts.js','utf8');
+assert(!/foxon/i.test(oauth),'No FOXON reference in Vuba OAuth');
+assert(oauth.includes('vuba-social-oauth'),'Vuba callback URL');
+assert(oauth.includes('VUBA_META_APP_ID')&&oauth.includes('VUBA_LINKEDIN_CLIENT_ID'),'Vuba provider secrets');
+assert(oauth.includes('checkedAdmin(req,db)'),'Only authorised Studio admin may connect');
+assert(oauth.includes('_vuba_social_tokens'),'Separate encrypted storage');
+assert(oauth.includes('AES-GCM'),'Encrypted access tokens');
+assert(oauth.includes('state_hash'),'OAuth state validation');
+assert(oauth.includes('providers:Object.fromEntries'),'Status response for simple Vuba UI');
+assert(client.includes('vuba-social-oauth')&&client.includes('setupReady'),'Client checks server-side setup');
+console.log('Vuba OAuth source checks passed');
