@@ -41,4 +41,10 @@ for(const name of ['premium.css','vuba-theme.css','theme-options.css','theme-con
 }
 assert.match(html,/dashboard-icons\.css/);
 assert.match(iconCss,/stroke-linecap:round/);
-console.log('Vuba static, branding and dashboard icon checks passed');
+const conn=fs.readFileSync(path.join(root,'social-accounts.js'),'utf8');
+assert.match(html,/connections-simple\\.css/);
+for(const p of ['Facebook','Instagram','LinkedIn'])assert.match(conn,new RegExp('name:"'+p+'"'));
+assert.ok(!/FOXON|foxon/i.test(conn));
+assert.match(conn,/vuba-social-oauth/);
+assert.match(conn,/Not connected/);
+console.log('Vuba static, branding, dashboard and simple connections checks passed');

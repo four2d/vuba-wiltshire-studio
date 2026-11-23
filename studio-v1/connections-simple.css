@@ -1,0 +1,40 @@
+/* Vuba Wiltshire Connections — clean, scoped and theme-aware */
+body.studio-shell-ready .vuba-connections-page .vc-layout{font:400 14px/1.55 "Poppins",Arial,sans-serif;color:var(--read-text,#e8eef2);max-width:1200px;margin:0 auto 40px}
+body.studio-shell-ready .vc-intro{padding:22px 2px 26px}
+body.studio-shell-ready .vc-kicker{font-size:11px;letter-spacing:.12em;font-weight:800;color:var(--read-accent,#d991a5)}
+body.studio-shell-ready .vc-intro h2{font-size:clamp(25px,3vw,36px);line-height:1.15;margin:7px 0!important;color:var(--read-text,#fff)!important}
+body.studio-shell-ready .vc-intro p{margin:0 0 15px;color:var(--read-muted,#d0d2d5)}
+body.studio-shell-ready .vc-summary{display:inline-flex;align-items:center;gap:9px;padding:8px 13px;border:1px solid var(--read-stroke,#45616f);background:var(--read-panel,#1b303a);border-radius:30px;font-size:12px;color:var(--read-text,#fff)}
+body.studio-shell-ready .vc-summary-dot{width:9px;height:9px;border-radius:50%;background:#035b80}
+body.studio-shell-ready .vc-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+body.studio-shell-ready .vc-card{display:flex;flex-direction:column;min-width:0;min-height:305px;padding:24px;border-radius:16px;border:1px solid var(--read-stroke,#41616e);background:var(--read-panel,#1b303a);box-shadow:none}
+body.studio-shell-ready .vc-card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
+body.studio-shell-ready .vc-provider-mark{display:grid;place-items:center;width:47px;height:47px;border-radius:13px;font:900 27px/1 Arial,sans-serif;color:#fff;flex:0 0 47px}
+body.studio-shell-ready .vc-facebook{background:#1877f2}
+body.studio-shell-ready .vc-instagram{background:#af3b88}
+body.studio-shell-ready .vc-linkedin{background:#0a66c2;font-size:20px}
+body.studio-shell-ready .vc-status{font-size:11px;font-weight:700;border-radius:20px;padding:6px 10px;background:var(--read-soft,#27404c);border:1px solid var(--read-stroke,#41616e);color:var(--read-muted,#d0d2d5);white-space:nowrap}
+body.studio-shell-ready .vc-status.vc-connected{color:#d5f6df;background:#17432e;border-color:#397950}
+body.studio-shell-ready .vc-card h3{font:800 22px/1.2 "Poppins",Arial,sans-serif;margin:0 0 3px!important;color:var(--read-text,#fff)!important}
+body.studio-shell-ready .vc-card p{margin:0 0 10px;color:var(--read-muted,#d0d2d5);font-size:12px;line-height:1.55}
+body.studio-shell-ready .vc-card .vc-account-kind{font-weight:700;color:var(--read-text,#fff)}
+body.studio-shell-ready .vc-card .vc-account-name{padding:8px;border-radius:6px;background:var(--read-soft,#27404c)}
+body.studio-shell-ready .vc-card .vc-connect-button{margin-top:auto;width:100%;min-height:44px;border:0;border-radius:9px;background:#821732!important;color:#fff!important;font:800 13px/1.2 "Poppins",Arial,sans-serif;cursor:pointer}
+body.studio-shell-ready .vc-card .vc-connect-button:hover{background:#a12c4a!important}
+body.studio-shell-ready .vc-card .vc-connect-button:focus-visible{outline:3px solid #d991a5;outline-offset:3px}
+body.studio-shell-ready .vc-message{min-height:1.5em;margin:13px 1px 0;color:var(--read-text,#fff)}
+body.studio-shell-ready .vc-footnote{margin:9px 1px 28px;color:var(--read-muted,#d0d2d5);font-size:12px}
+body.studio-shell-ready .vc-owner{padding:15px 18px;background:var(--read-panel,#1b303a);border:1px solid var(--read-stroke,#41616e);border-radius:12px}
+body.studio-shell-ready .vc-owner summary{cursor:pointer;font-size:13px;font-weight:700}
+body.studio-shell-ready .vc-owner p{font-size:12px;max-width:760px;color:var(--read-muted,#d0d2d5)}
+body.studio-shell-ready .vc-owner-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:15px 0}
+body.studio-shell-ready .vc-owner-grid>div{padding:12px;border:1px solid var(--read-stroke,#41616e);border-radius:9px;display:grid;gap:5px;font-size:12px}
+body.studio-shell-ready .vc-owner-grid span{color:var(--read-muted,#d0d2d5)}
+body.studio-shell-ready .vc-owner button{border-radius:8px;padding:8px 13px;background:#035b80!important;color:#fff!important}
+.vuba-connect-dialog{border:1px solid #45616f;background:#172a34;color:#e8eef2;border-radius:15px;padding:24px;max-width:min(510px,calc(100vw - 30px));font:400 14px/1.6 "Poppins",Arial,sans-serif}
+.vuba-connect-dialog::backdrop{background:#060f16aa}
+.vuba-connect-dialog .vc-dialog-head{display:flex;gap:20px;align-items:center;justify-content:space-between}
+.vuba-connect-dialog h2{font:800 22px/1.2 "Poppins",Arial,sans-serif;margin:0;color:#fff}
+.vuba-connect-dialog button[data-close]{border:0;border-radius:8px;font-size:23px;background:#294553;color:#fff;width:39px;height:39px;cursor:pointer}
+.vuba-connect-dialog p{margin:12px 0 0}
+@media(max-width:920px){body.studio-shell-ready .vc-cards{grid-template-columns:1fr}body.studio-shell-ready .vc-card{min-height:220px}body.studio-shell-ready .vc-owner-grid{grid-template-columns:1fr}}
