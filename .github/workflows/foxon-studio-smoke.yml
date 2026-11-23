@@ -1,9 +1,5 @@
 name: FOXON Studio smoke checks
 on:
-  push:
-    paths:
-      - "foxon-studio/**"
-      - ".github/workflows/foxon-studio-smoke.yml"
   pull_request:
     paths:
       - "foxon-studio/**"
