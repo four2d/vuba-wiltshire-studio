@@ -1,5 +1,5 @@
 /* Vuba Wiltshire Connections: beginner-first, Vuba-only social accounts.
-   No imported FOXON credentials, fake connected states, or client secrets. */
+   No imported another brand credentials, fake connected states, or client secrets. */
 import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
 const config=window.VUBA_CONFIG||{};
 if(config.supabaseUrl&&config.supabaseAnonKey){
