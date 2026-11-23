@@ -258,7 +258,7 @@ body.studio-shell-ready .vuba-preview-kicker{
 }
 body.studio-shell-ready .vuba-preview-title{
  color:#fff;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;
- font:800 clamp(17px,1.7vw,24px)/1.04 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ font:800 clamp(17px,1.7vw,24px)/1.04 'Poppins',Arial,sans-serif;
  text-transform:uppercase;letter-spacing:.01em;max-height:78px;max-width:95%;
  text-shadow:1px 2px 0 #000
 }
@@ -405,34 +405,32 @@ body.studio-shell-ready .vuba-feed-state{
 }
 
 
-/* VUBA BRAIN — official brand pass.
-   Black #0B0B0B, Yellow #F2C500; no Vuba blue/red, circles or ghosted text.
-   Scoped to VUBA-only theme, leaving the shared logic unchanged. */
+/* Vuba Brain — use the same red, blue and Poppins brand as the rest of Studio. */
 body.studio-shell-ready #vubaBrain{
  background:transparent!important;border:0!important;box-shadow:none!important;
  padding:0!important;color:#f5f5f5
 }
 #vubaBrain .brain-command{
  position:relative;min-height:285px;overflow:hidden;align-items:center;
- border:1px solid #574912!important;border-radius:12px!important;
- background:radial-gradient(ellipse at 80% 35%,#292308 0%,#141414 49%,#111a1f 90%)!important;
+ border:1px solid #35647a!important;border-radius:12px!important;
+ background:radial-gradient(ellipse at 80% 35%,#16445a 0%,#141414 49%,#111a1f 90%)!important;
  color:#fff!important;isolation:isolate
 }
 #vubaBrain .brain-command::before{
  content:"";display:block;position:absolute;top:0;left:0;right:0;height:13px;
- background:repeating-linear-gradient(-45deg,#821732 0 22px,#111a1f 22px 44px);z-index:3
+ background:linear-gradient(110deg,#821732 0 45%,#035b80 45% 100%);z-index:3
 }
 #vubaBrain .brain-command-copy{max-width:610px;position:relative;z-index:2}
 #vubaBrain .brain-overline{color:#821732!important;letter-spacing:.15em!important;font-weight:850}
 #vubaBrain .brain-overline-dot{background:#821732!important;box-shadow:0 0 0 3px #82173222}
 #vubaBrain .brain-command h2{
- font:800 clamp(32px,4vw,55px)/1.02 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ font:800 clamp(32px,4vw,55px)/1.02 'Poppins',Arial,sans-serif!important;
  letter-spacing:.01em!important;text-transform:uppercase!important;color:#fff!important
 }
 #vubaBrain .brain-command h2 em{font-style:normal!important;color:#821732!important}
 #vubaBrain .brain-command p{font-size:13px!important;color:#e2e2e2!important;line-height:1.65!important}
 #vubaBrain .brain-command-actions button{min-height:44px;border-radius:12px!important;font-weight:850!important;font-size:12px!important}
-#vubaBrain .brain-action-primary{background:#821732!important;color:#111a1f!important;border:2px solid #821732!important}
+#vubaBrain .brain-action-primary{background:#821732!important;color:#fff!important;border:2px solid #821732!important}
 #vubaBrain .brain-action-outline{background:#181818!important;color:#821732!important;border:2px solid #821732!important}
 #vubaBrain .vuba-brain-brand{
  right:22px!important;top:50%!important;transform:translateY(-50%)!important;
@@ -443,11 +441,11 @@ body.studio-shell-ready #vubaBrain{
 }
 #vubaBrain .vuba-brain-hazard{
  position:absolute;top:0;left:0;right:0;height:14px;
- background:repeating-linear-gradient(-45deg,#821732 0 16px,#111a1f 16px 32px)
+ background:linear-gradient(110deg,#821732 0 45%,#035b80 45% 100%)
 }
 #vubaBrain .vuba-brain-brand img{display:block;max-width:100%;width:210px;height:auto;object-fit:contain}
 #vubaBrain .vuba-brain-brand strong{
- font:800 20px/1.1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ font:800 20px/1.1 'Poppins',Arial,sans-serif;
  color:#821732;text-align:center;letter-spacing:.03em
 }
 #vubaBrain .vuba-brain-brand-line{
@@ -459,7 +457,7 @@ body.studio-shell-ready #vubaBrain{
 }
 #vubaBrain .brain-overview-bar>div{border-right:1px solid #484848!important}
 #vubaBrain .brain-overview-bar>div strong{
- font:800 30px/1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ font:800 30px/1 'Poppins',Arial,sans-serif!important;
  color:#821732!important
 }
 #vubaBrain .brain-overview-bar>div span{color:#e4e4e4!important;font-weight:750!important;font-size:11px!important}
@@ -469,12 +467,11 @@ body.studio-shell-ready #vubaBrain{
  color:#e1e1e1!important;background:#202020!important;border:1px solid #484848!important;
  border-radius:9px 9px 0 0!important;padding:12px 21px!important;min-height:44px
 }
-#vubaBrain .brain-workspace-nav button.active{
- background:#821732!important;color:#111a1f!important;border-color:#821732!important;
+#vubaBrain .brain-workspace-nav button.active{background:#035b80!important;color:#fff!important;border-color:#821732!important;
  font-weight:900!important
 }
 #vubaBrain .brain-knowledge-header h3,#vubaBrain .brain-doc-heading h3{
- color:#fff!important;font:800 25px/1.08 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ color:#fff!important;font:800 25px/1.08 'Poppins',Arial,sans-serif!important;
  letter-spacing:.012em!important;text-transform:uppercase
 }
 #vubaBrain .brain-knowledge-header p,#vubaBrain .brain-doc-heading p{color:#d4d4d4!important;font-size:12px!important}
@@ -505,7 +502,7 @@ body.studio-shell-ready #vubaBrain{
 #vubaBrain .brain-card:hover{border-color:#821732!important;box-shadow:none!important}
 #vubaBrain .brain-card-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 #vubaBrain .brain-tag{
- background:#302908!important;color:#821732!important;border:1px solid #66540b!important;
+ background:#173b4d!important;color:#821732!important;border:1px solid #35647a!important;
  border-radius:5px!important;font-size:10px!important;font-weight:850!important
 }
 #vubaBrain .brain-status{
@@ -516,7 +513,7 @@ body.studio-shell-ready #vubaBrain{
 #vubaBrain .brain-status.brain-needs_review{border-color:#d6a934!important;color:#ffe49e!important}
 #vubaBrain .brain-status.brain-superseded{border-color:#888!important;color:#ddd!important}
 #vubaBrain .brain-card h3{
- color:#fff!important;font:800 20px/1.14 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ color:#fff!important;font:800 20px/1.14 'Poppins',Arial,sans-serif!important;
  letter-spacing:.01em!important;text-transform:uppercase;margin:0
 }
 #vubaBrain .brain-card p{color:#dedede!important;line-height:1.55!important;font-size:12px!important}
@@ -536,7 +533,7 @@ body.studio-shell-ready #vubaBrain{
 }
 #vubaBrain .brain-doc-heading h3{color:#fff!important}
 #vubaBrain .brain-doc-total{
- background:#302908!important;color:#821732!important;border:1px solid #65520a!important;
+ background:#173b4d!important;color:#821732!important;border:1px solid #65520a!important;
  border-radius:7px!important;font-size:11px!important
 }
 #vubaBrain .brain-dropzone{
@@ -551,7 +548,7 @@ body.studio-shell-ready #vubaBrain{
  background:#821732!important;color:#111a1f!important;font-weight:900!important
 }
 #vubaBrain .brain-dropzone strong{
- color:#fff!important;font:800 24px/1.1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ color:#fff!important;font:800 24px/1.1 'Poppins',Arial,sans-serif!important;
  text-transform:uppercase!important
 }
 #vubaBrain .brain-dropzone>span,#vubaBrain .brain-dropzone small{color:#d7d7d7!important}
@@ -628,7 +625,7 @@ body.studio-shell-ready #vubaBrain{
 }
 #vubaBrain .brain-command-art:not(.vuba-brain-brand)::before{
  content:"";position:absolute;top:0;left:0;right:0;height:13px;
- background:repeating-linear-gradient(-45deg,#821732 0 16px,#111a1f 16px 32px)
+ background:linear-gradient(110deg,#821732 0 45%,#035b80 45% 100%)
 }
 #vubaBrain .brain-command-art:not(.vuba-brain-brand) > *{display:none!important}
 @media(max-width:850px){#vubaBrain .brain-command-art:not(.vuba-brain-brand){display:none!important}}
@@ -674,7 +671,7 @@ body.studio-shell-ready #vubaBrain{
 #vubaBrain .vuba-paper-back .vuba-paper-rule{background:#adb7bc!important}
 #vubaBrain .vuba-paper-rule.short{width:57%!important}
 #vubaBrain .vuba-paper-footer{
- color:#141414;font:800 10px/1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ color:#141414;font:800 10px/1 'Poppins',Arial,sans-serif;
  letter-spacing:.08em;margin-top:auto;
 }
 @media(max-width:1100px){
@@ -797,7 +794,7 @@ body.studio-shell-ready .vuba-art-generator{
  color:#f5f5f5!important;border:1px solid #555;border-left:4px solid #821732;border-radius:10px;
 }
 body.studio-shell-ready .vuba-art-generator h3{
- margin:0;color:#fff!important;font:800 20px/1.12 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ margin:0;color:#fff!important;font:800 20px/1.12 'Poppins',Arial,sans-serif;
  text-transform:uppercase;
 }
 body.studio-shell-ready .vuba-art-generator p,
