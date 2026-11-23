@@ -116,7 +116,7 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const details=$("vubaAdminDetails"),help=$("vubaAdminHelp");if(!details||!help)return;
   details.open=true;
   const url=platform==="LinkedIn"?"https://www.linkedin.com/developers/apps":"https://developers.facebook.com/apps/";
-  help.innerHTML='<h4>'+escapeHtml(platform)+' · Administrator setup</h4><p>VUBA configures this provider once for the whole platform. Customers will sign in to their own social accounts; they will not create developer apps.</p><p><a href="'+url+'" target="_blank" rel="noopener noreferrer">Open provider setup</a></p><p><a href="https://github.com/four2d/vuba-wiltshire-studio/blob/main/vuba-studio/DIRECT-SOCIAL-CONNECTIONS.md" target="_blank" rel="noopener noreferrer">Step-by-step instructions</a></p>';
+  help.innerHTML='<h4>'+escapeHtml(platform)+' · Administrator setup</h4><p>VUBA configures this provider once for the whole platform. Customers will sign in to their own social accounts; they will not create developer apps.</p><p><a href="'+url+'" target="_blank" rel="noopener noreferrer">Open provider setup</a></p><p><a href="https://github.com/four2d/vuba-wiltshire-studio" target="_blank" rel="noopener noreferrer">Step-by-step instructions</a></p>';
   details.scrollIntoView({block:"nearest"});
  }
  function requestAccess(platform){

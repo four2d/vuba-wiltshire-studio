@@ -1,0 +1,826 @@
+/* VUBA-only theme. Based on the supplied 22 Oct 2026 VUBA Brand Guidelines
+   and VUBA Books. Loaded AFTER the shared Studio styles. No Vuba assets touched. */
+:root{
+ --studio-navy:#0b0b0b;--studio-navy-deep:#050505;--studio-teal:#f2c500;--studio-red:#f2c500;
+ --studio-ink:#f5f5f5;--studio-muted:#b0b0b0;--studio-page:#0b0b0b;--studio-card:#171717;
+ --studio-stroke:#353535;--studio-radius:12px;--studio-shadow:0 6px 0 #0005;
+ --vuba-black:#0b0b0b;--vuba-yellow:#f2c500;--vuba-panel:#151515;--vuba-stroke:#333;
+ font-family:'Helvetica Neue',Arial,sans-serif;color-scheme:dark;
+}
+body{background:#0b0b0b;color:#f5f5f5;font-family:'Helvetica Neue',Arial,sans-serif}
+/* Keep the signed-out page background behind the whole viewport. */
+body:not(.studio-shell-ready){min-height:100vh}
+h1,h2,h3,.studio-page-heading h1,.hero-copy h2,.studio-section-heading h2,.studio-stat .stat-number,.studio-builder-card h2{
+ font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ font-weight:700;letter-spacing:.012em!important;text-transform:uppercase;line-height:1.05
+}
+p,.studio-page-heading p,.studio-stat .stat-foot{color:#c4c4c4}
+button{min-height:44px;border-radius:12px;font-weight:750;letter-spacing:.01em;background:#f2c500;color:#0b0b0b}
+button:hover:not(:disabled){filter:brightness(1.1)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #f2c500!important;outline-offset:3px}
+input,select,textarea{border-radius:10px;background:#101010;color:#fff;border:1px solid #555;min-height:44px}
+input::placeholder,textarea::placeholder{color:#aaa}
+input:focus,textarea:focus,select:focus{border-color:#f2c500}
+label{color:#e4e4e4}
+.panel, .workspace-card,.suggestion-card,.studio-builder-card,.studio-stat,.brain-card,.media-card,.campaign-card{
+ background:#171717!important;border:1px solid #343434!important;border-radius:12px!important;color:#f5f5f5;box-shadow:none!important
+}
+.studio-navigation{
+ background:#090909!important;color:#fff!important;border-right:1px solid #2b2b2b!important;
+ box-shadow:none!important;padding-top:19px!important
+}
+.studio-navigation:before{
+ content:"";height:8px;flex:0 0 8px;margin:0 0 18px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 22px,#0b0b0b 22px 44px)
+}
+.brand-lockup{padding:7px 7px 26px!important;display:block!important}
+.brand-lockup .brand-monogram,.brand-lockup>div:not(.brand-monogram){display:none!important}
+.brand-lockup:before{
+ content:"";display:block;width:216px;height:68px;max-width:100%;
+ background:url('./vuba-logo-horizontal-dark.svg') no-repeat left center/contain;
+}
+.studio-workspace-label{border-color:#4b410b!important;background:#19170a;color:#f2c500!important;border-radius:8px!important}
+.workspace-live-dot{background:#f2c500!important;box-shadow:0 0 0 3px #f2c50022!important}
+.studio-nav-heading{color:#e6b900!important}
+.studio-nav-links a{color:#c4c4c4!important;border-radius:10px!important;font-size:13px}
+.studio-nav-links a:hover{background:#242424!important;color:#fff!important}
+.studio-nav-links a.is-active{background:#f2c500!important;color:#080808!important;font-weight:800}
+.studio-nav-links a.is-active .nav-glyph,.studio-nav-links a.is-active .nav-active-mark{color:#080808!important}
+.is-active .nav-active-mark{background:#080808!important}
+.sidebar-bottom{border-color:#343434!important}
+.sidebar-brand-chip>span{
+ background:#f2c500!important;color:#0b0b0b!important;
+ font-family:Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif
+}
+.sidebar-brand-chip small{color:#aaa!important}
+.sidebar-signout{background:transparent!important;color:#d2d2d2!important}
+.studio-topbar{border-color:#303030!important}
+#studioBreadcrumb{color:#d0d0d0!important}
+.studio-live-pill{background:#24200a!important;color:#f2c500!important;border-color:#584910!important}
+.studio-live-pill i{background:#f2c500!important}
+.topbar-create{background:#f2c500!important;color:#0b0b0b!important;border:1px solid #f2c500!important}
+.topbar-create span{color:#0b0b0b!important}
+.studio-kicker,.section-eyebrow,.brain-eyebrow{color:#f2c500!important;letter-spacing:.14em}
+.studio-page-heading h1{color:#fff!important;font-size:clamp(30px,3.7vw,51px)}
+.heading-date{color:#bbb}
+.studio-hero{
+ background:radial-gradient(ellipse at 86% 32%,#3a3000 0%,#17150c 36%,#0b0b0b 74%)!important;
+ border:2px solid #45400e;border-radius:12px!important;min-height:292px;
+}
+.studio-hero:before{
+ content:"";height:12px;position:absolute;top:0;left:0;right:0;z-index:4;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 22px,#0b0b0b 22px 44px)
+}
+.hero-grid-overlay{opacity:.06!important}
+.hero-eyebrow{color:#f2c500!important}
+.hero-eyebrow>span{background:#f2c500!important}
+.hero-copy h2{color:#fff!important;font-size:clamp(32px,3.6vw,58px)!important;max-width:650px;line-height:1.02!important}
+.hero-copy h2 em{color:#f2c500!important}
+.hero-copy p{color:#ddd!important;max-width:500px;font-size:13px!important}
+.hero-actions button{background:#f2c500!important;color:#0b0b0b!important;font-size:13px;border-radius:12px!important}
+.hero-actions .hero-secondary{background:transparent!important;color:#f2c500!important}
+.hero-graphic{opacity:.16;filter:grayscale(1) sepia(1);transform:rotate(-7deg) scale(.85)}
+.graphic-card-front{border:3px solid #f2c500}
+.graphic-mini-dot{background:#f2c500}
+.studio-stat{border-top:4px solid #f2c500!important}
+.studio-stat:hover{border-color:#f2c500!important}
+.stat-top small,.stat-foot{color:#bbb!important}
+.stat-number,.studio-stat strong,.metrics strong{color:#f2c500!important}
+.stat-mark,.stat-mark.amber,.stat-mark.rose,.stat-mark.blue{background:#2d270d!important;color:#f2c500!important}
+.studio-text-btn,.studio-tip-card button{color:#f2c500!important}
+.studio-tip-card,.studio-automation-panel{background:#151515!important;border:1px solid #383838!important;color:#fff!important}
+.studio-section-heading h2,.studio-builder-card h2,.studio-home-main h2{color:#fff!important}
+.studio-section-heading p,.studio-home-main p,.studio-builder-card p,.studio-automation-panel p{color:#bbb!important}
+.studio-builder-card.featured{border-top:5px solid #f2c500!important}
+.studio-builder-icon,.automation-icon{background:#f2c500!important;color:#0b0b0b!important}
+.studio-builder-icon.secondary{background:#282828!important;color:#f2c500!important}
+.studio-builder-card button,#fillCalendar{background:#f2c500!important;color:#0b0b0b!important}
+.builder-visual,.builder-visual.simple{background:#0b0b0b!important;border-color:#5c4d10!important}
+.builder-visual-chip,.builder-card-index{color:#f2c500!important}
+.builder-visual-photo,.builder-corner-accent{color:#f2c500!important}
+.progress-track{background:#414141!important}
+#planProgressBar{background:#f2c500!important}
+.studio-footnote{color:#bbb!important}
+#app>.top,.metrics>div,.day,.strategy-tabs button,.workspace-tabs button{background:#171717;color:#fff;border-color:#3b3b3b}
+.day{border:1px solid #3b3b3b!important}
+.day.today{border-color:#f2c500!important;box-shadow:inset 0 0 0 1px #f2c500}
+.daynum,.weekdays,.metrics span,.balanceRow{color:#ddd!important}
+.day button{background:#343434;color:white}
+.day button.review{background:#6c5318!important;color:#fff}
+.day button.approved{background:#246344!important;color:#fff}
+.day button.scheduled{background:#584b12!important;color:#fff}
+.day button.idea{background:#444!important;color:#fff}
+.filters select{background:#121212;color:#fff}
+.strategy-tabs button.active,.workspace-tabs button.active{background:#f2c500!important;color:#0b0b0b!important}
+.strategy-tabs button,.workspace-tabs button{border:1px solid #555!important;background:#252525!important;color:#fff!important}
+.workspace-tabs button.active{border-color:#f2c500!important}
+.workspace-card h3,.suggestion-card h3,.brain-card h3{color:#fff}
+.workspace-card p,.suggestion-card p,.brain-card p,.workspace-card small{color:#c9c9c9!important}
+.asset-thumb,.mock-image{background:#222!important;color:#c6c6c6}
+.social-mock{background:#fff!important;color:#141414!important}
+.social-mock .mock-copy p,.social-mock .mock-head small{color:#303030!important}
+.mock-avatar{background:#0b0b0b!important;color:#f2c500!important}
+#vubaBrain,.brain-card,.review-history{background:#151515!important;border-color:#383838!important;color:#eee!important}
+.brain-summary span,.brain-tag{background:#272727;color:#f2c500!important;border-color:#484848!important}
+dialog{background:#151515;color:#fff;border:1px solid #f2c500!important;border-radius:14px!important}
+dialog::backdrop{background:#000b}
+.dialogHead button,.secondary-btn,.editor-extras button,.preview-header button{background:#252525!important;color:#f2c500!important}
+.preview-section,.review-history p,.balanceRow,.upcomingItem{border-color:#353535!important}
+.preview-caption{background:#0e0e0e!important;border-color:#555!important;color:#fff}
+.preview-meta,#assetMessage,.suggestion-pill{color:#f2c500!important}
+.danger{background:#b82d2d!important;color:#fff!important}
+#logout{background:#f2c500!important;color:#0b0b0b!important}
+#auth,#setup{margin:7vh auto;background:#151515!important}
+#auth:before,#setup:before{
+ content:"";display:block;height:86px;width:230px;max-width:100%;margin:0 0 20px;
+ background:url('./vuba-logo-horizontal-dark.svg') left center/contain no-repeat
+}
+#auth h1,#setup h1{font-size:34px;color:white}
+#auth p,#setup p{color:#ddd}
+.studio-link-tools small{color:#c9c9c9}
+@media(max-width:900px){
+ body.studio-shell-ready #app{padding-left:24px!important;padding-right:24px!important}
+ .studio-navigation{width:min(300px,86vw)!important}
+ .studio-navigation:before{margin-top:0}
+}
+@media(max-width:600px){
+ .studio-hero{padding:32px 20px!important}
+ .hero-graphic{display:none!important}
+ .brand-lockup:before{width:195px}
+}
+@media(prefers-reduced-motion:reduce){button,.studio-page{transition:none!important;animation:none!important}}
+
+/* Accessible actual-logo element, rather than a recreated brand mark. */
+.brand-lockup:before{display:none!important}
+.brand-lockup img{display:block;width:216px;max-width:100%;height:auto}
+.brand-lockup .vuba-product-label{display:block;color:#f2c500;font-size:10px;font-weight:900;letter-spacing:.24em;margin-top:11px}
+
+
+/* VUBA contrast and creative preview corrections — 20 Nov 2026.
+   VUBA only: Vuba retains its own design system. */
+
+/* No dark-on-dark typography: the original shared premium styles have
+   explicit slate/blue text values, so override them on VUBA surfaces. */
+body.studio-shell-ready .studio-stat .stat-foot,
+body.studio-shell-ready .studio-stat .stat-top small,
+body.studio-shell-ready .editorial-post-meta,
+body.studio-shell-ready .editorial-status,
+body.studio-shell-ready .studio-page-heading p,
+body.studio-shell-ready .studio-section-heading p,
+body.studio-shell-ready .studio-automation-panel>p,
+body.studio-shell-ready .automation-disclaimer,
+body.studio-shell-ready .progress-label,
+body.studio-shell-ready .progress-label strong,
+body.studio-shell-ready .automation-progress small,
+body.studio-shell-ready .studio-tip-card p,
+body.studio-shell-ready .studio-builder-card p,
+body.studio-shell-ready .builder-note,
+body.studio-shell-ready .studio-footnote,
+body.studio-shell-ready .upcomingItem,
+body.studio-shell-ready .workspace-card small,
+body.studio-shell-ready .brain-card p,
+body.studio-shell-ready .studio-home-main p {color:#d6d6d6!important}
+body.studio-shell-ready .studio-stat .stat-foot{
+ font-family:'Helvetica Neue',Arial,sans-serif!important;
+ font-size:12px!important;font-weight:600;line-height:1.45;letter-spacing:0!important;
+ text-transform:none!important
+}
+body.studio-shell-ready .studio-stat .stat-top small{color:#f0f0f0!important}
+body.studio-shell-ready .studio-section-heading h2,
+body.studio-shell-ready .studio-automation-panel h2,
+body.studio-shell-ready .studio-tip-card strong,
+body.studio-shell-ready .studio-builder-card h2,
+body.studio-shell-ready .studio-home-main h2,
+body.studio-shell-ready .studio-page-heading h1{color:#fff!important}
+body.studio-shell-ready .studio-section-heading{border-color:#474747!important}
+body.studio-shell-ready .studio-tip-card button,
+body.studio-shell-ready .studio-text-btn{background:#f2c500!important;color:#0b0b0b!important;border:1px solid #f2c500!important;border-radius:10px!important;padding:10px 13px!important;font-weight:800!important}
+body.studio-shell-ready .studio-automation-panel .progress-label strong{color:#f2c500!important}
+body.studio-shell-ready .automation-disclaimer{border-color:#484848!important}
+body.studio-shell-ready .tip-spark{color:#f2c500!important}
+body.studio-shell-ready #vubaBrain,
+body.studio-shell-ready .panel,
+body.studio-shell-ready .studio-builder-card,
+body.studio-shell-ready .studio-home-main,
+body.studio-shell-ready .studio-automation-panel,
+body.studio-shell-ready .studio-tip-card{
+ background:#171717!important;color:#fff!important;border-color:#383838!important
+}
+body.studio-shell-ready #workspacePlus .panel,
+body.studio-shell-ready #strategyArea .panel,
+body.studio-shell-ready .workspace-card,
+body.studio-shell-ready .brain-card,
+body.studio-shell-ready .suggestion-card{
+ background:#171717!important;color:#fff!important;border-color:#3b3b3b!important
+}
+body.studio-shell-ready label{color:#f0f0f0!important}
+body.studio-shell-ready select,
+body.studio-shell-ready input,
+body.studio-shell-ready textarea{
+ background:#101010!important;color:#fff!important;border-color:#737373!important
+}
+body.studio-shell-ready .day{background:#171717!important}
+body.studio-shell-ready .daynum{color:#f6f6f6!important}
+body.studio-shell-ready .day button{color:#f4f4f4!important;background:#383838!important;border:1px solid #555!important}
+body.studio-shell-ready .day button.idea{background:#3d3d3d!important}
+body.studio-shell-ready .day button.draft{background:#343434!important}
+body.studio-shell-ready .day button.review{background:#785a1b!important}
+body.studio-shell-ready .day button.approved{background:#216146!important}
+body.studio-shell-ready .day button.scheduled{background:#5e4d17!important}
+body.studio-shell-ready .day button.changes_requested{background:#703e25!important}
+
+/* Editorial previews: an honest branded art direction, not fake screenshots
+   or the generic blue-grey photos from the Vuba skin. */
+body.studio-shell-ready .editorial-post-grid{gap:14px}
+body.studio-shell-ready .editorial-post-card{
+ background:#101010!important;color:#f7f7f7!important;
+ border:1px solid #474747!important;border-radius:10px!important;
+ box-shadow:none!important
+}
+body.studio-shell-ready .editorial-post-card:hover,
+body.studio-shell-ready .editorial-post-card:focus-visible{
+ border-color:#f2c500!important;box-shadow:0 0 0 2px #f2c50066!important
+}
+body.studio-shell-ready .editorial-post-art,
+body.studio-shell-ready .editorial-post-art.art-1,
+body.studio-shell-ready .editorial-post-art.art-2,
+body.studio-shell-ready .editorial-post-art.art-3{
+ position:relative;min-height:168px;height:168px;
+ background:radial-gradient(ellipse at 85% 10%,#30280d 0%,#101010 55%,#060606 100%)!important;
+ border-bottom:3px solid #f2c500
+}
+body.studio-shell-ready .editorial-post-art:before{
+ content:"";position:absolute;inset:0 auto 0 0;width:9px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 8px,#0b0b0b 8px 16px);
+ z-index:1
+}
+body.studio-shell-ready .vuba-preview-design{
+ display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+ gap:9px;padding:22px 20px 35px 28px;height:100%;width:100%;position:relative;
+}
+body.studio-shell-ready .vuba-preview-kicker{
+ display:inline-block;background:#f2c500;color:#0b0b0b;
+ font:800 8px/1.25 'Helvetica Neue',Arial,sans-serif;
+ letter-spacing:.13em;padding:5px 7px;text-transform:uppercase
+}
+body.studio-shell-ready .vuba-preview-title{
+ color:#fff;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;
+ font:800 clamp(17px,1.7vw,24px)/1.04 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ text-transform:uppercase;letter-spacing:.01em;max-height:78px;max-width:95%;
+ text-shadow:1px 2px 0 #000
+}
+body.studio-shell-ready .vuba-preview-stripe{
+ display:block;height:5px;width:72px;background:#f2c500;margin-top:1px
+}
+body.studio-shell-ready .vuba-preview-mark{
+ font:800 8px/1 'Helvetica Neue',Arial,sans-serif;
+ letter-spacing:.09em;color:#d7d7d7;text-transform:uppercase;
+ max-width:95%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap
+}
+body.studio-shell-ready .editorial-channel{
+ background:#f2c500!important;color:#0b0b0b!important;
+ border-radius:7px!important;z-index:2
+}
+body.studio-shell-ready .editorial-image-needed{
+ background:#272727!important;color:#f5f5f5!important;
+ border:1px solid #777!important;font-size:8px!important;letter-spacing:.04em!important;
+ left:17px!important;bottom:7px!important;z-index:2
+}
+body.studio-shell-ready .editorial-post-details{
+ background:#171717!important;min-height:126px!important
+}
+body.studio-shell-ready .editorial-post-details>strong{
+ color:#fff!important;
+ font:800 13px/1.35 'Helvetica Neue',Arial,sans-serif!important;
+ letter-spacing:0!important
+}
+body.studio-shell-ready .editorial-post-meta{color:#dbdbdb!important;font-weight:700!important}
+body.studio-shell-ready .editorial-status{color:#dcdcdc!important}
+body.studio-shell-ready .editorial-status.status-approved{color:#b6edcb!important}
+body.studio-shell-ready .editorial-status.status-review{color:#ffde8a!important}
+body.studio-shell-ready .editorial-post-art img{object-fit:cover}
+body.studio-shell-ready .social-mock,
+body.studio-shell-ready .social-mock .mock-copy,
+body.studio-shell-ready .social-mock .mock-head{
+ background:#fff!important;color:#0b0b0b!important
+}
+body.studio-shell-ready .social-mock .mock-copy p{color:#222!important}
+@media(max-width:900px){
+ body.studio-shell-ready .editorial-post-art{height:155px}
+ body.studio-shell-ready .vuba-preview-title{font-size:19px}
+}
+
+
+/* VUBA-only feed preview cards — show what will be posted, not invented graphics. */
+body.studio-shell-ready .vuba-feed-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px
+}
+body.studio-shell-ready .vuba-feed-card{
+ display:flex;flex-direction:column;align-items:stretch;gap:0;
+ min-width:0;min-height:380px;padding:0;text-align:left;
+ background:#fff!important;color:#171717!important;border:1px solid #555!important;
+ border-radius:12px!important;overflow:hidden;box-shadow:none;
+ font:400 12px/1.45 'Helvetica Neue',Arial,sans-serif!important;letter-spacing:normal!important
+}
+body.studio-shell-ready .vuba-feed-card:hover,
+body.studio-shell-ready .vuba-feed-card:focus-visible{
+ border:2px solid #f2c500!important;filter:none!important
+}
+body.studio-shell-ready .vuba-feed-header{
+ display:flex;align-items:center;gap:9px;padding:10px 11px;min-height:58px;
+ background:#fff;color:#121212;border-bottom:1px solid #ebebeb
+}
+body.studio-shell-ready .vuba-feed-header>img{
+ width:51px;height:37px;max-width:51px;object-fit:contain;
+ background:#0b0b0b;padding:5px;border-radius:5px
+}
+body.studio-shell-ready .vuba-feed-profile{display:grid;gap:2px;min-width:0;flex:1}
+body.studio-shell-ready .vuba-feed-profile strong{font-weight:800;font-size:11px;white-space:nowrap;color:#171717}
+body.studio-shell-ready .vuba-feed-profile small{color:#666;font-size:10px;white-space:nowrap}
+body.studio-shell-ready .vuba-feed-channel{
+ background:#eaeaea;border-radius:4px;min-width:23px;height:23px;display:grid;
+ place-items:center;font-size:12px;font-weight:900;color:#333
+}
+body.studio-shell-ready .vuba-feed-body{display:flex;flex-direction:column;flex:1;min-width:0}
+body.studio-shell-ready .vuba-feed-media{display:block;min-width:0}
+body.studio-shell-ready .vuba-feed-image{display:block;width:100%;overflow:hidden;background:#0b0b0b}
+body.studio-shell-ready .vuba-feed-image img{
+ display:block;width:100%;height:100%;object-fit:contain;background:#0b0b0b
+}
+body.studio-shell-ready .vuba-feed-missing{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:7px;min-height:112px;padding:18px 12px;
+ color:#f2c500!important;text-align:center;background:#0b0b0b;
+ border-top:4px solid #f2c500;border-bottom:4px solid #f2c500;
+ font:800 12px/1.3 'Helvetica Neue',Arial,sans-serif;
+}
+body.studio-shell-ready .vuba-feed-missing small{font:500 10px/1.5 'Helvetica Neue',Arial,sans-serif;color:#f4f4f4!important}
+body.studio-shell-ready .vuba-feed-card.platform-instagram .vuba-feed-image{aspect-ratio:1}
+body.studio-shell-ready .vuba-feed-card.platform-instagram .vuba-feed-missing{min-height:160px}
+body.studio-shell-ready .vuba-feed-card.platform-facebook .vuba-feed-image,
+body.studio-shell-ready .vuba-feed-card.platform-linkedin .vuba-feed-image{aspect-ratio:1.91}
+body.studio-shell-ready .vuba-feed-caption{
+ display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:7;
+ overflow:hidden;white-space:pre-line;padding:11px 12px;margin:0;
+ color:#181818!important;background:#fff!important;
+ font:500 11px/1.5 'Helvetica Neue',Arial,sans-serif!important;
+ text-transform:none!important;letter-spacing:normal!important;overflow-wrap:anywhere
+}
+body.studio-shell-ready .vuba-feed-card.platform-instagram .vuba-feed-caption{-webkit-line-clamp:4}
+body.studio-shell-ready .vuba-feed-card .vuba-feed-caption.is-empty{color:#8b3434!important}
+body.studio-shell-ready .vuba-feed-actions{
+ display:block;color:#333!important;background:#fff!important;
+ border-top:1px solid #e9e9e9;padding:7px 12px 4px;font-size:17px
+}
+body.studio-shell-ready .vuba-feed-footer{
+ display:flex;justify-content:space-between;align-items:flex-end;gap:8px;
+ margin-top:auto;padding:9px 12px 12px;background:#f4f4f4;color:#242424;border-top:1px solid #ddd
+}
+body.studio-shell-ready .vuba-feed-footer strong{
+ color:#202020!important;font:800 10px/1.35 'Helvetica Neue',Arial,sans-serif!important;
+ letter-spacing:0!important;text-transform:none!important;flex:1;overflow:hidden;
+ display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical
+}
+body.studio-shell-ready .vuba-feed-state{
+ background:#252525;color:#fff;padding:3px 5px;border-radius:4px;
+ text-transform:uppercase;font:800 9px/1.4 'Helvetica Neue',Arial,sans-serif!important;
+ white-space:nowrap
+}
+#platformPreview .mock-avatar{
+ display:grid;place-items:center;width:46px;height:46px;border-radius:8px!important;
+ background:#0b0b0b!important;padding:4px;overflow:hidden
+}
+#platformPreview .mock-avatar img{display:block;width:100%;height:100%;object-fit:contain}
+#platformPreview .mock-copy p{
+ white-space:pre-wrap!important;color:#171717!important;
+ font:500 14px/1.5 'Helvetica Neue',Arial,sans-serif!important
+}
+#platformPreview .mock-placeholder{
+ background:#0b0b0b;color:#f2c500!important;
+ border-top:5px solid #f2c500;
+ text-align:center;padding:35px 20px;font-weight:800;letter-spacing:.02em
+}
+#platformPreview .mock-placeholder small{display:block;color:#fff!important;font-weight:500;padding-top:10px}
+#platformPreview .mock-image:has(.mock-placeholder){aspect-ratio:1.6;background:#0b0b0b!important}
+#platformPreview .social-mock.platform-instagram .mock-image:has(.mock-placeholder){aspect-ratio:1}
+@media(max-width:1200px){
+ body.studio-shell-ready .vuba-feed-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ body.studio-shell-ready .vuba-feed-grid{grid-template-columns:minmax(0,1fr)}
+ body.studio-shell-ready .vuba-feed-card{min-height:340px}
+}
+
+
+/* VUBA BRAIN — official brand pass.
+   Black #0B0B0B, Yellow #F2C500; no Vuba blue/red, circles or ghosted text.
+   Scoped to VUBA-only theme, leaving the shared logic unchanged. */
+body.studio-shell-ready #vubaBrain{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ padding:0!important;color:#f5f5f5
+}
+#vubaBrain .brain-command{
+ position:relative;min-height:285px;overflow:hidden;align-items:center;
+ border:1px solid #574912!important;border-radius:12px!important;
+ background:radial-gradient(ellipse at 80% 35%,#292308 0%,#141414 49%,#0b0b0b 90%)!important;
+ color:#fff!important;isolation:isolate
+}
+#vubaBrain .brain-command::before{
+ content:"";display:block;position:absolute;top:0;left:0;right:0;height:13px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 22px,#0b0b0b 22px 44px);z-index:3
+}
+#vubaBrain .brain-command-copy{max-width:610px;position:relative;z-index:2}
+#vubaBrain .brain-overline{color:#f2c500!important;letter-spacing:.15em!important;font-weight:850}
+#vubaBrain .brain-overline-dot{background:#f2c500!important;box-shadow:0 0 0 3px #f2c50022}
+#vubaBrain .brain-command h2{
+ font:800 clamp(32px,4vw,55px)/1.02 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ letter-spacing:.01em!important;text-transform:uppercase!important;color:#fff!important
+}
+#vubaBrain .brain-command h2 em{font-style:normal!important;color:#f2c500!important}
+#vubaBrain .brain-command p{font-size:13px!important;color:#e2e2e2!important;line-height:1.65!important}
+#vubaBrain .brain-command-actions button{min-height:44px;border-radius:12px!important;font-weight:850!important;font-size:12px!important}
+#vubaBrain .brain-action-primary{background:#f2c500!important;color:#0b0b0b!important;border:2px solid #f2c500!important}
+#vubaBrain .brain-action-outline{background:#181818!important;color:#f2c500!important;border:2px solid #f2c500!important}
+#vubaBrain .vuba-brain-brand{
+ right:22px!important;top:50%!important;transform:translateY(-50%)!important;
+ width:290px!important;height:225px!important;border:2px solid #f2c500;
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ gap:12px;padding:28px 24px 16px;background:#080808!important;border-radius:3px!important;
+ box-shadow:8px 8px 0 #f2c5001f;opacity:1!important
+}
+#vubaBrain .vuba-brain-hazard{
+ position:absolute;top:0;left:0;right:0;height:14px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 16px,#0b0b0b 16px 32px)
+}
+#vubaBrain .vuba-brain-brand img{display:block;max-width:100%;width:210px;height:auto;object-fit:contain}
+#vubaBrain .vuba-brain-brand strong{
+ font:800 20px/1.1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ color:#f2c500;text-align:center;letter-spacing:.03em
+}
+#vubaBrain .vuba-brain-brand-line{
+ color:#fff!important;font-size:10px!important;font-weight:850!important;letter-spacing:.14em!important
+}
+#vubaBrain .brain-overview-bar{
+ display:flex;flex-wrap:wrap;gap:0;background:#171717!important;border:1px solid #414141!important;
+ border-radius:12px!important;box-shadow:none!important
+}
+#vubaBrain .brain-overview-bar>div{border-right:1px solid #484848!important}
+#vubaBrain .brain-overview-bar>div strong{
+ font:800 30px/1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ color:#f2c500!important
+}
+#vubaBrain .brain-overview-bar>div span{color:#e4e4e4!important;font-weight:750!important;font-size:11px!important}
+#vubaBrain .brain-overview-bar>p{color:#d4d4d4!important;max-width:260px!important}
+#vubaBrain .brain-workspace-nav{border-color:#494949!important;margin-bottom:24px}
+#vubaBrain .brain-workspace-nav button{
+ color:#e1e1e1!important;background:#202020!important;border:1px solid #484848!important;
+ border-radius:9px 9px 0 0!important;padding:12px 21px!important;min-height:44px
+}
+#vubaBrain .brain-workspace-nav button.active{
+ background:#f2c500!important;color:#0b0b0b!important;border-color:#f2c500!important;
+ font-weight:900!important
+}
+#vubaBrain .brain-knowledge-header h3,#vubaBrain .brain-doc-heading h3{
+ color:#fff!important;font:800 25px/1.08 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ letter-spacing:.012em!important;text-transform:uppercase
+}
+#vubaBrain .brain-knowledge-header p,#vubaBrain .brain-doc-heading p{color:#d4d4d4!important;font-size:12px!important}
+#vubaBrain .brain-refresh{
+ background:#252525!important;color:#f2c500!important;border:1px solid #777!important;
+ border-radius:9px!important;min-height:44px
+}
+#vubaBrain .brain-filter{
+ background:#171717!important;border:1px solid #464646!important;
+ border-radius:12px!important;box-shadow:none!important
+}
+#vubaBrain .brain-filter label{color:#ededed!important;font-size:11px!important}
+#vubaBrain .brain-filter input,#vubaBrain .brain-filter select,
+#vubaBrain .brain-doc-tools input,#vubaBrain .brain-doc-tools select{
+ background:#090909!important;color:#fff!important;border:1px solid #777!important;
+ border-radius:9px!important;min-height:44px
+}
+#vubaBrain .brain-filter input::placeholder,#vubaBrain .brain-doc-tools input::placeholder{color:#bbb!important}
+#vubaBrain .brain-show-archived input,#vubaBrain .brain-archived-toggle input{
+ accent-color:#f2c500!important;min-height:auto!important;width:auto!important
+}
+#vubaBrain .brain-library-note{color:#d1d1d1!important;font-size:11px!important}
+#vubaBrain .brain-card{
+ display:flex;flex-direction:column;gap:12px;background:#171717!important;
+ border:1px solid #444!important;border-top:4px solid #f2c500!important;
+ border-radius:10px!important;box-shadow:none!important;color:#fff!important;min-width:0
+}
+#vubaBrain .brain-card:hover{border-color:#f2c500!important;box-shadow:none!important}
+#vubaBrain .brain-card-head{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#vubaBrain .brain-tag{
+ background:#302908!important;color:#f2c500!important;border:1px solid #66540b!important;
+ border-radius:5px!important;font-size:10px!important;font-weight:850!important
+}
+#vubaBrain .brain-status{
+ background:#292929!important;border:1px solid #666!important;border-radius:5px!important;
+ color:#e8e8e8!important;font-size:10px!important;font-weight:850!important;padding:5px 8px
+}
+#vubaBrain .brain-status.brain-approved{border-color:#719d74!important;color:#c7f5ce!important}
+#vubaBrain .brain-status.brain-needs_review{border-color:#d6a934!important;color:#ffe49e!important}
+#vubaBrain .brain-status.brain-superseded{border-color:#888!important;color:#ddd!important}
+#vubaBrain .brain-card h3{
+ color:#fff!important;font:800 20px/1.14 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ letter-spacing:.01em!important;text-transform:uppercase;margin:0
+}
+#vubaBrain .brain-card p{color:#dedede!important;line-height:1.55!important;font-size:12px!important}
+#vubaBrain .brain-source{color:#c6c6c6!important;font-size:11px!important;overflow-wrap:anywhere}
+#vubaBrain .brain-source a{color:#f2c500!important;text-decoration:underline}
+#vubaBrain .brain-card button{
+ background:#f2c500!important;color:#0b0b0b!important;border-radius:9px!important;
+ margin-top:auto!important;min-height:44px!important;font-weight:850!important
+}
+#vubaBrain #brainMessage{color:#dedede!important}
+
+/* The document panel and dropzone must look like VUBA, not a light Vuba panel. */
+#vubaBrain #brainDocumentZone,.brain-document-zone,
+#vubaBrain[data-brain-view="documents"] .brain-document-zone{
+ background:#151515!important;color:#fff!important;border:1px solid #444!important;
+ border-radius:12px!important;box-shadow:none!important
+}
+#vubaBrain .brain-doc-heading h3{color:#fff!important}
+#vubaBrain .brain-doc-total{
+ background:#302908!important;color:#f2c500!important;border:1px solid #65520a!important;
+ border-radius:7px!important;font-size:11px!important
+}
+#vubaBrain .brain-dropzone{
+ border:2px dashed #f2c500!important;border-radius:10px!important;
+ background:#0b0b0b!important;color:#fff!important;min-height:200px!important
+}
+#vubaBrain .brain-dropzone:hover,#vubaBrain .brain-dropzone.dragging,#vubaBrain .brain-dropzone:focus-visible{
+ background:#29240a!important;outline:2px solid #f2c500!important;outline-offset:2px
+}
+#vubaBrain .brain-drop-icon{
+ width:54px!important;height:54px!important;border-radius:8px!important;
+ background:#f2c500!important;color:#0b0b0b!important;font-weight:900!important
+}
+#vubaBrain .brain-dropzone strong{
+ color:#fff!important;font:800 24px/1.1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif!important;
+ text-transform:uppercase!important
+}
+#vubaBrain .brain-dropzone>span,#vubaBrain .brain-dropzone small{color:#d7d7d7!important}
+#vubaBrain .brain-dropzone>span button{
+ color:#f2c500!important;background:transparent!important;
+ text-decoration:underline!important;font-size:12px!important;min-height:44px!important
+}
+#vubaBrain .brain-upload-feedback{color:#f2c500!important;font-size:12px!important}
+#vubaBrain .brain-doc-tools label{color:#efefef!important}
+#vubaBrain .brain-document-row{
+ background:#202020!important;color:#f5f5f5!important;border:1px solid #494949!important;
+ border-left:4px solid #f2c500!important;border-radius:9px!important
+}
+#vubaBrain .brain-doc-filetype{
+ background:#f2c500!important;color:#0b0b0b!important;border-radius:6px!important;
+ font-size:11px!important;font-weight:900!important
+}
+#vubaBrain .brain-doc-info strong{color:#fff!important;font-size:13px!important}
+#vubaBrain .brain-doc-info small,#vubaBrain .brain-doc-info>span{color:#d3d3d3!important}
+#vubaBrain .brain-doc-actions button{
+ background:#f2c500!important;color:#0b0b0b!important;border-radius:8px!important;
+ min-height:44px!important;font-weight:800!important
+}
+#vubaBrain .brain-doc-empty{color:#d6d6d6!important}
+#brainDialog,#brainDocumentDialog{
+ background:#151515!important;color:#fff!important;border:1px solid #f2c500!important;
+ border-radius:12px!important
+}
+#brainDialog .dialogHead,#brainDocumentDialog .dialogHead{border-color:#444!important}
+#brainDialog h2,#brainDocumentDialog h2{color:#fff!important;font-size:24px!important}
+#brainDialog label,#brainDocumentDialog label{color:#eee!important}
+#brainDialog input,#brainDialog select,#brainDialog textarea,
+#brainDocumentDialog input,#brainDocumentDialog select,#brainDocumentDialog textarea{
+ background:#0b0b0b!important;color:#fff!important;border:1px solid #777!important
+}
+#brainDialog input:disabled,#brainDialog select:disabled,#brainDialog textarea:disabled,
+#brainDocumentDialog input:disabled,#brainDocumentDialog select:disabled,#brainDocumentDialog textarea:disabled{
+ color:#ccc!important;opacity:.8
+}
+#brainDialog .hint,#brainDocumentDialog .hint{color:#ddd!important}
+#brainDialog #saveBrain,#brainDocumentDialog button[type="submit"]{
+ background:#f2c500!important;color:#0b0b0b!important;min-height:44px!important
+}
+#brainDialog #brainCopy{background:#292929!important;color:#fff!important;border:1px solid #777!important}
+#brainDialog .brain-danger-action,#brainDocumentDialog .brain-danger-action{background:#b32e2e!important;color:#fff!important}
+@media(max-width:1100px){
+ #vubaBrain .vuba-brain-brand{width:230px!important;right:14px!important}
+ #vubaBrain .brain-command-copy{max-width:70%}
+}
+@media(max-width:850px){
+ #vubaBrain .vuba-brain-brand{display:none!important}
+ #vubaBrain .brain-command-copy{max-width:100%!important}
+ #vubaBrain .brain-overview-bar>div{min-width:100px;padding:9px 12px;margin:0}
+}
+@media(max-width:550px){
+ #vubaBrain .brain-command{padding:38px 20px 23px!important;min-height:0!important}
+ #vubaBrain .brain-overview-bar{padding:10px!important}
+ #vubaBrain .brain-overview-bar>div{flex:1 1 30%!important;min-width:80px!important;margin:0!important}
+ #vubaBrain .brain-overview-bar>p{display:block!important;max-width:none!important;flex:1 1 100%!important}
+ #vubaBrain .brain-workspace-nav button{flex:1!important;padding:12px 10px!important}
+ #vubaBrain #brainDocumentZone{padding:15px!important}
+ #vubaBrain .brain-document-row{align-items:flex-start}
+}
+
+
+/* Backwards-compatible VUBA-only guard: even if an older Brain JavaScript
+   module is cached, NEVER render the retired Vuba V/round-cards illustration. */
+#vubaBrain .brain-command-art:not(.vuba-brain-brand) {
+ position:absolute!important;right:20px!important;top:50%!important;
+ transform:translateY(-50%)!important;width:270px!important;height:196px!important;
+ opacity:1!important;border:2px solid #f2c500!important;border-radius:3px!important;
+ background:#0b0b0b url('./vuba-logo-horizontal-dark.svg') center center / 212px auto no-repeat!important;
+ box-shadow:none!important;
+}
+#vubaBrain .brain-command-art:not(.vuba-brain-brand)::before{
+ content:"";position:absolute;top:0;left:0;right:0;height:13px;
+ background:repeating-linear-gradient(-45deg,#f2c500 0 16px,#0b0b0b 16px 32px)
+}
+#vubaBrain .brain-command-art:not(.vuba-brain-brand) > *{display:none!important}
+@media(max-width:850px){#vubaBrain .brain-command-art:not(.vuba-brain-brand){display:none!important}}
+
+
+/* Restore VUBA Brain's original overlapping headed-paper concept,
+   replacing the incorrect Vuba monogram with the official VUBA lockup.
+   No generic decorative circles or fake document details. */
+#vubaBrain .brain-command-art.vuba-brain-papers{
+ display:block!important;position:absolute!important;width:320px!important;
+ height:270px!important;right:22px!important;top:50%!important;
+ transform:translateY(-50%)!important;
+ border:0!important;background:transparent!important;
+ box-shadow:none!important;opacity:1!important;
+}
+#vubaBrain .brain-command-art.vuba-brain-papers::before{content:none!important}
+#vubaBrain .vuba-paper-sheet{
+ display:flex;flex-direction:column;gap:13px;position:absolute;
+ width:208px;height:229px;padding:24px 21px 17px;
+ background:#f4f4f4;color:#0b0b0b;border:1px solid #d4d4d4;
+ border-radius:13px;box-shadow:0 14px 25px #0007;
+}
+#vubaBrain .vuba-paper-back{
+ left:24px;top:29px;transform:rotate(-16deg);
+ background:#dedede;border-color:#b5b5b5;
+}
+#vubaBrain .vuba-paper-front{
+ left:93px;top:13px;transform:rotate(7deg);
+ background:#fff;border:2px solid #e0e0e0;
+}
+#vubaBrain .vuba-paper-logo{
+ display:grid;place-items:center;background:#0b0b0b;
+ padding:10px;width:100%;height:65px;
+ border-radius:3px;margin-bottom:6px;flex:0 0 65px;
+}
+#vubaBrain .vuba-paper-logo img{
+ display:block;max-width:100%;width:153px;height:auto;object-fit:contain
+}
+#vubaBrain .vuba-paper-rule{
+ display:block;height:7px!important;border-radius:2px!important;
+ background:#d7dfe1!important;width:100%!important;
+}
+#vubaBrain .vuba-paper-back .vuba-paper-rule{background:#adb7bc!important}
+#vubaBrain .vuba-paper-rule.short{width:57%!important}
+#vubaBrain .vuba-paper-footer{
+ color:#141414;font:800 10px/1 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ letter-spacing:.08em;margin-top:auto;
+}
+@media(max-width:1100px){
+ #vubaBrain .brain-command-art.vuba-brain-papers{right:0!important;transform:translateY(-50%) scale(.85)!important;transform-origin:right center!important}
+}
+@media(max-width:850px){
+ #vubaBrain .brain-command-art.vuba-brain-papers{display:none!important}
+}
+
+
+/* VUBA cross-page contrast audit — 20 November 2026.
+   Keep the studio's black/yellow UI legible across Home, Calendar,
+   Campaigns, Ideas, Creative Library, Review, Brain and modal editors.
+   Scope to VUBA: never alter Vuba's separate style sheets. */
+body.studio-shell-ready{
+  color-scheme:dark;
+  color:#f5f5f5;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-hero,
+  .studio-home-main,.studio-tip-card,.studio-automation-panel,
+  .studio-builder-card,.studio-stat,.panel,.workspace-card,
+  .suggestion-card,.brain-card,.review-history,
+  .folder-import,.media-tools,.studio-navigation,
+  .studio-upcoming-row,.upcomingItem,.balanceRow
+){
+  color:#f5f5f5;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-home-main,
+  .studio-tip-card,.studio-automation-panel,.studio-builder-card,
+  .panel,.workspace-card,.suggestion-card,.brain-card,
+  .review-history,.folder-import,.media-tools
+) :is(h1,h2,h3,h4,h5,h6){
+  color:#fff!important;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-home-main,
+  .studio-tip-card,.studio-automation-panel,.studio-builder-card,
+  .panel,.workspace-card,.suggestion-card,.brain-card,
+  .review-history,.folder-import,.media-tools
+) :is(p,small,blockquote,dd,dt,li,.hint,.description,.subtitle,.muted,.meta){
+  color:#dedede!important;
+}
+body.studio-shell-ready :is(
+  .studio-page-intro,.studio-page-heading,.studio-home-main,
+  .studio-tip-card,.studio-automation-panel,.studio-builder-card,
+  .panel,.workspace-card,.suggestion-card,.brain-card
+) :is(a:not(.button),.studio-text-btn){
+  color:#f2c500!important;
+}
+body.studio-shell-ready :is(.panel,.workspace-card,.suggestion-card,.brain-card)
+  :is(input,textarea,select){
+  background:#0c0c0c!important;color:#fff!important;border-color:#858585!important;
+}
+body.studio-shell-ready :is(input,textarea)::placeholder{
+  color:#bdbdbd!important;opacity:1;
+}
+body.studio-shell-ready :is(.panel,.workspace-card,.suggestion-card,.brain-card)
+  :is(input,textarea,select):focus-visible,
+body.studio-shell-ready button:focus-visible,
+body.studio-shell-ready a:focus-visible{
+  outline:2px solid #f2c500!important;outline-offset:2px;
+}
+body.studio-shell-ready .studio-navigation :is(a,small,span){
+  color:#dedede;
+}
+body.studio-shell-ready .studio-navigation a.is-active{
+  color:#0b0b0b!important;background:#f2c500!important;
+}
+body.studio-shell-ready :is(.studio-page-heading,.studio-page-intro) :is(p,small,span),
+body.studio-shell-ready :is(.workspace-card,.suggestion-card,.brain-card) :is(small,.hint),
+body.studio-shell-ready :is(.studio-upcoming-row,.upcomingItem,.balanceRow) :is(small,span,p){
+  color:#dcdcdc!important;
+}
+body.studio-shell-ready :is(dialog,.panel) :is(.dialogHead,.preview-header) h2{
+  color:#fff!important;
+}
+/* Actual Facebook / LinkedIn / Instagram previews remain white, as posted.
+   Never paint white preview text over the light platform mockups. */
+body.studio-shell-ready :is(.social-mock,.vuba-feed-card){
+  color-scheme:light;color:#171717!important;background:#fff!important;
+}
+body.studio-shell-ready :is(.social-mock,.vuba-feed-card) :is(
+  h1,h2,h3,h4,strong,p,small,li,span,.mock-copy,.mock-head,
+  .vuba-feed-caption,.vuba-feed-footer
+){color:#171717!important}
+body.studio-shell-ready .social-mock .mock-avatar,
+body.studio-shell-ready .vuba-feed-card .vuba-feed-missing,
+body.studio-shell-ready .vuba-feed-card .vuba-feed-image{
+  color:#f2c500!important;background:#0b0b0b!important;
+}
+body.studio-shell-ready .vuba-feed-card .vuba-feed-missing small{
+  color:#fff!important;
+}
+/* Yellow actions always have black type; dark actions have pale type. */
+body.studio-shell-ready :is(.topbar-create,.hero-actions button:not(.hero-secondary),
+  .studio-builder-card>button,#fillCalendar,.brain-card>button){
+  color:#0b0b0b!important;
+}
+
+/* Fix the dedicated interior page H1. premium.css gives this selector #142e3b
+   (unlike .studio-page-heading h1), which made Post ideas invisible. */
+body.studio-shell-ready .studio-interior-heading h1,
+body.studio-shell-ready .studio-page-heading h1,
+body.studio-shell-ready .studio-page-intro h1{
+  color:#ffffff!important;
+}
+body.studio-shell-ready .studio-interior-heading p,
+body.studio-shell-ready .studio-interior-heading .subtitle{
+  color:#dedede!important;
+}
+body.studio-shell-ready .studio-interior-heading .studio-kicker{
+  color:#f2c500!important;
+}
+
+/* VUBA per-post generated artwork controls */
+body.studio-shell-ready .vuba-art-generator{
+ display:grid;gap:12px;padding:16px;background:#141414!important;
+ color:#f5f5f5!important;border:1px solid #555;border-left:4px solid #f2c500;border-radius:10px;
+}
+body.studio-shell-ready .vuba-art-generator h3{
+ margin:0;color:#fff!important;font:800 20px/1.12 Impact,Haettenschweiler,'Arial Narrow Bold',sans-serif;
+ text-transform:uppercase;
+}
+body.studio-shell-ready .vuba-art-generator p,
+body.studio-shell-ready #vubaArtStatus{color:#ddd!important;margin:0;font-size:12px;line-height:1.5}
+body.studio-shell-ready .vuba-art-generator label{color:#fff!important}
+body.studio-shell-ready .vuba-art-generator .vuba-art-checkbox{
+ display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;
+}
+body.studio-shell-ready .vuba-art-generator input[type=checkbox]{
+ width:18px!important;height:18px!important;min-height:18px!important;
+ accent-color:#f2c500;flex-shrink:0
+}
+body.studio-shell-ready #generateVUBAArt{
+ background:#f2c500!important;color:#0b0b0b!important;font-weight:800;
+}
+body.studio-shell-ready #vubaArtPreview img{
+ display:block;max-height:350px;width:auto;max-width:100%;object-fit:contain;
+ background:#080808;border:1px solid #565656;border-radius:8px
+}

@@ -49,7 +49,7 @@ function buildShell(){
    <div class="hero-grid-overlay" aria-hidden="true"></div>
    <span class="special-hero-plate" aria-hidden="true"></span>
    <span class="edition-hero-mascot" aria-hidden="true"></span>
-   <div class="hero-copy"><span class="hero-eyebrow"><span></span> TOOLS THAT GRAFT</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan hard-working social posts for Installer Advice, CIS, Miles and Gas. Use real app screens, sharp headlines and the proper VUBA look.</p>
+   <div class="hero-copy"><span class="hero-eyebrow"><span></span> RESIN-BOUND IDEAS</span><h2>YOUR BRAND.<br><em>READY FOR THE JOB.</em></h2><p>Plan posts about resin-bound materials, colour blends, installer tips and Wiltshire stock. Use genuine photographs and approved Vuba content.</p>
    <div class="hero-actions"><button type="button" id="heroFillCalendar">PLAN THE NEXT 4 WEEKS</button><button type="button" id="heroExploreIdeas" class="hero-secondary">Explore ideas <span>↗</span></button></div></div>
    <div class="hero-graphic" aria-hidden="true"><div class="graphic-ring graphic-ring-one"></div><div class="graphic-ring graphic-ring-two"></div><div class="graphic-card graphic-card-back"><div class="graphic-mini-badge">DRAFT</div><div class="graphic-card-line"></div><div class="graphic-card-line short"></div></div><div class="graphic-card graphic-card-front"><div class="graphic-image-art"><span class="graphic-sun"></span><span class="graphic-road road-one"></span><span class="graphic-road road-two"></span></div><div class="graphic-card-bottom"><span class="graphic-mini-dot"></span><span>VUBA WILTSHIRE</span><span>✦</span></div></div></div>
   </div>
@@ -65,13 +65,13 @@ function buildShell(){
    <div class="automation-progress"><div class="progress-label"><span>4-week editorial plan</span><strong id="planProgress">0%</strong></div><div class="progress-track"><span id="planProgressBar"></span></div><small>Based on your planned publishing slots</small></div>
    <button id="fillCalendar" type="button">Fill calendar gaps <span>→</span></button><p id="fillCalendarMessage" class="hint" role="status"></p><div class="automation-disclaimer">✳ &nbsp; Drafts only. Approval always stays with your team.</div>
    </section>
-   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>SHOW THE TOOL.</strong><p>Use official VUBA screens, brand graphics and approved product imagery. Keep the details true to the apps.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
+   <section class="studio-tip-card"><span class="tip-spark">✧</span><div><strong>SHOW THE PRODUCT.</strong><p>Use genuine Vuba product photography, approved project images and accurate technical information.</p><button type="button" data-dash-route="media">Open media library <span>↗</span></button></div></section>
    </div>
   </div>
   <div class="studio-footnote"><span class="studio-footnote-dot"></span> Your team stays in control. Nothing publishes until it has been approved and connected to a publishing channel.</div>
  </section>
  <section id="studioBuilder" class="studio-page" aria-label="Post builder">
-   <div class="studio-page-heading"><div><span class="studio-kicker">VUBA POST BUILDER</span><h1>MAKE IT COUNT.</h1><p>Sharp copy. Genuine VUBA screens. No nonsense.</p></div></div>
+   <div class="studio-page-heading"><div><span class="studio-kicker">VUBA POST BUILDER</span><h1>MAKE IT COUNT.</h1><p>Sharp copy. Genuine Vuba photos. No nonsense.</p></div></div>
    <div class="studio-builder-actions">
     <article class="panel studio-builder-card featured"><div class="studio-builder-icon">✦</div><div class="builder-card-index">01 / SMART START</div><h2>Let the Studio lead.</h2><p>We'll suggest a relevant topic, prepare your first draft and search approved VUBA imagery automatically.</p><div class="builder-visual"><span class="builder-visual-chip">✦ &nbsp; CONTENT ASSISTANT</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-visual-photo">▧ &nbsp; Library image matched</span></div><button id="builderSuggest" type="button">Create a suggested draft <span>→</span></button></article>
     <article class="panel studio-builder-card"><div class="studio-builder-icon secondary">＋</div><div class="builder-card-index">02 / YOUR DIRECTION</div><h2>Start with your idea.</h2><p>Got something specific to say? Set the topic, choose your channel and make it your own.</p><div class="builder-visual simple"><span class="builder-blank-label">YOUR NEXT POST</span><div class="builder-visual-lines"><span></span><span></span><span></span></div><span class="builder-corner-accent"></span></div><button id="builderBlank" type="button">Create a blank post <span>→</span></button></article>
@@ -191,7 +191,7 @@ function route(){
  applyVisibility();
  if(name==="home")refreshDashboard();
  window.scrollTo?.({top:0,behavior:"instant"});
- if(name==="campaigns"||name==="media"||name==="reviews")window.VUBAStudioPlus?.refresh?.();
+ if(name==="campaigns"||name==="media"||name==="reviews")window.VubaStudioPlus?.refresh?.();
  if(name==="connections")window.VUBASocialAccounts?.refresh?.();
 }
 function show(el,visible){if(el)el.hidden=!visible;}
@@ -303,7 +303,7 @@ async function refreshDashboard(){
      '<span class="vuba-feed-footer"><strong>'+esc(p.title)+'</strong><span class="vuba-feed-state">'+esc(status)+'</span></span>'+
      '</button>';
  }).join("")+'</div>':"<div class='studio-empty'><span>✦</span><h3>Make room for something good.</h3><p>Your next posts will appear here once you've planned them.</p><button type='button' id='emptyPlan'>Plan content →</button></div>";
- $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{navigate("calendar");window.VUBAOpenPost?.(b.dataset.dashEdit)});
+ $("dashList").querySelectorAll("[data-dash-edit]").forEach(b=>b.onclick=()=>{navigate("calendar");window.VubaOpenPost?.(b.dataset.dashEdit)});
  if($("emptyPlan"))$("emptyPlan").onclick=fillCalendar;
  const coverage=slots.length?Math.round((slots.length-gaps)/slots.length*100):100;
  $("planProgress").textContent=coverage+"%";
@@ -322,13 +322,13 @@ async function fillCalendar(){
   if(!scheduled.length){message.textContent="Calendar already has a post in every planned slot. Nothing changed.";return;}
   const titles=existing.map(x=>x.title);
   const plan=[];
-  await window.VUBAMediaAssist?.refresh?.();
+  await window.VubaMediaAssist?.refresh?.();
   const pillars=["Product Education","Installer Advice","Blends & Colour Inspiration","Local Stock & Availability","Project Planning","Trade Productivity","Behind the Software","Frequently Asked Questions"];
   for(const s of scheduled){
-   const starter=window.VUBAOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length],channel:s.channel});
+   const starter=window.VubaOfflineDraft?.({existingTitles:titles,pillar:pillars[(s.week*4+plan.length)%pillars.length],channel:s.channel});
    if(!starter)throw Error("Offline content templates unavailable. Refresh the Studio.");
    titles.push(starter.title);
-   const match=window.VUBAMediaAssist?.bestForText?.([starter.title,starter.topic,starter.pillar].join(" "));
+   const match=window.VubaMediaAssist?.bestForText?.([starter.title,starter.topic,starter.pillar].join(" "));
    plan.push({
     title:starter.title,topic:starter.topic,pillar:starter.pillar,
     format:starter.format||"Single image",series:starter.series||null,
@@ -341,8 +341,8 @@ async function fillCalendar(){
   const {error}=await db.from("studio_posts").insert(plan);
   if(error)throw Error(error.message);
   message.textContent="Created "+plan.length+" draft(s), preserving existing posts. Photos were added only where matching approved library images were available. Review before approving.";
-  await window.VUBACalendarReload?.();
-  await window.VUBAStudioPlus?.refresh?.();
+  await window.VubaCalendarReload?.();
+  await window.VubaStudioPlus?.refresh?.();
   await refreshDashboard();
  }catch(e){message.textContent="Couldn't fill calendar: "+(e?.message||String(e));}
  finally{inFlight=false;button.disabled=false;button.textContent="Fill calendar gaps";}

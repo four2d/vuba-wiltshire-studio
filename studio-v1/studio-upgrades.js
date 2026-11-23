@@ -12,7 +12,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
  const state={user:null,role:"",posts:[],approvedMedia:new Set(),brain:[],mode:"month",product:"all",dragId:null,busy:false,importedMetrics:[]};
  const allowedRoles=new Set(["admin","approver","editor"]);
  const editorFields=["title","topic","date","postChannel","pillar","format","series","caption","source","postStatus"];
- function sourceName(p){const s=[p.title||"",p.topic||"",p.pillar||""].join(" ").toLowerCase();for(const n of ["invoice","cis","miles","gas"])if(new RegExp("(^|[^a-z])"+n+"([^a-z]|$)").test(s))return "VUBA "+(n==="cis"?"CIS":n[0].toUpperCase()+n.slice(1));return "General";}
+ function sourceName(p){const s=[p.title||"",p.topic||"",p.pillar||""].join(" ").toLowerCase();for(const n of ["Installer Advice","Blends & Colour Inspiration","Local Stock & Availability","Project Planning"])if(s.includes(n.toLowerCase()))return n;return "General";}
  function guardNote(p){const issues=[];if(!String(p.caption||"").trim())issues.push("caption missing");if(p.format!=="Text-led"){if(!p.media_id)issues.push("approved image not selected");else if(!state.approvedMedia.has(p.media_id))issues.push("image not approved");}if(!String(p.source_notes||"").trim())issues.push("source notes missing");return issues;}
  async function init(user){
   state.user=user||null;
@@ -162,7 +162,7 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const calendar=byId("calendar"),weekdays=document.querySelector("#app .weekdays");
   if(!calendar||!weekdays)return;
   const tools=document.createElement("div");tools.id="vubaCalendarTools";tools.className="vuba-upgrade vuba-calendar-tools";
-  tools.innerHTML='<div class="vuba-calendar-toggle"><button type="button" data-view="month" aria-pressed="true">Month</button><button type="button" data-view="agenda" aria-pressed="false">Agenda</button></div><label class="vuba-product-filter">VUBA app <select id="vubaProductFilter"><option value="all">All products</option><option value="Installer Advice">Invoice</option><option value="Blends & Colour Inspiration">CIS</option><option value="Local Stock & Availability">Miles</option><option value="Project Planning">Gas</option><option value="General">General</option></select></label><span class="vuba-calendar-instruction">Drag an idea or draft onto another date to reschedule it.</span><span id="vubaCalendarStatus" role="status"></span>';
+  tools.innerHTML='<div class="vuba-calendar-toggle"><button type="button" data-view="month" aria-pressed="true">Month</button><button type="button" data-view="agenda" aria-pressed="false">Agenda</button></div><label class="vuba-product-filter">Content category <select id="vubaProductFilter"><option value="all">All products</option><option value="Installer Advice">Installer advice</option><option value="Blends & Colour Inspiration">Blends & colours</option><option value="Local Stock & Availability">Stock & availability</option><option value="Project Planning">Project planning</option><option value="General">General</option></select></label><span class="vuba-calendar-instruction">Drag an idea or draft onto another date to reschedule it.</span><span id="vubaCalendarStatus" role="status"></span>';
   weekdays.insertAdjacentElement("beforebegin",tools);
   const agenda=document.createElement("div");agenda.id="vubaAgenda";agenda.className="vuba-upgrade vuba-agenda";agenda.hidden=true;calendar.insertAdjacentElement("afterend",agenda);
   tools.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{
