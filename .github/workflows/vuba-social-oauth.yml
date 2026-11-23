@@ -1,0 +1,17 @@
+name: Vuba OAuth foundation
+on:
+  pull_request:
+    paths:
+      - 'studio-v1/supabase/**'
+      - 'studio-v1/tests/social-oauth.mjs'
+      - '.github/workflows/vuba-social-oauth.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node studio-v1/tests/social-oauth.mjs
