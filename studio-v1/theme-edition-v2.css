@@ -1,0 +1,537 @@
+/* Special Edition 2.0 — handcrafted interface materials.
+   These rules style actual app elements, not screenshots or fake analytics.
+   Loaded last, after contrast and earlier immersive CSS. */
+
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]){
+ --edition-mascot:none;
+ --edition-nav-art:none;
+ --edition-ornament:var(--read-accent);
+ --edition-surface:var(--read-panel);
+ --edition-ink:var(--read-text);
+ --edition-muted:var(--read-muted);
+ --edition-border:var(--read-stroke);
+ --edition-radius:10px;
+ --edition-lift:0 8px 26px #0006;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .brand-lockup::before{
+ display:none!important;content:none!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .brand-lockup>img{
+ display:block!important;max-width:186px!important;width:186px!important;
+ height:57px!important;object-fit:contain!important;object-position:left!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .neutral-brand-lockup{display:none!important}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .brand-lockup{
+ gap:4px!important;padding:12px 10px 21px!important;
+ border-bottom:1px solid var(--edition-border)!important;
+ margin-bottom:10px
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .vuba-product-label{
+ display:block!important;color:var(--read-muted)!important;
+ font-weight:850!important;letter-spacing:.21em!important;font-size:10px!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .special-edition-plate{
+ margin-top:10px!important;padding:10px 5px!important;
+ border:1px solid var(--read-accent)!important;border-radius:3px!important;
+ color:var(--read-accent)!important;letter-spacing:.08em!important;
+ background:linear-gradient(130deg,color-mix(in srgb,var(--theme-base) 96%,transparent),color-mix(in srgb,var(--read-accent) 11%,var(--theme-base)))!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .edition-side-mascot{
+ display:block!important;width:72px;height:86px;
+ position:absolute;right:0;top:18px;pointer-events:none;opacity:.8;z-index:2;
+ background:var(--edition-mascot) center/contain no-repeat;
+ filter:drop-shadow(0 1px 9px color-mix(in srgb,var(--read-accent) 55%,transparent))
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .edition-hero-mascot{
+ position:absolute;display:block;z-index:2!important;
+ width:205px;height:266px;right:12%;bottom:-9px;
+ pointer-events:none;background:var(--edition-mascot) center bottom/contain no-repeat;
+ filter:drop-shadow(0 0 15px color-mix(in srgb,var(--read-accent) 40%,transparent))
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-copy{
+ width:min(60%,620px)!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-copy h2{
+ font-size:clamp(30px,3.25vw,48px)!important;
+ line-height:1.11!important;
+ text-transform:uppercase!important;max-width:580px!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-copy p{
+ max-width:470px!important;font-size:13px!important;
+ line-height:1.6!important;letter-spacing:.012em!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-actions{gap:12px!important;flex-wrap:wrap!important}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-actions button{
+ padding:13px 17px!important;min-height:44px!important;
+ font-size:12px!important;letter-spacing:.025em!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) :is(.studio-stat,.studio-home-main,.studio-automation-panel,
+ .studio-tip-card,.studio-builder-card,.workspace-card,.suggestion-card,
+ .mm-import,.mm-asset,.mm-folder,.day,.metrics>div){
+ border-color:var(--edition-border)!important;
+ border-radius:var(--edition-radius)!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat{
+ min-height:120px!important;overflow:hidden!important;
+ padding:19px 18px!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat .stat-top small{
+ font-size:10px!important;line-height:1.5!important;
+ letter-spacing:.055em!important;font-weight:800!important;
+ color:var(--edition-muted)!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat .stat-number{
+ font-size:30px!important;line-height:1.1!important;
+ font-family:var(--edition-font)!important;font-weight:900!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat .stat-foot{
+ font-size:10px!important;color:var(--edition-muted)!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat .stat-mark{
+ width:34px!important;height:34px!important;border-radius:8px!important;
+ flex-shrink:0!important;font-size:20px!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-home-grid{align-items:stretch!important}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-home-grid .panel{overflow:hidden}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-section-heading h2{
+ font-size:23px!important;font-family:var(--edition-font)!important;letter-spacing:-.025em!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-section-heading p{font-size:12px!important}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .editorial-post-card{
+ background:var(--edition-surface)!important;border:1px solid var(--edition-border)!important;
+ border-radius:7px!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .editorial-post-details{
+ background:var(--edition-surface)!important;color:var(--edition-ink)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .editorial-post-details>strong{
+ color:var(--edition-ink)!important;font-size:12px!important;line-height:1.4!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .editorial-post-meta,
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .editorial-status{
+ color:var(--edition-muted)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) :is(.studio-upcoming-row,.upcomingItem,.balanceRow) :is(strong,span,p){
+ color:var(--edition-ink)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-builder-card{
+ overflow:hidden!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-home-main,body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-automation-panel{
+ padding:24px!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-builder-card .builder-card-index{
+ font-size:10px!important;letter-spacing:.11em!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-page-heading h1,body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-interior-heading h1{
+ font-family:var(--edition-font)!important;
+ letter-spacing:-.025em!important;font-weight:900!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-nav-links a{
+ border:1px solid transparent!important;border-radius:5px!important;
+ margin:2px 0!important;position:relative!important;
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-nav-links a.is-active{
+ border:1px solid var(--read-accent)!important;
+ box-shadow:0 0 13px color-mix(in srgb,var(--read-accent) 26%,transparent)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-nav-links a:not(.is-active):hover{
+ border-color:var(--read-stroke)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-topbar{
+ border-bottom:2px solid var(--read-accent)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-live-pill{
+ color:var(--read-text)!important;
+ background:var(--read-soft)!important;border:1px solid var(--read-stroke)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-live-pill i{background:var(--read-accent)!important}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .vuba-theme-picker{
+ background:var(--theme-nav)!important;
+ border-top:1px solid var(--read-stroke)!important;
+ position:relative;z-index:4
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .vuba-theme-picker select{
+ background:var(--read-field)!important;color:var(--read-field-text)!important;
+ border:1px solid var(--read-stroke)!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation :is(.sidebar-bottom,.sidebar-brand-chip){
+ position:relative;z-index:4
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero::after{
+ background-position:center,right center!important;
+ background-size:100% 100%,cover!important
+}
+/* ── Futuristic: science-fiction command bridge ── */
+body.studio-shell-ready[data-vuba-theme="futuristic"]{
+ --edition-mascot:url('./theme-art/mascot-futuristic.svg');
+ --edition-surface:#101e30;--edition-ink:#f0fbff;
+ --edition-muted:#bdd5e5;--edition-border:#3986a1;
+ --edition-radius:5px
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-hero{
+ border:2px solid #53e6f6!important;
+ clip-path:polygon(0 0,97.5% 0,100% 11%,100% 100%,2.5% 100%,0 89%);
+ box-shadow:inset 0 0 30px #24edff26,0 0 25px #1ee9ff1a!important;
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-hero::after{
+ opacity:.96!important
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-hero .hero-copy h2{
+ font-family:'Trebuchet MS',Arial,sans-serif!important;
+ font-weight:900!important;text-transform:uppercase!important;
+ letter-spacing:-.06em!important;text-shadow:0 0 22px #11f0e455
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-navigation{
+ border-right:2px solid #38e4f9!important;
+ background-image:linear-gradient(#08203bba,#071523f0),repeating-linear-gradient(0deg,#1aeefe18 0 2px,transparent 2px 70px)!important
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] :is(
+ .studio-stat,.studio-home-main,.studio-builder-card,.workspace-card,.suggestion-card){
+ border:1px solid #3986a1!important;
+ box-shadow:inset 0 0 0 1px #8ffeff10,0 0 15px #0de4ff1b!important
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-stat{
+ clip-path:polygon(0 0,93% 0,100% 13%,100% 100%,0 100%)
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-stat .stat-mark{
+ border:1px solid #57f2fb!important;background:#0c3444!important;
+ color:#76f7ff!important;box-shadow:0 0 15px #4fffea44
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-stat .stat-number{
+ color:#b7fbff!important;text-shadow:0 0 10px #67feff67
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-section-heading h2{
+ text-transform:uppercase!important;letter-spacing:.08em!important
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-topbar::after{
+ content:"";position:absolute;right:260px;top:12px;height:10px;width:80px;
+ pointer-events:none;background:repeating-linear-gradient(90deg,#66f6f4 0 14px,transparent 14px 20px);
+ opacity:.45
+}
+/* ── Steampunk: parchment, embossed brass, exposed machinery ── */
+body.studio-shell-ready[data-vuba-theme="steampunk"]{
+ --edition-mascot:url('./theme-art/mascot-steampunk.svg');
+ --edition-surface:#f1dfb9;--edition-ink:#3a2616;--edition-muted:#6d543b;
+ --edition-border:#b18a54;--edition-radius:6px
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-hero{
+ border:7px ridge #b7894d!important;
+ background:#302015!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-hero::before{
+ background:repeating-linear-gradient(90deg,#bf8649 0 2px,#533720 2px 23px)!important;
+ height:11px!important;opacity:1!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-navigation{
+ background-color:#1d140e!important;
+ background-image:repeating-linear-gradient(95deg,transparent 0 18px,#e1ad6920 19px 21px,transparent 22px 55px)!important;
+ box-shadow:inset -6px 0 0 #62401e!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-navigation .brand-lockup{
+ border-bottom:4px double #caa36d!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] :is(
+ .studio-stat,.studio-home-main,.studio-builder-card,.studio-automation-panel,
+ .workspace-card,.suggestion-card,.mm-asset,.mm-folder){
+ color:#3a2616!important;
+ background-color:#f1dfb9!important;
+ background-image:radial-gradient(circle at 8px 8px,#ad7d48 0 2px,transparent 3px),
+ radial-gradient(circle at calc(100% - 8px) 8px,#ad7d48 0 2px,transparent 3px),
+ radial-gradient(circle at 8px calc(100% - 8px),#ad7d48 0 2px,transparent 3px),
+ radial-gradient(circle at calc(100% - 8px) calc(100% - 8px),#ad7d48 0 2px,transparent 3px),
+ repeating-linear-gradient(2deg,#a56e3420 0 1px,transparent 1px 13px)!important;
+ border:5px double #ad824c!important;
+ box-shadow:inset 0 0 20px #99662b21,0 7px 14px #0006!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] :is(
+ .studio-stat,.studio-home-main,.studio-builder-card,.studio-automation-panel,
+ .workspace-card,.suggestion-card,.mm-asset,.mm-folder) :is(
+ h2,h3,strong,small,p,.hint,.stat-number,.stat-foot,.editorial-post-meta
+){color:#3a2616!important}
+body.studio-shell-ready[data-vuba-theme="steampunk"] :is(
+ .studio-stat,.studio-home-main,.studio-builder-card,.studio-automation-panel,
+ .workspace-card,.suggestion-card) .studio-kicker{
+ color:#725027!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-stat .stat-mark{
+ background:#78502f!important;color:#ffe4ab!important;
+ border:2px solid #d4ac6b!important;border-radius:50%!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-stat .stat-number{
+ font-family:Georgia,serif!important;font-size:34px!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .editorial-post-card,
+body.studio-shell-ready[data-vuba-theme="steampunk"] .editorial-post-details{
+ background:#f9edcf!important;color:#3a2616!important;
+ border-color:#a88759!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .editorial-post-details>strong,
+body.studio-shell-ready[data-vuba-theme="steampunk"] :is(.editorial-post-meta,.editorial-status){
+ color:#513821!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-section-heading{
+ border-bottom:3px double #a37d4c!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] :is(.studio-text-btn,.studio-tip-card button){
+ background:#6f482c!important;color:#fff0ce!important;border:1px solid #bd8b52!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-navigation a.is-active{
+ background:linear-gradient(#f6dca9,#b88d51)!important;color:#352012!important
+}
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-navigation a.is-active span{
+ color:#352012!important
+}
+/* ── Christmas: holly and fairy lights, red ribbons, ivory cards ── */
+body.studio-shell-ready[data-vuba-theme="christmas"]{
+ --edition-mascot:url('./theme-art/mascot-christmas.svg');
+ --edition-surface:#fff5db;--edition-ink:#143c2e;--edition-muted:#496658;
+ --edition-border:#cba765;--edition-radius:12px
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-navigation{
+ background-image:linear-gradient(#082f24ec,#06271deb),
+ radial-gradient(circle at 35% 20%,#e6cf8955,transparent 30%)!important;
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-navigation::before,
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-hero::before{
+ background:repeating-linear-gradient(90deg,#17533a 0 20px,#e0bb71 21px 27px,#b52e42 28px 32px,#17533a 33px 50px)!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-hero{
+ border:3px solid #d8bd7b!important;box-shadow:0 0 22px #f1d47a36!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] :is(
+ .studio-stat,.studio-home-main,.studio-automation-panel,.studio-builder-card,
+ .workspace-card,.suggestion-card,.mm-asset,.mm-folder){
+ background:#fff5db!important;color:#143c2e!important;
+ border:3px solid #d8b76c!important;
+ box-shadow:inset 0 0 0 2px #fdfcf5,0 5px 20px #0004!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] :is(
+ .studio-stat,.studio-home-main,.studio-automation-panel,.studio-builder-card,
+ .workspace-card,.suggestion-card,.mm-asset,.mm-folder) :is(
+ h2,h3,strong,p,small,.hint,.stat-number,.stat-foot
+){color:#153d2b!important}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-stat::before{
+ content:"✦";position:absolute;right:13px;top:8px;font-size:17px;
+ color:#ad3141;opacity:.85
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-stat .stat-mark{
+ background:#ae3245!important;border:2px solid #dfc788!important;
+ border-radius:50%!important;color:#fff5dd!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] :is(
+ .studio-home-main,.studio-builder-card,.workspace-card,.studio-automation-panel){
+ background-image:linear-gradient(90deg,transparent 0 calc(100% - 8px),#b33d48 calc(100% - 8px) 100%)!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .editorial-post-card,
+body.studio-shell-ready[data-vuba-theme="christmas"] .editorial-post-details{
+ background:#fffdf5!important;color:#143c2e!important;
+ border-color:#d2b87f!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .editorial-post-details>strong,
+body.studio-shell-ready[data-vuba-theme="christmas"] .editorial-post-meta,
+body.studio-shell-ready[data-vuba-theme="christmas"] .editorial-status{
+ color:#285342!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-section-heading{
+ border-bottom:2px solid #ccb077!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] :is(
+ .studio-text-btn,.studio-tip-card button){
+ background:#ac3443!important;color:#fff!important
+}
+/* ── Synthwave: illuminated arcade-era chrome and sunset gradients ── */
+body.studio-shell-ready[data-vuba-theme="synthwave"]{
+ --edition-mascot:url('./theme-art/mascot-synthwave.svg');
+ --edition-surface:#26133e;--edition-ink:#fff0ff;
+ --edition-muted:#e1c8e8;--edition-border:#f16bdf;--edition-radius:10px
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-hero{
+ border:2px solid #fb84df!important;box-shadow:0 0 24px #ff6eda66!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-navigation{
+ background:linear-gradient(165deg,#1b0d36,#3a124e 55%,#140c2d)!important;
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-hero .hero-copy h2 em{
+ color:#ffb8f4!important;text-shadow:0 0 18px #ff80e67a!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-stat{
+ background-image:linear-gradient(135deg,#301546,#23133f 75%)!important;
+ border:2px solid #eb62de!important;box-shadow:0 0 15px #e15cdb40!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-stat .stat-mark{
+ border:2px solid #f799e8!important;background:#372552!important;
+ color:#fff0ff!important;box-shadow:0 0 13px #f292d586
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] :is(
+ .studio-home-main,.studio-automation-panel,.studio-builder-card,.workspace-card){
+ border:2px solid #de79ec!important;box-shadow:0 0 15px #b82fda3a!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-section-heading h2{
+ text-shadow:0 0 10px #ed81e955
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-navigation .studio-nav-links a.is-active{
+ background:#d54cbe!important;box-shadow:0 0 18px #d54cbe88!important;
+ color:#fff!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-navigation a.is-active span{
+ color:#fff!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-topbar{
+ box-shadow:0 2px 18px #e66bdb66!important
+}
+/* ── Arcade: block pixels, physical game cabinet, retro scoreboard styling ── */
+body.studio-shell-ready[data-vuba-theme="arcade"]{
+ --edition-mascot:url('./theme-art/mascot-arcade.svg');
+ --edition-surface:#191638;--edition-ink:#fffbe8;
+ --edition-muted:#d5d2ed;--edition-border:#b1a2fb;--edition-radius:0
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-navigation{
+ background:linear-gradient(180deg,#171440,#161439)!important;
+ border-right:5px solid #f8dd75!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-hero{
+ border:5px solid #ffdc65!important;
+ box-shadow:7px 7px 0 #773db3!important;clip-path:none!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] :is(
+ .studio-stat,.studio-home-main,.studio-builder-card,.workspace-card,.suggestion-card){
+ border:4px solid #b99afd!important;border-radius:0!important;
+ box-shadow:5px 5px 0 #613d95!important;
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-stat{
+ background-color:#21184b!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-stat .stat-mark{
+ background:#7c39c6!important;border:2px solid #ffed8c!important;
+ color:#ffec8c!important;border-radius:0!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] :is(
+ .studio-stat .stat-number,.studio-section-heading h2,
+ .studio-page-heading h1,.studio-interior-heading h1){
+ color:#fff3a6!important;text-shadow:3px 3px 0 #7c3d9f!important;
+ font-family:'Courier New',monospace!important;
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] :is(
+ .studio-nav-links a.is-active,#fillCalendar,.topbar-create){
+ box-shadow:3px 3px 0 #9d5ade!important;
+ border:2px solid #f9df7b!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-navigation a.is-active{
+ background:#f8db71!important;color:#25143c!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-navigation a.is-active span{
+ color:#25143c!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-hero .hero-copy h2{
+ font-family:'Courier New',monospace!important;font-size:clamp(26px,2.9vw,43px)!important
+}
+/* On narrow displays, keep all illustration behind the controls. */
+@media(max-width:1250px){
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .edition-hero-mascot{
+  right:2%!important;width:175px!important;height:235px!important;opacity:.83!important
+ }
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-copy{width:72%!important}
+}
+@media(max-width:900px){
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .edition-hero-mascot{
+  right:-35px!important;width:155px!important;height:210px!important;opacity:.35!important
+ }
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-copy{width:100%!important}
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-navigation .edition-side-mascot{opacity:.4!important}
+}
+@media(max-width:600px){
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .edition-hero-mascot{display:none!important}
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-hero .hero-copy{width:100%!important}
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-stat{min-height:105px!important}
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-home-main,body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) .studio-automation-panel{padding:17px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) :is(.studio-stat,.studio-hero,.studio-nav-links a){
+  transition:none!important;animation:none!important
+ }
+}
+/* Artwork and feed previews must NEVER inherit the special surface palette. */
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) :is(.social-mock,.vuba-feed-card){
+ background:#fff!important;color:#171717!important
+}
+body.studio-shell-ready:is([data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],[data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],[data-vuba-theme="arcade"]) :is(.social-mock,.vuba-feed-card) :is(
+ .mock-head,.mock-copy,.mock-copy p,.vuba-feed-header,.vuba-feed-caption,.vuba-feed-footer,
+ .vuba-feed-profile strong,.vuba-feed-profile small
+){background:#fff!important;color:#171717!important}
+
+/* Illustrated edgework makes the entire sidebar feel like the edition,
+   not merely its accent colour. Navigation and theme controls stay above it. */
+body.studio-shell-ready:is(
+ [data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],
+ [data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],
+ [data-vuba-theme="arcade"]
+) .studio-navigation{position:fixed;isolation:isolate}
+body.studio-shell-ready:is(
+ [data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],
+ [data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],
+ [data-vuba-theme="arcade"]
+) .studio-navigation::after{
+ content:"";position:absolute;inset:0;z-index:0!important;
+ background:var(--edition-nav-art) center center / 100% 100% no-repeat!important;
+ opacity:.75!important;transform:none!important;pointer-events:none!important
+}
+body.studio-shell-ready:is(
+ [data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],
+ [data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],
+ [data-vuba-theme="arcade"]
+) .studio-navigation :is(
+ .brand-lockup,.studio-workspace-label,.studio-nav-scroll,
+ .vuba-theme-picker,.sidebar-bottom
+){position:relative;z-index:2}
+body.studio-shell-ready[data-vuba-theme="futuristic"]{--edition-nav-art:url('./theme-art/trim-futuristic.svg')}
+body.studio-shell-ready[data-vuba-theme="steampunk"]{--edition-nav-art:url('./theme-art/trim-steampunk.svg')}
+body.studio-shell-ready[data-vuba-theme="christmas"]{--edition-nav-art:url('./theme-art/trim-christmas.svg')}
+body.studio-shell-ready[data-vuba-theme="synthwave"]{--edition-nav-art:url('./theme-art/trim-synthwave.svg')}
+body.studio-shell-ready[data-vuba-theme="arcade"]{--edition-nav-art:url('./theme-art/trim-arcade.svg')}
+/* The shared top bar stays functional; its trim follows the selected theme. */
+body.studio-shell-ready[data-vuba-theme="steampunk"] .studio-topbar{
+ background:linear-gradient(90deg,#2b1c11,#4e321a)!important;
+ border-bottom:5px ridge #a97842!important
+}
+body.studio-shell-ready[data-vuba-theme="christmas"] .studio-topbar{
+ background:linear-gradient(90deg,#06372a,#164b36)!important;
+ border-bottom:5px solid #e0c378!important
+}
+body.studio-shell-ready[data-vuba-theme="arcade"] .studio-topbar{
+ background:linear-gradient(90deg,#23184b,#1c1435)!important;
+ border-bottom:5px solid #a47cea!important
+}
+body.studio-shell-ready[data-vuba-theme="futuristic"] .studio-topbar{
+ background:linear-gradient(90deg,#071526,#112639)!important;
+ border-bottom:3px solid #69f3f9!important
+}
+body.studio-shell-ready[data-vuba-theme="synthwave"] .studio-topbar{
+ background:linear-gradient(90deg,#201039,#451858)!important;
+ border-bottom:3px solid #f58bdf!important
+}
+
+/* FIX: optional edition mascot was an empty flex item on Classic and other
+   ordinary themes. justify-content:space-between then moved .hero-copy
+   to the far right. Hide it by default; special editions explicitly display
+   their absolutely positioned mascots above. */
+body.studio-shell-ready .studio-hero > .edition-hero-mascot{
+ display:none;
+}
+body.studio-shell-ready .studio-hero > .hero-copy{
+ margin-left:0!important;
+ margin-right:auto!important;
+ min-width:0;
+}
+/* Don't let presentation-only empty elements take flex layout space. */
+body.studio-shell-ready .studio-hero > .special-hero-plate{
+ display:none;
+}
+/* The special edition plate is an overlay only and never a flex item. */
+body.studio-shell-ready:is(
+ [data-vuba-theme="futuristic"],[data-vuba-theme="steampunk"],
+ [data-vuba-theme="christmas"],[data-vuba-theme="synthwave"],
+ [data-vuba-theme="arcade"]
+) .studio-hero > .special-hero-plate{
+ display:block;position:absolute;
+}

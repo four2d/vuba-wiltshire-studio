@@ -1,0 +1,438 @@
+/* VUBA Marketing HQ — one scoped design system, no changes to saved theme skins. */
+body.studio-shell-ready .vuba-hq{
+ --hq-bg:var(--read-soft,var(--theme-panel,#151515));
+ --hq-paper:var(--read-card,var(--theme-panel,#1d1d1d));
+ --hq-line:var(--read-stroke,var(--theme-edge,#474747));
+ --hq-fg:var(--read-text,#f3f3f3);
+ --hq-muted:var(--read-muted,#bdbdbd);
+ --hq-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --hq-ink:var(--read-accent-text,#121212);
+ margin:20px 0 26px;padding:23px;border:1px solid var(--hq-line);border-radius:14px;
+ background:var(--hq-bg);color:var(--hq-fg);font:400 13px/1.5 'Helvetica Neue',Arial,sans-serif;
+}
+body.studio-shell-ready[data-vuba-theme="classic"] .vuba-hq{
+ --hq-bg:#151515;--hq-paper:#1f1f1f;--hq-line:#393939;
+ --hq-fg:#f5f5f5;--hq-muted:#bfbfbf;--hq-accent:#f2c500;--hq-ink:#101010
+}
+body.studio-shell-ready .vuba-hq :is(h2,h3,h4,p){color:inherit}
+body.studio-shell-ready .vuba-hq :is(h2,h3,h4){margin:0;font-weight:850;line-height:1.18}
+body.studio-shell-ready .vuba-hq h2{font-size:29px;letter-spacing:-.02em}
+body.studio-shell-ready .vuba-hq h3{font-size:21px}
+body.studio-shell-ready .vuba-hq h4{font-size:14px}
+body.studio-shell-ready .vuba-hq p{margin:6px 0 0}
+body.studio-shell-ready .vuba-hq small,
+body.studio-shell-ready .vuba-hq .hq-muted{color:var(--hq-muted)}
+body.studio-shell-ready .vuba-hq .hq-head{
+ display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap
+}
+body.studio-shell-ready .vuba-hq .hq-head small{
+ color:var(--hq-accent);letter-spacing:.16em;font-size:10px;font-weight:900
+}
+body.studio-shell-ready .vuba-hq .hq-head p,
+body.studio-shell-ready .vuba-hq .hq-headline p{color:var(--hq-muted);font-size:12px}
+body.studio-shell-ready .vuba-hq button{
+ min-height:35px;border:1px solid var(--hq-line);border-radius:7px;
+ padding:8px 12px;background:var(--hq-paper);color:var(--hq-fg);
+ font:800 12px/1.3 'Helvetica Neue',Arial,sans-serif;cursor:pointer
+}
+body.studio-shell-ready .vuba-hq button:hover{border-color:var(--hq-accent)}
+body.studio-shell-ready .vuba-hq button:disabled{opacity:.55;cursor:not-allowed}
+body.studio-shell-ready .vuba-hq :is(button,select,input,textarea):focus-visible{
+ outline:3px solid var(--hq-accent);outline-offset:3px
+}
+body.studio-shell-ready .vuba-hq :is(#hqGeneratePlan,#hqSaveDrafts,#hqDownload,#hqUpload,#hqExport){
+ background:var(--hq-accent);color:var(--hq-ink);border-color:var(--hq-accent)
+}
+body.studio-shell-ready .vuba-hq .hq-tabs{
+ display:flex;gap:7px;flex-wrap:wrap;padding:15px 0;margin-top:16px;
+ border-top:1px solid var(--hq-line);border-bottom:1px solid var(--hq-line)
+}
+body.studio-shell-ready .vuba-hq .hq-tabs button{background:transparent}
+body.studio-shell-ready .vuba-hq .hq-tabs button[aria-pressed="true"]{
+ background:var(--hq-accent);color:var(--hq-ink);border-color:var(--hq-accent)
+}
+body.studio-shell-ready .vuba-hq #hqMessage{
+ margin:12px 0;padding:0;color:var(--hq-muted);font-size:12px;min-height:18px
+}
+body.studio-shell-ready .vuba-hq .hq-page[hidden]{display:none!important}
+body.studio-shell-ready .vuba-hq .hq-page{min-width:0}
+body.studio-shell-ready .vuba-hq .hq-headline{
+ display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;margin:0 0 16px
+}
+body.studio-shell-ready .vuba-hq label{display:grid;gap:5px;font-size:11px;font-weight:750}
+body.studio-shell-ready .vuba-hq :is(input:not([type="checkbox"]),select,textarea){
+ display:block;box-sizing:border-box;width:100%;min-width:0;min-height:37px;
+ border:1px solid var(--hq-line);border-radius:7px;
+ background:var(--hq-paper);color:var(--hq-fg);font:500 12px/1.45 'Helvetica Neue',Arial,sans-serif;
+ padding:8px 10px
+}
+body.studio-shell-ready .vuba-hq textarea{resize:vertical}
+body.studio-shell-ready .vuba-hq .hq-fields-row{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:14px
+}
+body.studio-shell-ready .vuba-hq .hq-cards{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0
+}
+body.studio-shell-ready .vuba-hq .hq-proposal,
+body.studio-shell-ready .vuba-hq .hq-publish-item{
+ background:var(--hq-paper);border:1px solid var(--hq-line);border-radius:10px;
+ padding:15px;display:grid;align-content:start;gap:10px;min-width:0
+}
+body.studio-shell-ready .vuba-hq .hq-proposal-top{
+ display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap
+}
+body.studio-shell-ready .vuba-hq .hq-proposal-top label{
+ display:flex;align-items:center;gap:6px
+}
+body.studio-shell-ready .vuba-hq .hq-proposal-top strong{
+ color:var(--hq-accent);font-size:12px
+}
+body.studio-shell-ready .vuba-hq .hq-proposal textarea{min-height:128px}
+body.studio-shell-ready .vuba-hq .hq-proposal small{line-height:1.5;overflow-wrap:anywhere}
+body.studio-shell-ready .vuba-hq .hq-creative-grid{
+ display:grid;grid-template-columns:minmax(240px,350px) minmax(0,1fr);gap:23px
+}
+body.studio-shell-ready .vuba-hq .hq-controls{display:grid;gap:10px;align-content:start}
+body.studio-shell-ready .vuba-hq .hq-controls .hq-check{
+ display:flex;align-items:flex-start;gap:9px;line-height:1.45
+}
+body.studio-shell-ready .vuba-hq input[type="checkbox"]{accent-color:var(--hq-accent);width:16px;height:16px}
+body.studio-shell-ready .vuba-hq .hq-buttons{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+body.studio-shell-ready .vuba-hq .hq-preview{
+ display:flex;justify-content:center;align-items:flex-start;padding:15px;
+ background:#0b0b0b;border:1px solid var(--hq-line);border-radius:10px;min-width:0
+}
+body.studio-shell-ready .vuba-hq #hqCanvas{display:block;width:100%;height:auto;max-height:540px;object-fit:contain}
+body.studio-shell-ready .vuba-hq .hq-filter{
+ display:flex;align-items:center;gap:10px;margin:0 0 15px;max-width:350px
+}
+body.studio-shell-ready .vuba-hq .hq-filter select{flex:1}
+body.studio-shell-ready .vuba-hq .hq-publish-item{
+ border-left:4px solid var(--hq-accent);gap:8px
+}
+body.studio-shell-ready .vuba-hq .hq-publish-item p{
+ white-space:pre-line;overflow-wrap:anywhere;color:var(--hq-muted);font-size:12px
+}
+body.studio-shell-ready .vuba-hq .hq-label{
+ color:var(--hq-accent);font-size:10px;font-weight:900;letter-spacing:.1em
+}
+body.studio-shell-ready .vuba-hq .hq-insight-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px
+}
+body.studio-shell-ready .vuba-hq .hq-insight-grid>div{
+ display:grid;gap:6px;padding:16px;border:1px solid var(--hq-line);
+ border-radius:9px;background:var(--hq-paper)
+}
+body.studio-shell-ready .vuba-hq .hq-insight-grid strong{
+ color:var(--hq-accent);font-size:26px;font-weight:900
+}
+body.studio-shell-ready .vuba-hq .hq-insight-grid p{font-size:12px;color:var(--hq-muted)}
+@media(max-width:980px){
+ body.studio-shell-ready .vuba-hq .hq-creative-grid{grid-template-columns:1fr}
+ body.studio-shell-ready .vuba-hq .hq-cards{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+ body.studio-shell-ready .vuba-hq{padding:14px;margin:15px 0}
+ body.studio-shell-ready .vuba-hq h2{font-size:24px}
+ body.studio-shell-ready .vuba-hq .hq-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.studio-shell-ready .vuba-hq .hq-fields-row,
+ body.studio-shell-ready .vuba-hq .hq-insight-grid{grid-template-columns:1fr}
+ body.studio-shell-ready .vuba-hq .hq-preview{padding:7px}
+ body.studio-shell-ready .vuba-hq #hqCanvas{max-height:480px}
+}
+@media(prefers-reduced-motion:reduce){
+ body.studio-shell-ready .vuba-hq *,body.studio-shell-ready .vuba-hq *:before{
+ animation:none!important;transition:none!important;scroll-behavior:auto!important
+}
+}
+/* Always-visible shortcut in the existing Overview heading. */
+body.studio-shell-ready #hqQuickJump{
+ align-self:center;min-height:39px;padding:10px 15px;
+ background:var(--read-accent,var(--theme-accent,#f2c500));
+ color:var(--read-accent-text,#101010);
+ border:1px solid var(--read-accent,var(--theme-accent,#f2c500));
+ border-radius:8px;font-size:11px;font-weight:850;cursor:pointer;
+}
+body.studio-shell-ready #hqQuickJump:focus-visible{
+ outline:3px solid var(--read-accent,var(--theme-accent,#f2c500));outline-offset:3px
+}
+body.studio-shell-ready .vuba-hq a{
+ color:var(--hq-accent);text-decoration:underline;text-underline-offset:3px
+}
+body.studio-shell-ready .vuba-hq a:focus-visible{
+ outline:3px solid var(--hq-accent);outline-offset:3px
+}
+
+/* Media Library uploader: required rights field must be visible in every theme. */
+body.studio-shell-ready #mediaManager .mm-rights-label{
+ display:grid;gap:7px;margin:0 0 16px;max-width:none;
+ color:var(--read-text,#f5f5f5);font-size:12px;font-weight:750
+}
+body.studio-shell-ready #mediaManager .mm-rights-label span{
+ color:var(--read-muted,#bcbcbc);font-size:11px;font-weight:400;line-height:1.5
+}
+body.studio-shell-ready #mediaManager #mmRights{
+ display:block;box-sizing:border-box;width:100%;max-width:720px;
+ min-height:43px;padding:11px 13px;border-radius:9px;
+ color:var(--read-text,#f5f5f5);
+ background:var(--read-field,var(--theme-panel,#1e1e1e));
+ border:1px solid var(--read-stroke,var(--theme-edge,#777));
+ font:500 13px/1.4 'Helvetica Neue',Arial,sans-serif
+}
+body.studio-shell-ready #mediaManager #mmRights:focus-visible{
+ outline:3px solid var(--read-accent,var(--theme-accent,#f2c500));outline-offset:2px
+}
+body.studio-shell-ready #mediaManager #mmStatus{
+ white-space:normal;overflow-wrap:anywhere;line-height:1.5
+}
+
+/* Direct social-account administration — contained in VUBA Publishing Desk. */
+body.studio-shell-ready .vuba-social-accounts{
+ --sa-line:var(--hq-line,var(--read-stroke,#4b4b4b));
+ --sa-bg:var(--hq-paper,var(--read-soft,#1a1a1a));
+ --sa-fg:var(--hq-fg,var(--read-text,#f3f3f3));
+ --sa-muted:var(--hq-muted,var(--read-muted,#bcbcbc));
+ --sa-accent:var(--hq-accent,var(--read-accent,#f2c500));
+ padding:18px 0;margin-bottom:21px;border-bottom:1px solid var(--sa-line)
+}
+body.studio-shell-ready .vuba-social-heading{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px
+}
+body.studio-shell-ready .vuba-social-heading small{display:block;color:var(--sa-accent);font-size:10px;letter-spacing:.11em;font-weight:900}
+body.studio-shell-ready .vuba-social-accounts .vuba-social-heading :is(h3,h4){margin:2px 0 5px;color:var(--sa-fg)}
+body.studio-shell-ready .vuba-social-accounts .vuba-social-heading p{margin:0;color:var(--sa-muted);font-size:12px}
+body.studio-shell-ready .vuba-social-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px;margin:13px 0 19px}
+body.studio-shell-ready .vuba-social-card{
+ border:1px solid var(--sa-line);border-radius:10px;padding:14px;background:var(--sa-bg);
+ display:flex;flex-direction:column;gap:8px
+}
+body.studio-shell-ready .vuba-social-card-header{display:flex;align-items:start;justify-content:space-between;gap:7px;flex-wrap:wrap}
+body.studio-shell-ready .vuba-social-card-header strong{font-size:13px;color:var(--sa-fg)}
+body.studio-shell-ready .vuba-connection-state{
+ font-size:10px;font-weight:800;background:transparent;border:1px solid var(--sa-line);
+ border-radius:20px;padding:4px 8px;color:var(--sa-muted)
+}
+body.studio-shell-ready .vuba-connection-state[data-state="Connected"]{color:var(--sa-accent);border-color:var(--sa-accent)}
+body.studio-shell-ready .vuba-social-card p{font-size:11px;color:var(--sa-muted);margin:0}
+body.studio-shell-ready .vuba-social-card a{margin-top:auto;font-size:11px;font-weight:800;line-height:1.5}
+body.studio-shell-ready .vuba-social-card ul{font-size:11px;margin:0;padding-left:16px;overflow-wrap:anywhere}
+body.studio-shell-ready #vubaSocialStatus{font-size:12px;line-height:1.5;color:var(--sa-muted)}
+body.studio-shell-ready .vuba-delivery-panel{padding-top:15px;border-top:1px solid var(--sa-line)}
+body.studio-shell-ready .vuba-delivery-table{overflow:auto}
+body.studio-shell-ready .vuba-delivery-table table{border-collapse:collapse;width:100%;font-size:11px}
+body.studio-shell-ready .vuba-delivery-table :is(th,td){padding:9px;border-bottom:1px solid var(--sa-line);text-align:left}
+body.studio-shell-ready .vuba-delivery-table th{color:var(--sa-muted);font-size:10px}
+body.studio-shell-ready .vuba-social-disclaimer,
+body.studio-shell-ready .vuba-social-empty{color:var(--sa-muted);font-size:11px;line-height:1.6;margin:12px 0}
+@media(max-width:900px){body.studio-shell-ready .vuba-social-cards{grid-template-columns:1fr}}
+
+/* Explicit manual provider publication — never expose accidental one-click posting. */
+body.studio-shell-ready .vuba-direct-publish{
+ border-top:1px solid var(--sa-line);padding:18px 0;margin:16px 0
+}
+body.studio-shell-ready .vuba-ready-row{
+ display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,220px) auto;
+ gap:12px;align-items:center;padding:12px;margin:7px 0;
+ border:1px solid var(--sa-line);background:var(--sa-bg);border-radius:10px
+}
+body.studio-shell-ready .vuba-ready-row>div:first-child{display:grid;gap:4px;min-width:0}
+body.studio-shell-ready .vuba-ready-row strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}
+body.studio-shell-ready .vuba-ready-row :is(small,p){color:var(--sa-muted);font-size:10px;margin:0}
+body.studio-shell-ready .vuba-ready-row label{display:grid;gap:6px;font-size:11px}
+body.studio-shell-ready .vuba-ready-row select{
+ min-height:35px;padding:7px 10px;border:1px solid var(--sa-line);
+ background:var(--sa-bg);color:var(--sa-fg);border-radius:7px
+}
+body.studio-shell-ready .vuba-ready-row button{
+ background:var(--sa-accent);color:var(--hq-ink,#161616);
+ border:1px solid var(--sa-accent);font-size:11px;font-weight:850
+}
+body.studio-shell-ready .vuba-social-card button[data-social-connect]{
+ background:var(--sa-accent);color:var(--hq-ink,#161616);border-color:var(--sa-accent);
+ font-size:11px;font-weight:850
+}
+body.studio-shell-ready .vuba-social-setup-note{
+ margin-top:4px;font-size:11px;color:var(--sa-muted);line-height:1.4
+}
+@media(max-width:730px){
+ body.studio-shell-ready .vuba-ready-row{grid-template-columns:1fr}
+}
+
+/* Dedicated Connections route: uses VUBA theme tokens and the existing account service. */
+body.studio-shell-ready .vuba-connections-page{
+ --fc-accent:var(--read-accent,var(--theme-accent,#f2c500));
+ --fc-ink:var(--read-accent-text,#111);
+ --fc-ink-soft:var(--read-text,#f3f3f3);
+ --fc-muted:var(--read-muted,#c3c3c3);
+ --fc-panel:var(--read-card,var(--theme-panel,#1f1f1f));
+ --fc-line:var(--read-stroke,var(--theme-edge,#4a4a4a));
+ color:var(--fc-ink-soft);
+ padding-bottom:40px
+}
+body.studio-shell-ready .vuba-connections-page :is(h1,h2,h3,h4,strong){color:var(--fc-ink-soft)}
+body.studio-shell-ready .vuba-connections-page .vuba-connect-intro{
+ background:var(--fc-panel);border:1px solid var(--fc-line);
+ border-left:5px solid var(--fc-accent);padding:21px 23px;
+ border-radius:11px;margin:14px 0 21px
+}
+body.studio-shell-ready .vuba-connections-page .vuba-connect-intro strong{
+ display:block;font:900 19px/1.25 Impact,'Arial Narrow',Arial,sans-serif;letter-spacing:.04em
+}
+body.studio-shell-ready .vuba-connections-page .vuba-connect-intro p{
+ max-width:700px;margin:8px 0 0;color:var(--fc-muted);
+ font:500 13px/1.65 'Helvetica Neue',Arial,sans-serif
+}
+body.studio-shell-ready .vuba-connections-page .vuba-social-accounts{
+ --sa-line:var(--fc-line);--sa-bg:var(--fc-panel);
+ --sa-fg:var(--fc-ink-soft);--sa-muted:var(--fc-muted);--sa-accent:var(--fc-accent);
+ background:transparent;margin:0;padding:0;border:0
+}
+body.studio-shell-ready .vuba-connections-page .vuba-social-heading h3{
+ font:900 24px/1.25 Impact,'Arial Narrow',Arial,sans-serif
+}
+body.studio-shell-ready .vuba-connections-page .vuba-social-card{min-height:196px}
+body.studio-shell-ready .vuba-connections-page .vuba-social-card :is(a,button){min-height:35px}
+body.studio-shell-ready .vuba-connections-page .vuba-social-card a{color:var(--fc-accent);font-weight:800}
+body.studio-shell-ready .vuba-connections-page .vuba-future-connections{
+ padding:22px 0 0;margin-top:22px;border-top:1px solid var(--fc-line)
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-grid{
+ display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:12px;margin:16px 0 0
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-card{
+ border:1px solid var(--fc-line);background:var(--fc-panel);
+ border-radius:10px;padding:16px;min-width:0;
+ display:flex;flex-direction:column;gap:8px
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-card>div{
+ display:flex;align-items:start;justify-content:space-between;flex-wrap:wrap;gap:8px
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-card strong{
+ font-weight:850;font-size:13px
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-card span{
+ border:1px solid var(--fc-line);border-radius:30px;padding:4px 8px;
+ font-size:10px;color:var(--fc-muted)
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-card p{
+ color:var(--fc-ink-soft);font-size:12px;margin:0
+}
+body.studio-shell-ready .vuba-connections-page .vuba-future-card small{
+ color:var(--fc-muted);font-size:10px;line-height:1.5;margin-top:auto
+}
+body.studio-shell-ready .vuba-connections-page :is(button,a,select):focus-visible{
+ outline:3px solid var(--fc-accent);outline-offset:3px
+}
+@media(max-width:1050px){
+ body.studio-shell-ready .vuba-connections-page .vuba-future-grid{
+ grid-template-columns:repeat(2,minmax(0,1fr))
+ }
+}
+@media(max-width:680px){
+ body.studio-shell-ready .vuba-connections-page .vuba-future-grid{grid-template-columns:1fr}
+ body.studio-shell-ready .vuba-connections-page .vuba-connect-intro{padding:16px}
+}
+
+/* Simple member-facing connection controls; technical setup visible to admins only. */
+body.studio-shell-ready .vuba-connections-page .vuba-social-card button:disabled{
+ opacity:.62;cursor:not-allowed;background:var(--fc-panel);
+ color:var(--fc-muted);border:1px solid var(--fc-line)
+}
+body.studio-shell-ready .vuba-connections-page .vuba-social-card button[data-social-connect]{
+ background:var(--fc-accent);color:var(--fc-ink);border:1px solid var(--fc-accent)
+}
+body.studio-shell-ready .vuba-developer-admin{
+ margin-top:20px;border:1px solid var(--fc-line);
+ border-radius:10px;background:var(--fc-panel);padding:13px 18px
+}
+body.studio-shell-ready .vuba-developer-admin[hidden]{display:none!important}
+body.studio-shell-ready .vuba-developer-admin summary{
+ cursor:pointer;font-size:12px;font-weight:850;color:var(--fc-ink-soft);padding:6px 0
+}
+body.studio-shell-ready .vuba-developer-admin p{
+ color:var(--fc-muted);font-size:12px;line-height:1.6
+}
+body.studio-shell-ready .vuba-admin-provider-links{
+ display:flex;flex-wrap:wrap;gap:9px;margin:14px 0
+}
+body.studio-shell-ready .vuba-admin-provider-links a{
+ display:inline-flex;align-items:center;min-height:35px;
+ padding:8px 11px;border:1px solid var(--fc-line);
+ border-radius:8px;color:var(--fc-accent);
+ font-size:11px;font-weight:800
+}
+
+/* Connection-first layout: advanced publishing and provider configuration stay collapsed. */
+body.studio-shell-ready .vuba-connections-page .vuba-social-cards{margin-bottom:18px}
+body.studio-shell-ready .vuba-connections-page .vuba-simple-card{
+ min-height:190px;gap:12px;justify-content:space-between
+}
+body.studio-shell-ready .vuba-connections-page .vuba-simple-card>.vuba-social-card-header{gap:10px}
+body.studio-shell-ready .vuba-connections-page .vuba-simple-card button{
+ width:100%;margin-top:auto;min-height:43px;
+ background:var(--fc-accent);color:var(--fc-ink);border:1px solid var(--fc-accent);
+ font-weight:850
+}
+body.studio-shell-ready .vuba-connections-page .vuba-simple-card ul{margin:0}
+body.studio-shell-ready .vuba-connections-page .vuba-extra-panel{
+ margin:16px 0;border:1px solid var(--fc-line);
+ border-radius:10px;background:var(--fc-panel);padding:12px 17px
+}
+body.studio-shell-ready .vuba-connections-page .vuba-extra-panel>summary{
+ cursor:pointer;color:var(--fc-ink-soft);font-size:12px;font-weight:800;
+ min-height:36px;display:list-item;align-content:center
+}
+body.studio-shell-ready .vuba-connections-page .vuba-extra-panel[open]{
+ padding-bottom:18px
+}
+body.studio-shell-ready .vuba-connections-page .vuba-social-disclaimer{
+ margin:6px 0 16px;font-size:11px;color:var(--fc-muted)
+}
+
+/* VUBA novice-first Connections screen. Overrides previous technical card layout. */
+body.studio-shell-ready .vuba-connections-page .vuba-easy-connect{background:transparent;border:0;padding:0;margin:0;color:var(--fc-ink-soft)}
+body.studio-shell-ready .vuba-connections-page .fc-welcome{display:flex;align-items:center;gap:16px;margin:8px 0 22px}
+body.studio-shell-ready .vuba-connections-page .fc-spark{display:grid;place-items:center;flex:none;width:54px;height:54px;border-radius:14px;background:var(--fc-accent);color:var(--fc-ink);font-size:25px}
+body.studio-shell-ready .vuba-connections-page .fc-welcome h2{margin:0;color:var(--fc-ink-soft);font-size:clamp(23px,2vw,31px);font-weight:850;letter-spacing:-.03em}
+body.studio-shell-ready .vuba-connections-page .fc-welcome p{margin:5px 0 0;font-size:13px;color:var(--fc-muted);line-height:1.6}
+body.studio-shell-ready .vuba-connections-page .fc-primary-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+body.studio-shell-ready .vuba-connections-page .fc-account-card{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:245px;padding:23px;border:1px solid var(--fc-line);border-radius:15px;background:var(--fc-panel);box-shadow:0 5px 15px rgba(0,0,0,.06)}
+body.studio-shell-ready .vuba-connections-page .fc-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+body.studio-shell-ready .vuba-connections-page .fc-mark{display:grid;place-items:center;width:49px;height:49px;border-radius:12px;background:var(--fc-accent);color:var(--fc-ink);font-size:24px;font-weight:900;line-height:1}
+body.studio-shell-ready .vuba-connections-page .fc-mark-linkedin{font-size:20px}
+body.studio-shell-ready .vuba-connections-page .fc-connection-status{display:inline-flex;align-items:center;padding:5px 9px;border-radius:20px;background:var(--fc-line);color:var(--fc-ink-soft);font-size:10px;font-weight:750}
+body.studio-shell-ready .vuba-connections-page .fc-connection-status.is-connected{background:var(--fc-accent);color:var(--fc-ink)}
+body.studio-shell-ready .vuba-connections-page .fc-account-card h3{font-size:20px;font-weight:850;margin:4px 0 0;letter-spacing:-.02em;color:var(--fc-ink-soft)}
+body.studio-shell-ready .vuba-connections-page .fc-account-card p{margin:0;color:var(--fc-muted);font-size:12px;line-height:1.55}
+body.studio-shell-ready .vuba-connections-page .fc-account-card small{color:var(--fc-ink-soft);font-size:11px}
+body.studio-shell-ready .vuba-connections-page .fc-account-card button{margin-top:auto;min-height:46px;width:100%;border:1px solid var(--fc-accent);border-radius:9px;background:var(--fc-accent);color:var(--fc-ink);font-size:13px;font-weight:900;cursor:pointer}
+body.studio-shell-ready .vuba-connections-page .fc-account-card button:hover{filter:brightness(.94)}
+body.studio-shell-ready .vuba-connections-page .fc-account-card button:focus-visible{outline:3px solid var(--fc-accent);outline-offset:3px}
+body.studio-shell-ready .vuba-connections-page .fc-friendly-status{min-height:0;margin:16px 0 0;color:var(--fc-ink-soft);font-size:12px;line-height:1.5}
+body.studio-shell-ready .vuba-connections-page .fc-friendly-status:empty{display:none}
+body.studio-shell-ready .vuba-connections-page .fc-reassurance{font-size:12px;color:var(--fc-muted);margin:20px 0}
+body.studio-shell-ready .vuba-connections-page .fc-optional-details,
+body.studio-shell-ready .vuba-connections-page .fc-admin-section>details{margin-top:20px;border:1px solid var(--fc-line);border-radius:10px;padding:12px 16px;color:var(--fc-ink-soft);background:var(--fc-panel)}
+body.studio-shell-ready .vuba-connections-page .fc-optional-details[hidden],
+body.studio-shell-ready .vuba-connections-page .fc-admin-section[hidden]{display:none!important}
+body.studio-shell-ready .vuba-connections-page .fc-optional-details summary,
+body.studio-shell-ready .vuba-connections-page .fc-admin-section summary{cursor:pointer;font-weight:800;font-size:12px}
+body.studio-shell-ready .vuba-connections-page .fc-admin-section{margin-top:30px}
+@media(max-width:1080px){body.studio-shell-ready .vuba-connections-page .fc-primary-cards{grid-template-columns:1fr}}
+@media(max-width:680px){body.studio-shell-ready .vuba-connections-page .fc-account-card{min-height:200px;padding:17px}body.studio-shell-ready .vuba-connections-page .fc-welcome{align-items:flex-start}}
+
+/* Calm page heading; remove the overwhelming banner on beginner Connections. */
+body.studio-shell-ready .vuba-connections-page > .studio-page-heading{
+ background:transparent!important;border:0!important;box-shadow:none!important;
+ padding:10px 0 18px!important;margin:0 0 8px!important;min-height:0!important
+}
+body.studio-shell-ready .vuba-connections-page > .studio-page-heading :is(h1,p,.studio-kicker){
+ color:var(--fc-ink-soft)!important;text-shadow:none!important
+}
+body.studio-shell-ready .vuba-connections-page > .studio-page-heading h1{
+ font-size:clamp(22px,2vw,28px)!important;letter-spacing:-.025em!important;margin:0!important
+}
+body.studio-shell-ready .vuba-connections-page > .studio-page-heading p{
+ color:var(--fc-muted)!important;font-size:12px!important;line-height:1.5!important
+}
