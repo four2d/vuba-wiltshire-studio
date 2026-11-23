@@ -7,9 +7,9 @@ const env=(key:string)=>Deno.env.get(key)||"";
 const base=env("SUPABASE_URL");
 const endpoint=base+"/functions/v1/vuba-social-oauth";
 const config={
- Facebook:{client:env("VUBA_META_APP_ID"),secret:env("VUBA_META_APP_SECRET"),auth:"https://www.facebook.com/v24.0/dialog/oauth",scope:"pages_show_list,pages_read_engagement,pages_manage_posts,business_management"},
+ Facebook:{client:env("VUBA_META_APP_ID"),secret:env("VUBA_META_APP_SECRET"),auth:"https://www.facebook.com/v24.0/dialog/oauth",scope:"pages_show_list,pages_read_engagement,pages_manage_posts"},
  Instagram:{client:env("VUBA_META_APP_ID"),secret:env("VUBA_META_APP_SECRET"),auth:"https://www.facebook.com/v24.0/dialog/oauth",scope:"pages_show_list,pages_read_engagement,instagram_basic,instagram_content_publish"},
- LinkedIn:{client:env("VUBA_LINKEDIN_CLIENT_ID"),secret:env("VUBA_LINKEDIN_CLIENT_SECRET"),auth:"https://www.linkedin.com/oauth/v2/authorization",scope:"w_organization_social r_organization_social r_organization_admin"}
+ LinkedIn:{client:env("VUBA_LINKEDIN_CLIENT_ID"),secret:env("VUBA_LINKEDIN_CLIENT_SECRET"),auth:"https://www.linkedin.com/oauth/v2/authorization",scope:"w_organization_social r_organization_social rw_organization_admin"}
 };
 const cors={ "Access-Control-Allow-Origin":site,"Access-Control-Allow-Headers":"authorization, apikey, content-type, x-client-info","Access-Control-Allow-Methods":"POST, OPTIONS","Vary":"Origin" };
 const respond=(body:unknown,status=200)=>new Response(JSON.stringify(body),{status,headers:{...cors,"Content-Type":"application/json","Cache-Control":"no-store"}});
