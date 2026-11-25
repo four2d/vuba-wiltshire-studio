@@ -1,6 +1,5 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-const cfg = window.VUBA_CONFIG;
-const db = createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
+const db = createStudioClient();
 const safe = value => String(value ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pillars = {
  "Installer Advice":"Useful trade","Product Education":"Useful trade",
@@ -276,7 +275,7 @@ async function addPreviewToCalendar(){
  document.getElementById("suggestionMessage").textContent=(editedCaption?"Draft":"Idea")+" added for "+new Date(date+"T12:00:00").toLocaleDateString("en-GB")+".";
  await loadAll();
 }
-const {data:{session}}=await db.auth.getSession();await init(session?.user||null);
-db.auth.onAuthStateChange((_,session)=>{setTimeout(()=>init(session?.user||null),0)});
+await init(await getStudioUser());
+onStudioAuth((user)=>{setTimeout(()=>init(user||null),0)});
 
 document.addEventListener("vuba-brain-updated",()=>{if(user&&document.getElementById("strategyArea"))loadAll()});

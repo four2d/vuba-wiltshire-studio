@@ -1,9 +1,9 @@
 /* VUBA Studio upgrade pack: read-only analytics, safe calendar planning,
    editorial QA and export. No simulated publishing or engagement data. */
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
 const config=window.VUBA_CONFIG||{};
 if(config.supabaseUrl && config.supabaseAnonKey){
- const db=createClient(config.supabaseUrl,config.supabaseAnonKey);
+ const db=createStudioClient();
  const byId=id=>document.getElementById(id);
  const esc=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const dateToday=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");};
@@ -302,8 +302,8 @@ if(config.supabaseUrl && config.supabaseAnonKey){
   const link=document.createElement("a");link.href=url;link.download="vuba-approved-content-"+today+".csv";document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   byId("vubaUpgradeNotice").textContent=rows.length+" prepared posts exported. This does not publish them or verify platform delivery.";
  }
- db.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>init(session?.user||null),0);});
- db.auth.getSession().then(({data})=>init(data.session?.user||null));
+ onStudioAuth((user)=>{setTimeout(()=>init(user||null),0);});
+ getStudioUser().then((user)=>init(user||null));
  window.addEventListener("hashchange",()=>{if(location.hash==="#home"||location.hash==="#calendar")refresh();});
  document.addEventListener("visibilitychange",()=>{if(!document.hidden&&state.user)refresh();});
  window.addEventListener("vuba:post-saved",()=>{setTimeout(refresh,100);});

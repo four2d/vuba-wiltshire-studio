@@ -1,4 +1,4 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import {createStudioClient,ensureStudioSession,onStudioAuth,studioSignOut,mountStudioLoginGate,studioStartUrl} from "./staff-auth.js";
 const C=window.VUBA_CONFIG||{};
 const $=id=>document.getElementById(id);
 const pillars=["Installer Advice","Product Education","Blends & Colour Inspiration","Local Stock & Availability","Project Planning","Behind the Scenes / Depot","Installer & Project Spotlights","FAQs & Myth Busting","Homeowner Education","Commercial / Sales"];
@@ -12,21 +12,26 @@ function alertError(e,id="editorError"){ $(id).textContent=e?.message||String(e)
 function option(el,items){el.innerHTML=items.map(x=>'<option value="'+esc(x)+'">'+esc(x||"None")+"</option>").join("");}
 option($("pillar"),pillars);option($("series"),series);
 if(!C.supabaseUrl||!C.supabaseAnonKey){$("setup").hidden=false;}else{
- db=createClient(C.supabaseUrl,C.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true}});
- db.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>boot(session?.user),0)});
- boot((await db.auth.getSession()).data.session?.user);
+ db=createStudioClient();
+ mountStudioLoginGate({authEl:$("auth"),setupEl:$("setup")});
+ onStudioAuth((u)=>setTimeout(()=>boot(u),0));
+ boot(await ensureStudioSession({redirect:false}));
 }
 async function boot(u){
  user=u;$("auth").hidden=!!u;$("app").hidden=!u;$("logout").hidden=!u;
- if(!u)return;
+ if(!u){
+  if($("auth") && !$("studioSsoContinue")){
+   $("auth").innerHTML=`<h1>Staff sign in</h1><p>Use your Vuba Order desk login. You will return here after signing in.</p><p style="margin:1rem 0 0"><a id="studioSsoContinue" href="${studioStartUrl()}" style="display:inline-flex;align-items:center;justify-content:center;padding:0.7rem 1.1rem;border-radius:10px;background:#821732;color:#fff;font-weight:700;text-decoration:none">Continue with Order login</a></p><p id="authError" role="alert"></p>`;
+  }
+  return;
+ }
  try{
  const {data,error}=await db.from("studio_members").select("role").eq("user_id",u.id).single();
  if(error||!data)throw Error("Your account has not been invited to the Vuba Wiltshire workspace.");
- role=data.role;$("who").textContent=u.email+" · "+role;await load();
+ role=data.role;$("who").textContent=(u.email||u.name||"Staff")+" · "+role;await load();
  }catch(e){$("app").hidden=true;$("auth").hidden=false;alertError(e,"authError");}
 }
-$("login").onsubmit=async e=>{e.preventDefault();$("authError").textContent="";const {error}=await db.auth.signInWithPassword({email:$("email").value,password:$("password").value});if(error)alertError(error,"authError");};
-$("logout").onclick=()=>db.auth.signOut();
+$("logout").onclick=()=>studioSignOut();
 async function load(){
  const {data,error}=await db.from("studio_posts").select("*").order("scheduled_date",{ascending:true}).limit(500);
  if(error)throw error;posts=data||[];render();

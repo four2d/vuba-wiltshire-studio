@@ -1,6 +1,5 @@
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
-const conf=window.VUBA_CONFIG;
-const db=createClient(conf.supabaseUrl,conf.supabaseAnonKey);
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
+const db=createStudioClient();
 const $=id=>document.getElementById(id);
 const safe=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const categories=["Brand","Audience","Operations","Marketing","Website","Product","Team","Open question","Other"];
@@ -150,6 +149,5 @@ async function save(e){
  $("brainDialog").close();await load();
  document.dispatchEvent(new Event("vuba-brain-updated"));
 }
-const {data:{session}}=await db.auth.getSession();
-await init(session?.user||null);
-db.auth.onAuthStateChange((_,session)=>setTimeout(()=>init(session?.user||null),0));
+await init(await getStudioUser());
+onStudioAuth((user)=>setTimeout(()=>init(user||null),0));

@@ -1,6 +1,5 @@
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
-const C=window.VUBA_CONFIG;
-const db=createClient(C.supabaseUrl,C.supabaseAnonKey);
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
+const db=createStudioClient();
 const $=id=>document.getElementById(id);
 const safe=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const state={user:null,role:null,campaigns:[],media:[],posts:[],urls:{},currentPost:null};
@@ -203,6 +202,5 @@ async function changeReviewStatus(status,action){
  $("reviewGrid").scrollIntoView({block:"nearest"});
 }
 window.VubaStudioPlus={refresh};
-const {data:{session}}=await db.auth.getSession();
-await auth(session?.user||null);
-db.auth.onAuthStateChange((_,session)=>setTimeout(()=>auth(session?.user||null),0));
+await auth(await getStudioUser());
+onStudioAuth((user)=>setTimeout(()=>auth(user||null),0));

@@ -1,9 +1,9 @@
 /* VUBA Marketing HQ: verified-source editorial planning, original creative layout,
    explicit hand-off and evidence-labelled insight. No direct social posting. */
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
 const config=window.VUBA_CONFIG||{};
 if(config.supabaseUrl&&config.supabaseAnonKey){
- const db=createClient(config.supabaseUrl,config.supabaseAnonKey);
+ const db=createStudioClient();
  const $=id=>document.getElementById(id);
  const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const products=["Installer Advice","Blends & Colour Inspiration","Local Stock & Availability","Project Planning"],channels=["LinkedIn","Facebook","Instagram"];
@@ -295,8 +295,8 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   const results=entries.map(selector=>{const e=document.querySelector(selector);if(!e)return selector+": not on this screen";const c=getComputedStyle(e);return selector+": text "+c.color+" / background "+c.backgroundColor;});
   $("hqContrastResult").textContent="Current-theme computed colours: "+results.join(" · ")+". Automated colour inspection does not replace visual, mobile or screen-reader testing.";
  }
- db.auth.onAuthStateChange((_e,session)=>setTimeout(()=>enter(session?.user||null),0));
- db.auth.getSession().then(({data})=>enter(data.session?.user||null));
+ onStudioAuth((user)=>setTimeout(()=>enter(user||null),0));
+ getStudioUser().then((user)=>enter(user||null));
  window.addEventListener("vuba:post-saved",()=>setTimeout(refresh,100));
  document.addEventListener("vuba:studio-refresh",()=>{if(state.active==="insights")renderInsights();});
 }

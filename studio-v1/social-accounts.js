@@ -1,9 +1,9 @@
 /* Vuba Wiltshire Connections: beginner-first, Vuba-only social accounts.
    No imported another brand credentials, fake connected states, or client secrets. */
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
 const config=window.VUBA_CONFIG||{};
 if(config.supabaseUrl&&config.supabaseAnonKey){
- const db=createClient(config.supabaseUrl,config.supabaseAnonKey);
+ const db=createStudioClient();
  const $=id=>document.getElementById(id);
  const escapeHtml=value=>String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
  const providers=[
@@ -108,6 +108,6 @@ if(config.supabaseUrl&&config.supabaseAnonKey){
   render();await refresh();
   window.VUBASocialAccounts={refresh};
  }
- db.auth.onAuthStateChange((_event,session)=>setTimeout(()=>init(session?.user||null),0));
- db.auth.getSession().then(({data})=>init(data.session?.user||null));
+ onStudioAuth((user)=>setTimeout(()=>init(user||null),0));
+ getStudioUser().then((user)=>init(user||null));
 }

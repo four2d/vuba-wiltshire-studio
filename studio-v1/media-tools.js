@@ -1,6 +1,5 @@
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
-const cfg=window.VUBA_CONFIG;
-const db=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
+const db=createStudioClient();
 const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 let signedIn=null,media=[],signedUrls={},selectedMedia="",renderTicket=0,batchOffset=0;
@@ -196,5 +195,5 @@ async function start(u){
  await loadMedia();
 }
 window.VubaMediaAssist={chooseForBuilder,bestForText,refresh:loadMedia};
-const {data:{session}}=await db.auth.getSession();await start(session?.user||null);
-db.auth.onAuthStateChange((_,session)=>{setTimeout(()=>start(session?.user||null),0)});
+await start(await getStudioUser());
+onStudioAuth((user)=>{setTimeout(()=>start(user||null),0)});

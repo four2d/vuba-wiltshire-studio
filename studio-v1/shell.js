@@ -1,6 +1,5 @@
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
-const cfg=window.VUBA_CONFIG;
-const db=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+import {createStudioClient,getStudioUser,onStudioAuth,studioSignOut} from "./staff-auth.js";
+const db=createStudioClient();
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pages=[
@@ -86,7 +85,7 @@ function buildShell(){
  root.prepend(shell);
  $("heroFillCalendar").onclick=fillCalendar;
  $("heroExploreIdeas").onclick=()=>navigate("ideas");
- $("sidebarSignout").onclick=()=>document.getElementById("logout")?.click();
+ $("sidebarSignout").onclick=()=>studioSignOut();
  $("topbarNewPost").onclick=()=>document.getElementById("new")?.click();
  $("studioMobileMenu").onclick=()=>toggleMobileMenu();
  $("studioNavShade").onclick=()=>toggleMobileMenu(false);
@@ -355,6 +354,5 @@ async function auth(u){
  buildShell();
  route();
 }
-const {data:{session}}=await db.auth.getSession();
-await auth(session?.user||null);
-db.auth.onAuthStateChange((_,session)=>setTimeout(()=>auth(session?.user||null),0));
+await auth(await getStudioUser());
+onStudioAuth((user)=>setTimeout(()=>auth(user||null),0));

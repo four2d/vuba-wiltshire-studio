@@ -1,6 +1,5 @@
-import {createClient} from "https://esm.sh/@supabase/supabase-js@2";
-const cfg=window.VUBA_CONFIG;
-const db=createClient(cfg.supabaseUrl,cfg.supabaseAnonKey);
+import {createStudioClient,getStudioUser,onStudioAuth} from "./staff-auth.js";
+const db=createStudioClient();
 const $=id=>document.getElementById(id);
 const safe=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const bucket="vuba-brain-documents";
@@ -192,5 +191,5 @@ async function init(u){
  if(!$("vubaBrain"))return;
  build();await load();
 }
-const {data:{session}}=await db.auth.getSession();await init(session?.user||null);
-db.auth.onAuthStateChange((_,session)=>setTimeout(()=>init(session?.user||null),0));
+await init(await getStudioUser());
+onStudioAuth((user)=>setTimeout(()=>init(user||null),0));
