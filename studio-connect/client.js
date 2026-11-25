@@ -74,7 +74,10 @@ if(cfg.supabaseUrl&&cfg.supabaseAnonKey){
   try{
    accountState=await api("status");
    render();
-   if(announce)note("Page selections updated.");
+   if(announce){
+    note("Page selections updated.");
+    if(tenant==="vuba")await window.VUBASocialAccounts?.refresh();
+   }
    const value=new URL(location.href).searchParams.get("studio_connect");
    if(value==="select_pages")note("Sign-in complete. Tick the Pages you want, then choose Connect selected Pages.");
    else if(value&&value!=="done")note("The social network returned: "+value.replace(/_/g," ")+".");
