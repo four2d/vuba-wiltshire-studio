@@ -21,8 +21,20 @@ jobs:
           node --check foxon-studio/studio-upgrades.js
           node --check foxon-studio/marketing-hq.js
           node --check foxon-studio/social-accounts.js
+          node --check foxon-studio/schedule-time.js
           node --check foxon-studio/workspace.js
           node --check foxon-studio/marketing.js
           node --check foxon-studio/brain.js
       - name: Verify FOXON interface safeguards
         run: node foxon-studio/tests/smoke.mjs
+      - name: UK schedule time helper
+        run: node foxon-studio/tests/schedule-time.test.mjs
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - name: Type-check FOXON Edge Functions
+        run: deno check foxon-studio/supabase/functions/foxon-social-publish/index.ts foxon-studio/supabase/functions/foxon-social-scheduler/index.ts
+      - name: Publishing core unit tests (no network)
+        run: deno test --allow-env foxon-studio/tests/publish-core.test.ts
+      - name: Scheduling migration on throwaway PostgreSQL
+        run: foxon-studio/tests/sql/run.sh

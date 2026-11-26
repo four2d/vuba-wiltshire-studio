@@ -83,3 +83,47 @@ assert(social.includes('if(role!=="admin"||connecting)return;'),"Only authorised
 assert(social.includes('action:"begin"'),"Provider connection must use server-side OAuth");
 assert(!social.includes("Refresh connections"),"Ordinary user interface must not show redundant refresh controls");
 console.log("FOXON Studio static upgrade smoke checks passed.");
+// Scheduled publishing + LinkedIn images (26 Nov 2026)
+const has=name=>{try{read(name);return true;}catch{return false;}};
+const scheduleTime=read("schedule-time.js");
+const core=read("supabase/functions/_shared/foxon-publish-core.ts");
+const schedCore=read("supabase/functions/_shared/foxon-scheduler-core.ts");
+const publishFn=read("supabase/functions/foxon-social-publish/index.ts");
+const schedulerFn=read("supabase/functions/foxon-social-scheduler/index.ts");
+const migration=read("supabase/migrations/20261126120000_foxon_scheduled_publishing.sql");
+const cron=read("supabase/cron/foxon-scheduler-cron.sql");
+assert(social.includes('from "./schedule-time.js'),"Scheduling UI must use the shared UK time helper");
+assert(scheduleTime.includes('UK_TIME_ZONE="Europe/London"')&&scheduleTime.includes('DEFAULT_UK_TIME="07:30"'),"Schedules are UK time with a 07:30 default");
+assert(social.includes('confirmSchedule')&&social.includes('Type PUBLISH to confirm.')&&social.includes(')==="PUBLISH"'),"Scheduling must reuse the typed PUBLISH confirmation");
+assert(social.includes('confirm:"PUBLISH"'),"Schedule requests must carry the typed confirmation");
+for(const action of ['action:"schedule"','action:"reschedule"','action:"cancel"','action:"resolve"'])assert(social.includes(action),"Queue UI missing "+action);
+assert(social.includes('id="foxonScheduleQueue"'),"Scheduled queue must be visible");
+assert(social.includes('db.from("studio_publish_schedules").select('),"Queue status must come from Supabase");
+assert(!/studio_publish_schedules"\)\.(insert|update|upsert|delete)/.test(social),"Browser must never write the queue directly");
+assert(social.includes('p.channel==="Instagram"'),"Instagram scheduling must stay switched off in the UI");
+assert(!social.includes('p.channel==="LinkedIn"&&!!p.media_id'),"LinkedIn image posts must no longer be blocked in the UI");
+assert(social.includes("schedulingReady=!queue.error"),"Publish now must keep working before the migration is applied");
+for(const fn of [publishFn,schedulerFn,core,schedCore]){
+ assert(!fn.includes("service_role_key\"")&&!/sb_secret_|eyJhbGci/.test(fn),"No keys may be committed in functions");
+}
+assert(publishFn.includes('if(req.headers.get("Origin")!==STUDIO_ORIGIN)'),"Admin publisher stays origin-locked");
+assert(publishFn.includes("getAdmin(req,db)")&&publishFn.includes('"admin_required"'),"Only Studio admins may publish or schedule");
+assert(publishFn.includes('requireConfirm(body)'),"Server also requires the typed confirmation for schedule changes");
+assert(publishFn.includes('{allowInstagram:false}'),"Instagram cannot be scheduled server-side");
+assert(schedulerFn.includes('constantTimeEqual(req.headers.get("x-foxon-scheduler-secret")'),"Scheduler must authenticate cron with a shared secret");
+assert(schedulerFn.includes('FOXON_SCHEDULER_ENABLED")!=="true"'),"Scheduler must have an off switch");
+assert(schedCore.includes('.eq("status","sending")'),"Only the claiming run may close a schedule");
+assert(schedCore.includes("needs_reconciliation")&&schedCore.includes("err.retryable&&row.attempts<row.max_attempts"),"Unsafe failures need reconciliation; only safe ones retry");
+assert(core.includes('insert({post_id:t.post.id,social_account_id:t.account.id,status:"sending"})'),"Delivery row remains the idempotency gate");
+assert(core.indexOf("commit=await prepareLinkedIn")<core.indexOf('from("studio_publish_deliveries").insert'),"Uploads must happen before the idempotency row");
+assert(core.includes("/rest/images?action=initializeUpload")&&core.includes('method:"PUT"')&&core.includes("content={media:{id:image.urn"),"LinkedIn Images API flow: initializeUpload, PUT, post with content.media");
+assert(core.includes("isLinkedInUploadUrl(uploadUrl)"),"Only upload to LinkedIn-hosted URLs");
+assert(migration.includes("enable row level security")&&migration.includes("grant select on public.studio_publish_schedules to authenticated")&&migration.includes("revoke all on public.studio_publish_schedules from anon, authenticated"),"Queue is read-only for browsers");
+assert(migration.includes("studio_publish_schedules_one_live"),"Unique live schedule index is the first idempotency gate");
+assert(migration.includes("for update skip locked"),"Claims must be safe against overlapping cron runs");
+assert(!/cron\.schedule/.test(migration),"The migration must never enable cron by itself");
+assert(cron.includes("DO NOT RUN without Pete's explicit OK")&&cron.includes("vault.decrypted_secrets"),"Cron SQL is separate, gated and reads secrets from Vault");
+assert(!/x-foxon-scheduler-secret', '[A-Za-z0-9]/.test(cron),"No scheduler secret literal in the cron SQL");
+assert(has("SCHEDULED-PUBLISHING.md"),"Deployment runbook must exist");
+console.log("FOXON scheduled publishing and LinkedIn image smoke checks passed.");
+
