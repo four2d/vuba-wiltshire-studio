@@ -1,0 +1,20 @@
+// Node tests for foxon-studio/schedule-time.js (UK wall-clock to UTC). Run: node foxon-studio/tests/schedule-time.test.mjs
+import assert from "node:assert/strict";
+import {ukLocalToUtcIso,utcIsoToUkParts,formatUk,scheduleWindowError,tomorrowUk,DEFAULT_UK_TIME} from "../schedule-time.js";
+assert.equal(DEFAULT_UK_TIME,"07:30");
+assert.equal(ukLocalToUtcIso("2026-11-30","07:30"),"2026-11-30T07:30:00.000Z","GMT: 07:30 UK is 07:30 UTC");
+assert.equal(ukLocalToUtcIso("2027-06-02","07:30"),"2027-06-02T06:30:00.000Z","BST: 07:30 UK is 06:30 UTC");
+assert.equal(ukLocalToUtcIso("2027-03-28","07:30"),"2027-03-28T06:30:00.000Z","Clocks-forward day after the change");
+assert.equal(ukLocalToUtcIso("2027-03-28","01:30"),null,"01:30 on clocks-forward day does not exist");
+assert.equal(ukLocalToUtcIso("2026-02-30","07:30"),null,"Invalid calendar date");
+assert.equal(ukLocalToUtcIso("2026-11-30","7:30"),null,"Time must be HH:MM");
+assert.deepEqual(utcIsoToUkParts("2027-06-02T06:30:00.000Z"),{date:"2027-06-02",time:"07:30"});
+assert.match(formatUk("2026-11-30T07:30:00.000Z"),/30 Nov 2026.*07:30.*GMT/);
+assert.match(formatUk("2027-06-02T06:30:00.000Z"),/07:30.*BST/);
+const now=Date.parse("2026-11-26T12:00:00Z");
+assert.equal(scheduleWindowError("2026-11-26T12:04:00Z",now),"time_must_be_in_future");
+assert.equal(scheduleWindowError("2026-11-30T07:30:00.000Z",now),null);
+assert.equal(scheduleWindowError("2027-03-01T07:30:00Z",now),"time_too_far_ahead");
+assert.equal(scheduleWindowError("nope",now),"invalid_time");
+assert.equal(tomorrowUk(now),"2026-11-27");
+console.log("FOXON schedule time helper tests passed.");

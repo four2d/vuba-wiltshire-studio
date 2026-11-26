@@ -436,3 +436,36 @@ body.studio-shell-ready .foxon-connections-page > .studio-page-heading h1{
 body.studio-shell-ready .foxon-connections-page > .studio-page-heading p{
  color:var(--fc-muted)!important;font-size:12px!important;line-height:1.5!important
 }
+
+/* Scheduled publishing (26 Nov 2026). Schedule is the primary action; Publish now is secondary. */
+body.studio-shell-ready .foxon-ready-row{
+ grid-template-columns:minmax(0,1fr) minmax(150px,200px) 140px 96px auto auto
+}
+body.studio-shell-ready .foxon-ready-row input:is([type="date"],[type="time"]){
+ min-height:35px;padding:7px 10px;border:1px solid var(--sa-line);
+ background:var(--sa-bg);color:var(--sa-fg);border-radius:7px;font:inherit;font-size:11px
+}
+body.studio-shell-ready .foxon-ready-row button[data-publish]{
+ background:transparent;color:var(--sa-fg);border-color:var(--sa-line)
+}
+body.studio-shell-ready .foxon-ready-row button:disabled{opacity:.45;cursor:not-allowed}
+body.studio-shell-ready .foxon-schedule-queue{border-top:1px solid var(--sa-line);padding:18px 0;margin:16px 0}
+body.studio-shell-ready .foxon-schedule-note{color:var(--sa-muted);font-size:11px;margin:0 0 10px}
+body.studio-shell-ready .foxon-schedule-queue td small{color:var(--sa-muted);font-size:10px;line-height:1.5}
+body.studio-shell-ready .foxon-schedule-queue td button{
+ min-height:28px;padding:4px 10px;font-size:10px;font-weight:800;border-radius:6px;
+ border:1px solid var(--sa-line);background:transparent;color:var(--sa-fg);margin:2px 0
+}
+body.studio-shell-ready .foxon-schedule-queue tr[data-queue-status="failed"] td strong,
+body.studio-shell-ready .foxon-schedule-queue tr[data-queue-status="needs_reconciliation"] td strong{color:var(--sa-danger,#ff6b5b)}
+body.studio-shell-ready .foxon-schedule-queue tr[data-queue-status="published"] td strong{color:var(--sa-accent)}
+body.studio-shell-ready .foxon-schedule-queue tr[data-queue-status="cancelled"]{opacity:.6}
+#foxonScheduleEdit form{display:grid;gap:10px;min-width:min(420px,80vw)}
+#foxonScheduleEdit label{display:grid;gap:6px;font-size:12px}
+@media(max-width:1100px){
+ body.studio-shell-ready .foxon-ready-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+ body.studio-shell-ready .foxon-ready-row>div:first-child{grid-column:1/-1}
+}
+@media(max-width:730px){
+ body.studio-shell-ready .foxon-ready-row{grid-template-columns:1fr}
+}

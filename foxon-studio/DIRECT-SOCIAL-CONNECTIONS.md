@@ -54,8 +54,9 @@ The Edge Function also uses Supabase-provided server-side credentials. No servic
 ## Supported initial direct publishing formats
 - Facebook Page: text-only or one approved image.
 - Instagram Professional (linked via Meta): one approved image; Meta must accept the private signed media URL and return a published post ID.
-- LinkedIn organisation: text-only.
-- Unsupported so far: native carousel publishing, Reels, videos, LinkedIn media upload, scheduled automated delivery, direct native Planner import and live analytics sync.
+- LinkedIn organisation: text-only, or one approved JPEG/PNG/GIF via the LinkedIn Images API (26 Nov 2026).
+- Scheduled delivery (UK time, Supabase Cron): built 26 Nov 2026, not deployed. See `SCHEDULED-PUBLISHING.md`. Instagram scheduling is off.
+- Unsupported so far: native carousel publishing, Reels, videos, direct native Planner import and live analytics sync.
 
 These restrictions are deliberately enforced server-side. Each publishing attempt creates one unique delivery record. An ambiguous provider response requires manual platform reconciliation; automatic retries are disabled to avoid duplicate posts.
 
